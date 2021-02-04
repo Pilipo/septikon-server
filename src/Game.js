@@ -1,7 +1,9 @@
-import { INVALID_MOVE } from 'boardgame.io/core';
+const tilesJSON = require('./constants/tile_map.json');
 
 export const TicTacToe = {
-    setup: () => ({ cells: Array(9).fill(null) }),
+    setup: () => ({ 
+        cells: Array(651).fill(null),
+     }),
 
     turn: {
         moveLimit: 1,
@@ -9,10 +11,10 @@ export const TicTacToe = {
 
     moves: {
         clickCell: (G, ctx, id) => {
-            if (G.cells[id] !== null) {
-                return INVALID_MOVE;
-            }
-            G.cells[id] = ctx.currentPlayer;
+            // G.cells[id] = "X: " + (Math.floor(id / 21)) + " Y: " + (id % 21);
+            let x = (Math.floor(id / 21));
+            let y = (id % 21);
+            G.cells[id] = tilesJSON[x][y]['name'];
         }
     },
   };

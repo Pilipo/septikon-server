@@ -14,10 +14,10 @@ class TicTacToeClient {
     createBoard() {
       // Create cells in rows for the Tic-Tac-Toe board.
       const rows = [];
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 31; i++) {
         const cells = [];
-        for (let j = 0; j < 3; j++) {
-          const id = 3 * i + j;
+        for (let j = 0; j < 21; j++) {
+          const id = 21 * i + j;
           cells.push(`<td class="cell" data-id="${id}"></td>`);
         }
         rows.push(`<tr>${cells.join('')}</tr>`);
@@ -26,6 +26,7 @@ class TicTacToeClient {
       // Add the HTML to our app <div>.
       // We’ll use the empty <p> to display the game winner later.
       this.rootElement.innerHTML = `
+        <p class="selectedTile">pick a tile</p>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
       `;
