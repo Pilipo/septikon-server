@@ -17,7 +17,6 @@ class SeptikonClient {
     }
   
     createBoard() {
-      // Create cells in rows for the Tic-Tac-Toe board.
       const rows = [];
       for (let i = 0; i < 31; i++) {
         const cells = [];
@@ -31,7 +30,7 @@ class SeptikonClient {
       // Add the HTML to our app <div>.
       // We’ll use the empty <p> to display the game winner later.
       this.rootElement.innerHTML = `
-        <p class="selectedTile">pick a tile</p>
+        <button class="rollButton">Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
       `;
@@ -44,11 +43,16 @@ class SeptikonClient {
         const id = parseInt(event.target.dataset.id);
         this.client.moves.clickCell(id);
       };
+      const handleRoll = event => {
+        this.client.moves.rollDie();
+      }
       // Attach the event listener to each of the board cells.
       const cells = this.rootElement.querySelectorAll('.cell');
       cells.forEach(cell => {
         cell.onclick = handleCellClick;
       });
+      const rollButton = this.rootElement.querySelector('.rollButton');
+      rollButton.onclick = handleRoll;
     }
 
     update(state) {
@@ -57,10 +61,11 @@ class SeptikonClient {
         const textField = this.rootElement.querySelectorAll('.selectedTile');
         // Update cells to display the values in game state.
         textField.textContent = state.G.clickedCell;
-        // console.log(state.G.clickedCell);
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
           const cellValue = state.G.cells[cellId];
+          let x = (Math.floor(cellId / 21));
+          let y = (cellId % 21);
           cell.textContent = cellValue !== null ? cellValue : '';
         });
         // Get the gameover message element.
