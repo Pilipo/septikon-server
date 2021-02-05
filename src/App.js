@@ -1,9 +1,9 @@
 import { Client } from 'boardgame.io/client';
-import { TicTacToe } from './Game';
+import { Septikon } from './Game';
 
-class TicTacToeClient {
+class SeptikonClient {
     constructor(rootElement) {
-      this.client = Client({ game: TicTacToe });
+      this.client = Client({ game: Septikon });
       this.client.start();
       this.rootElement = rootElement;
       this.createBoard();
@@ -49,7 +49,10 @@ class TicTacToeClient {
     update(state) {
         // Get all the board cells.
         const cells = this.rootElement.querySelectorAll('.cell');
+        const textField = this.rootElement.querySelectorAll('.selectedTile');
         // Update cells to display the values in game state.
+        textField.textContent = state.G.clickedCell;
+        // console.log(state.G.clickedCell);
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
           const cellValue = state.G.cells[cellId];
@@ -70,4 +73,4 @@ class TicTacToeClient {
   }
   
   const appElement = document.getElementById('app');
-  const app = new TicTacToeClient(appElement);
+  const app = new SeptikonClient(appElement);
