@@ -1,9 +1,14 @@
 import { Client } from 'boardgame.io/client';
+import { Local } from 'boardgame.io/multiplayer'
 import { Septikon } from './Game';
 
 class SeptikonClient {
-    constructor(rootElement) {
-      this.client = Client({ game: Septikon });
+    constructor(rootElement, { playerID }) {
+      this.client = Client({ 
+        game: Septikon,
+        multiplayer: Local(),
+        playerID,
+      });
       this.client.start();
       this.rootElement = rootElement;
       this.createBoard();
@@ -73,4 +78,10 @@ class SeptikonClient {
   }
   
   const appElement = document.getElementById('app');
-  const app = new SeptikonClient(appElement);
+  const playerIDs = ['0', '1'];
+  const clients = playerIDs.map(playerID => {
+    const rootElement = document.createElement('div');
+    rootElement.classList.add('board');
+    appElement.append(rootElement);
+    return new SeptikonClient(rootElement, { playerID })
+  });
