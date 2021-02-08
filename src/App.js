@@ -66,7 +66,7 @@ class SeptikonClient {
           const cellValue = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
-          cell.textContent = cellValue !== null ? cellValue : '';
+          // cell.textContent = cellValue !== null ? cellValue : '';
         });
         // Get the gameover message element.
         const messageEl = this.rootElement.querySelector('.winner');

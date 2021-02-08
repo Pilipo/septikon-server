@@ -1,26 +1,20 @@
+import Token from './tokens/Token';
+import PersonnelHelper from './helpers/personnelManager';
+
 const tilesJSON = require('./constants/tile_map.json');
 
 function clickCell(G, ctx, id, playerID) {
-    // G.cells[id] = "X: " + (Math.floor(id / 21)) + " Y: " + (id % 21);
     let x = (Math.floor(id / 21));
     let y = (id % 21);
     if (ctx.phase === "layout") {
-        placeClone(G, ctx, id, playerID)
-        // console.log ('call placeClone');
+        let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, {x, y});
+        if (cloneIndex === false) {
+            PersonnelHelper.placeClone(G, playerID, {x, y});
+        } else {
+            PersonnelHelper.removeClone(G, playerID, {x, y})
+        }
     } else {
         G.clickedCell = tilesJSON[x][y];
-    }
-}
-
-function placeClone(G, ctx, id, playerID) {
-    if (G.pieces[playerID]['clones'] < 5) {
-        console.log('Clone placed for player ' + playerID);
-        G.pieces[playerID]['clones']++;
-        if (G.pieces[playerID]['clones'] == 5) {
-            console.log("Count is Maxed at " + G.pieces[playerID]['clones']);
-        } else {
-            console.log("Count is " + G.pieces[playerID]['clones']);
-        }
     }
 }
 
@@ -56,16 +50,47 @@ function fire(G, ctx) {
 
 export const Septikon = {
     setup: () => ({
-        cells: Array(651).fill(null),
+        cells: Array(651).fill({
+            occupied: false,
+            damaged: false,
+        }),
         clickedCell: null,
         rollValue: 0,
         rollHistory: [],
-        pieces: [
+        players: [
             {
-                clones: 0,
+                clones: [],
+                biodrones: [],
+                rockets: [],
+                satellites: [],
+                shields: [],
+                resources: {
+                    energy1: [],
+                    energy2: [],
+                    metal: [],
+                    rocket: [],
+                    uranium: [],
+                    oxygen: [],
+                    biomass: [],
+                    biodrone: [],
+                },
             },
             {
-                clones: 0,
+                clones: [],
+                biodrones: [],
+                rockets: [],
+                satellites: [],
+                shields: [],
+                resources: {
+                    energy1: [],
+                    energy2: [],
+                    metal: [],
+                    rocket: [],
+                    uranium: [],
+                    oxygen: [],
+                    biomass: [],
+                    biodrone: [],
+                },
             }
         ]
     }),
