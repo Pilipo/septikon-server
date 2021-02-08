@@ -1,17 +1,26 @@
 const tilesJSON = require('./constants/tile_map.json');
 
-function clickCell(G, ctx, id) {
+function clickCell(G, ctx, id, playerID) {
     // G.cells[id] = "X: " + (Math.floor(id / 21)) + " Y: " + (id % 21);
     let x = (Math.floor(id / 21));
     let y = (id % 21);
-    G.clickedCell = tilesJSON[x][y];
+    if (ctx.phase === "layout") {
+        placeClone(G, ctx, id, playerID)
+        // console.log ('call placeClone');
+    } else {
+        G.clickedCell = tilesJSON[x][y];
+    }
 }
 
-function placeClone(G, ctx) {
-    console.log('Clone placed.');
-    G.pieces[ctx.currentPlayer]['clones']++;
-    if (G.pieces[ctx.currentPlayer]['clones'] == 5) {
-        console.log("Maxed");
+function placeClone(G, ctx, id, playerID) {
+    if (G.pieces[playerID]['clones'] < 5) {
+        console.log('Clone placed for player ' + playerID);
+        G.pieces[playerID]['clones']++;
+        if (G.pieces[playerID]['clones'] == 5) {
+            console.log("Count is Maxed at " + G.pieces[playerID]['clones']);
+        } else {
+            console.log("Count is " + G.pieces[playerID]['clones']);
+        }
     }
 }
 
@@ -64,10 +73,12 @@ export const Septikon = {
 
     phases: {
         layout: {
-            // onBegin: (G, ctx) => G,
+            onBegin: (G, ctx) => {
+                ctx.events.setActivePlayers({ all: 'setBoard'});
+            },
             // onEnd: (G, ctx) => G,
             // endIf: (G, ctx) => G,
-            moves: { placeClone },
+            moves: { clickCell },
             start: true,
             next: 'play'
         },

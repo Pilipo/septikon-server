@@ -12,7 +12,7 @@ class SeptikonClient {
       this.client.start();
       this.rootElement = rootElement;
       this.createBoard();
-      this.attachListeners();
+      this.attachListeners(playerID);
       this.client.subscribe(state => this.update(state));
     }
   
@@ -36,12 +36,12 @@ class SeptikonClient {
       `;
     }
   
-    attachListeners() {
+    attachListeners(playerID) {
       // This event handler will read the cell id from a cell’s
       // `data-id` attribute and make the `clickCell` move.
       const handleCellClick = event => {
         const id = parseInt(event.target.dataset.id);
-        this.client.moves.clickCell(id);
+        this.client.moves.clickCell(id, playerID);
       };
       const handleRoll = event => {
         this.client.moves.rollDie();
