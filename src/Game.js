@@ -1,17 +1,17 @@
 import Token from './tokens/Token';
 import PersonnelHelper from './helpers/personnelManager';
+import TileHelper from './helpers/tileHelper';
 
 const tilesJSON = require('./constants/tile_map.json');
 
 function clickCell(G, ctx, id, playerID) {
-    let x = (Math.floor(id / 21));
-    let y = (id % 21);
+    let coords = TileHelper.tileIndexToCoordinates(id);
     if (ctx.phase === "layout") {
-        let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, {x, y});
+        let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
         if (cloneIndex === false) {
-            PersonnelHelper.placeClone(G, playerID, {x, y});
+            PersonnelHelper.placeClone(G, playerID, coords);
         } else {
-            PersonnelHelper.removeClone(G, playerID, {x, y})
+            PersonnelHelper.removeClone(G, playerID, coords)
         }
     } else {
         G.clickedCell = tilesJSON[x][y];
