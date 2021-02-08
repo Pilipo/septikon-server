@@ -30,7 +30,8 @@ class SeptikonClient {
       // Add the HTML to our app <div>.
       // We’ll use the empty <p> to display the game winner later.
       this.rootElement.innerHTML = `
-        <button class="rollButton">Roll</button>
+        <button class="startButton" disabled>Start Game</button>
+        <button class="rollButton" disabled>Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
       `;
@@ -46,6 +47,9 @@ class SeptikonClient {
       const handleRoll = event => {
         this.client.moves.rollDie();
       }
+      const handleStart = event => {
+        this.client.moves.startGame();
+      }
       // Attach the event listener to each of the board cells.
       const cells = this.rootElement.querySelectorAll('.cell');
       cells.forEach(cell => {
@@ -53,6 +57,8 @@ class SeptikonClient {
       });
       const rollButton = this.rootElement.querySelector('.rollButton');
       rollButton.onclick = handleRoll;
+      const startButton = this.rootElement.querySelector('.startButton');
+      startButton.onclick = handleStart;
     }
 
     update(state) {
@@ -68,6 +74,7 @@ class SeptikonClient {
           let y = (cellId % 21);
           // cell.textContent = cellValue !== null ? cellValue : '';
         });
+
         // Get the gameover message element.
         const messageEl = this.rootElement.querySelector('.winner');
         // Update the element to show a winner if any.
