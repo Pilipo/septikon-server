@@ -20,6 +20,7 @@ const PersonnelHelper = {
                 y: coordinates.y,
             };
             G.players[playerID]['clones'].push(newClone);
+            G.players[playerID]
         }
     },
     removeClone: (G, playerID, coordinates) => {
