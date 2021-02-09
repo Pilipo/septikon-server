@@ -1,8 +1,12 @@
-import Token from './tokens/Token';
 import PersonnelHelper from './helpers/personnelHelper';
+import ResourceHelper from './helpers/resourceHelper';
 import TileHelper from './helpers/tileHelper';
 
 const tilesJSON = require('./constants/tile_map.json');
+
+function addResource(G, ctx, playerID, type) {
+    ResourceHelper.addResource(G, playerID, ResourceHelper.TYPE.metal);
+} 
 
 function clickCell(G, ctx, id, playerID) {
     let coords = TileHelper.tileIndexToCoordinates(id);
@@ -74,16 +78,7 @@ export const Septikon = {
                 rockets: [],
                 satellites: [],
                 shields: [],
-                resources: {
-                    energy1: [],
-                    energy2: [],
-                    metal: [],
-                    rocket: [],
-                    uranium: [],
-                    oxygen: [],
-                    biomass: [],
-                    biodrone: [],
-                },
+                resources: {},
             },
             {
                 clones: [],
@@ -91,16 +86,7 @@ export const Septikon = {
                 rockets: [],
                 satellites: [],
                 shields: [],
-                resources: {
-                    energy1: [],
-                    energy2: [],
-                    metal: [],
-                    rocket: [],
-                    uranium: [],
-                    oxygen: [],
-                    biomass: [],
-                    biodrone: [],
-                },
+                resources: {},
             }
         ]
     }),
@@ -125,7 +111,7 @@ export const Septikon = {
                     return false;
                 }
             },
-            moves: { clickCell, confirmSetup },
+            moves: { clickCell, confirmSetup, addResource },
             start: true,
             next: 'play'
         },
@@ -133,6 +119,7 @@ export const Septikon = {
             turn: {
                 onBegin: (G, ctx) => {
                     ctx.events.setStage('roll');
+                    ResourceHelper.populatePlayerResources(G);
                 },
                 stages: {
                     roll: {
