@@ -17,9 +17,9 @@ function clickCell(G, ctx, id, playerID) {
 }
 
 function rollDie(G, ctx) {
-    G.rollValue = ctx.random.D6();
-    console.log(G.rollValue + ' was yer roll');
-    G.rollHistory.unshift(G.rollValue);
+    let roll = ctx.random.D6();
+    G.rollValue = roll;
+    G.rollHistory.unshift(roll);
     ctx.events.endStage();
 }
 
