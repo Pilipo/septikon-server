@@ -2,14 +2,8 @@ import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties} from './helpers/tileHelper';
 
-function addResource(G, ctx, playerID, type) {
-    ResourceHelper.addResource(G, playerID, ResourceHelper.TYPE.metal);
-} 
-
 function clickCell(G, ctx, id, playerID) {
     let coords = TileHelper.tileIndexToCoordinates(id);
-    console.log(id);
-    console.log(TileHelper.getClickedTileByIndex(id));
     if (ctx.phase === "layout") {
         let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
         if (cloneIndex === false) {
@@ -109,7 +103,7 @@ export const Septikon = {
                     return false;
                 }
             },
-            moves: { clickCell, confirmSetup, addResource },
+            moves: { clickCell, confirmSetup },
             start: true,
             next: 'play'
         },
