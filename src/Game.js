@@ -1,5 +1,5 @@
 import Token from './tokens/Token';
-import PersonnelHelper from './helpers/personnelManager';
+import PersonnelHelper from './helpers/personnelHelper';
 import TileHelper from './helpers/tileHelper';
 
 const tilesJSON = require('./constants/tile_map.json');

@@ -31,7 +31,7 @@ class SeptikonClient {
       // We’ll use the empty <p> to display the game winner later.
       this.rootElement.innerHTML = `
         <button class="startButton">Start Game</button>
-        <button class="rollButton" disabled>Roll</button>
+        <button class="rollButton">Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
       `;
