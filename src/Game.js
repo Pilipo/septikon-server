@@ -1,8 +1,6 @@
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
-import TileHelper from './helpers/tileHelper';
-
-const tilesJSON = require('./constants/tile_map.json');
+import { TileHelper, tileProperties} from './helpers/tileHelper';
 
 function addResource(G, ctx, playerID, type) {
     ResourceHelper.addResource(G, playerID, ResourceHelper.TYPE.metal);
@@ -10,6 +8,8 @@ function addResource(G, ctx, playerID, type) {
 
 function clickCell(G, ctx, id, playerID) {
     let coords = TileHelper.tileIndexToCoordinates(id);
+    console.log(id);
+    console.log(TileHelper.getClickedTileByIndex(id));
     if (ctx.phase === "layout") {
         let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
         if (cloneIndex === false) {
@@ -18,7 +18,7 @@ function clickCell(G, ctx, id, playerID) {
             PersonnelHelper.removeClone(G, playerID, coords)
         }
     } else {
-        G.clickedCell = tilesJSON[x][y];
+        G.clickedCell = TileHelper.getClickedTileByIndex(id);
     }
 }
 
@@ -60,10 +60,7 @@ function fire(G, ctx) {
 
 export const Septikon = {
     setup: () => ({
-        cells: Array(651).fill({
-            occupied: false,
-            damaged: false,
-        }),
+        cells: Array(651).fill(tileProperties),
         clickedCell: null,
         rollValue: 0,
         rollHistory: [],
@@ -96,6 +93,7 @@ export const Septikon = {
         layout: {
             onBegin: (G, ctx) => {
                 ctx.events.setActivePlayers({ all: 'setBoard'});
+                TileHelper.setOwnership(G);
             },
             // onEnd: (G, ctx) => G,
             endIf: (G, ctx) => {
