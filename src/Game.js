@@ -89,7 +89,6 @@ export const Septikon = {
                 ctx.events.setActivePlayers({ all: 'setBoard'});
                 TileHelper.setOwnership(G);
             },
-            // onEnd: (G, ctx) => G,
             endIf: (G, ctx) => {
                 let playersReady = true;
                 G.setupConfirmations.forEach(player => {
@@ -109,6 +108,9 @@ export const Septikon = {
         },
         play: {
             turn: {
+                order: {
+                    first: (G, ctx) => 0,
+                },
                 onBegin: (G, ctx) => {
                     ctx.events.setStage('roll');
                     ResourceHelper.populatePlayerResources(G);

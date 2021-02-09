@@ -1,12 +1,27 @@
 import { Client } from 'boardgame.io/client';
-import { Local } from 'boardgame.io/multiplayer'
+import { Local, SocketIO } from 'boardgame.io/multiplayer'
 import { Septikon } from './Game';
+
+function SplashScreen(rootElement) {
+  return new Promise(resolve => {
+    const createButton = playerID => {
+      const button = document.createElement('button');
+      button.textContent = 'Player ' + playerID;
+      button.onclick = () => resolve(playerID);
+      rootElement.append(button);
+    };
+    rootElement.innerHTML = ` <p>Play as</p>`;
+    const playerIDs = ['0', '1'];
+    playerIDs.forEach(createButton);
+  });
+}
 
 class SeptikonClient {
     constructor(rootElement, { playerID }) {
       this.client = Client({ 
         game: Septikon,
-        multiplayer: Local(),
+        // multiplayer: Local(),
+        multiplayer: SocketIO({ server: 'localhost:8000' }),
         playerID,
       });
       this.client.start();
@@ -62,6 +77,7 @@ class SeptikonClient {
     }
 
     update(state) {
+      if (state === null) return;
         // Get all the board cells.
         const cells = this.rootElement.querySelectorAll('.cell');
         const textField = this.rootElement.querySelectorAll('.selectedTile');
@@ -88,12 +104,27 @@ class SeptikonClient {
         }
       }
   }
-  
+
+  // Multiplayer via Socket
+
+  class App {
+    constructor(rootElement) {
+      SplashScreen(rootElement).then(playerID => {
+        this.client = new SeptikonClient(rootElement, {playerID});
+      });
+    }
+  }
+
   const appElement = document.getElementById('app');
-  const playerIDs = ['0', '1'];
-  const clients = playerIDs.map(playerID => {
-    const rootElement = document.createElement('div');
-    rootElement.classList.add('board');
-    appElement.append(rootElement);
-    return new SeptikonClient(rootElement, { playerID })
-  });
+  const app = new App(appElement);
+
+  // Local Multiplayer
+  
+  // const appElement = document.getElementById('app');
+  // const playerIDs = ['0', '1'];
+  // const clients = playerIDs.map(playerID => {
+  //   const rootElement = document.createElement('div');
+  //   rootElement.classList.add('board');
+  //   appElement.append(rootElement);
+  //   return new SeptikonClient(rootElement, { playerID })
+  // });
