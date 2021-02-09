@@ -25,6 +25,10 @@ function rollDie(G, ctx) {
     ctx.events.endStage();
 }
 
+function confirmSetup(G, ctx, playerID) {
+    G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
+}
+
 function moveClone(G, ctx) {
     G.clone++;
     console.log('move just one of yer clones ' + G.rollValue + ' spaces');
@@ -57,6 +61,10 @@ export const Septikon = {
         clickedCell: null,
         rollValue: 0,
         rollHistory: [],
+        setupConfirmations: [
+            false,
+            false
+        ],
         players: [
             {
                 clones: [],
@@ -102,8 +110,20 @@ export const Septikon = {
                 ctx.events.setActivePlayers({ all: 'setBoard'});
             },
             // onEnd: (G, ctx) => G,
-            // endIf: (G, ctx) => G,
-            moves: { clickCell },
+            endIf: (G, ctx) => {
+                let playersReady = true;
+                G.setupConfirmations.forEach(player => {
+                    if (player === false) {
+                        playersReady = false;
+                    }
+                });
+                if (playersReady === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            moves: { clickCell, confirmSetup },
             start: true,
             next: 'play'
         },

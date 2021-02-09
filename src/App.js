@@ -30,7 +30,7 @@ class SeptikonClient {
       // Add the HTML to our app <div>.
       // We’ll use the empty <p> to display the game winner later.
       this.rootElement.innerHTML = `
-        <button class="startButton" disabled>Start Game</button>
+        <button class="startButton">Start Game</button>
         <button class="rollButton" disabled>Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
@@ -48,7 +48,7 @@ class SeptikonClient {
         this.client.moves.rollDie();
       }
       const handleStart = event => {
-        this.client.moves.startGame();
+        this.client.moves.confirmSetup(playerID);
       }
       // Attach the event listener to each of the board cells.
       const cells = this.rootElement.querySelectorAll('.cell');
