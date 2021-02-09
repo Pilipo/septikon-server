@@ -26,7 +26,9 @@ function rollDie(G, ctx) {
 }
 
 function confirmSetup(G, ctx, playerID) {
-    G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
+    if (G.players[playerID]['clones'].length === 5) {
+        G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
+    }
 }
 
 function moveClone(G, ctx) {
