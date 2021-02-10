@@ -3,6 +3,12 @@ import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties} from './helpers/tileHelper';
 
 function clickCell(G, ctx, id, playerID) {
+
+    // TESTING
+    let result = PersonnelHelper.getClonesLegalMoves();
+
+    console.log(result);
+
     let coords = TileHelper.tileIndexToCoordinates(id);
     if (ctx.phase === "layout") {
         let cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
