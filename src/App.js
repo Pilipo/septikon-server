@@ -20,8 +20,8 @@ class SeptikonClient {
     constructor(rootElement, { playerID }) {
       this.client = Client({ 
         game: Septikon,
-        // multiplayer: Local(),
-        multiplayer: SocketIO({ server: 'localhost:8000' }),
+        multiplayer: Local(),
+        // multiplayer: SocketIO({ server: 'localhost:8000' }),
         playerID,
       });
       this.client.start();
@@ -107,24 +107,24 @@ class SeptikonClient {
 
   // Multiplayer via Socket
 
-  class App {
-    constructor(rootElement) {
-      SplashScreen(rootElement).then(playerID => {
-        this.client = new SeptikonClient(rootElement, {playerID});
-      });
-    }
-  }
+  // class App {
+  //   constructor(rootElement) {
+  //     SplashScreen(rootElement).then(playerID => {
+  //       this.client = new SeptikonClient(rootElement, {playerID});
+  //     });
+  //   }
+  // }
 
-  const appElement = document.getElementById('app');
-  const app = new App(appElement);
+  // const appElement = document.getElementById('app');
+  // const app = new App(appElement);
 
   // Local Multiplayer
   
-  // const appElement = document.getElementById('app');
-  // const playerIDs = ['0', '1'];
-  // const clients = playerIDs.map(playerID => {
-  //   const rootElement = document.createElement('div');
-  //   rootElement.classList.add('board');
-  //   appElement.append(rootElement);
-  //   return new SeptikonClient(rootElement, { playerID })
-  // });
+  const appElement = document.getElementById('app');
+  const playerIDs = ['0', '1'];
+  const clients = playerIDs.map(playerID => {
+    const rootElement = document.createElement('div');
+    rootElement.classList.add('board');
+    appElement.append(rootElement);
+    return new SeptikonClient(rootElement, { playerID })
+  });

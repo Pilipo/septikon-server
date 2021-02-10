@@ -26,6 +26,7 @@ function rollDie(G, ctx) {
 function confirmSetup(G, ctx, playerID) {
     if (G.players[playerID]['clones'].length === 5) {
         G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
+        ctx.events.endTurn();
     }
 }
 
@@ -86,9 +87,11 @@ export const Septikon = {
     phases: {
         layout: {
             onBegin: (G, ctx) => {
-                ctx.events.setActivePlayers({ all: 'setBoard'});
                 TileHelper.setOwnership(G);
             },
+            // onEnd: (G, ctx) => {
+            //     ctx.events.endTurn();
+            // },
             endIf: (G, ctx) => {
                 let playersReady = true;
                 G.setupConfirmations.forEach(player => {
@@ -108,11 +111,10 @@ export const Septikon = {
         },
         play: {
             turn: {
-                order: {
-                    first: (G, ctx) => 0,
-                },
                 onBegin: (G, ctx) => {
-                    ctx.events.setStage('roll');
+                    ctx.events.setActivePlayers({
+                        currentPlayer: 'roll',
+                    });
                     ResourceHelper.populatePlayerResources(G);
                 },
                 stages: {
