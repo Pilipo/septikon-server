@@ -1,4 +1,5 @@
 const tilesJSON = require('../constants/tile_map.json');
+const wallsJSON = require('../constants/wallGrid.json');
 
 function indexToCoordinates(index) {
     let x = (Math.floor(index / 21));
@@ -70,6 +71,32 @@ const TileHelper = {
             return false;
         } else {
             return potentialResult;
+        }
+    },
+    checkWall (coordinate, direction) {
+        switch (direction){
+            case directions.NORTH:
+                if (parseInt(wallsJSON.grid[coordinate.x][coordinate.y] & directions.NORTH) === 0) {
+                    return true;
+                }
+                return false;
+            case directions.SOUTH:
+                if (parseInt(wallsJSON.grid[coordinate.x][coordinate.y] & directions.SOUTH) === 0) {
+                    return true;
+                }
+                return false;
+            case directions.EAST:
+                if (parseInt(wallsJSON.grid[coordinate.x][coordinate.y] & directions.EAST) === 0) {
+                    return true;
+                }
+                return false;
+            case directions.WEST:
+                if (parseInt(wallsJSON.grid[coordinate.x][coordinate.y] & directions.WEST) === 0) {
+                    return true;
+                }
+                return false;
+            default:
+                return false;
         }
     },
 };

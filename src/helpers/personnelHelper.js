@@ -2,7 +2,6 @@ import Clone from '../tokens/Clone';
 import { TileHelper, directions } from './tileHelper';
 
 function getClonesLegalMoves(moves, currentCoordinates, previousCoordinates) {
-    console.log(moves);
     if (moves < 1) {
         return false;
     } else {
@@ -25,29 +24,23 @@ function getClonesLegalMoves(moves, currentCoordinates, previousCoordinates) {
         let nextTile = TileHelper.getClickedTileByCoordinates(nextMove);
         // MOVE RULES: clones can't go on space tiles, damaged tiles, warehouse tiles, or tiles occupied by enemy biodrones. They can't finish their move on an occupied tile.
         if (nextTile.damaged === true || nextTile.type === "space" || nextTile.type === "warehouse") continue;
+        if (TileHelper.checkWall(currentCoordinates, directions[direction]) === false) continue;
 
-        // TODO: check for walls
         // TODO: check for occupants (clones and biodrones can "jump" teammates)
 
-        getClonesLegalMoves(moves, nextMove, currentCoordinates);
-
-        // if (moves === 0) {
-        //     legalMoves.push(nextMove);
-        // } else {
-        //     returnArray = returnArray.concat(getClonesLegalMoves(moves, nextMove, currentCoordinates));
-        //     for (let index in returnArray) {
-        //         if (returnArray[index].x !== currentCoordinates.x || returnArray[index].y !== currentCoord.y) {
-        //             legalMoves.push(returnArray[index]);
-        //         }
-        //     }
-        // }
-
-        // console.log("still alive");
-        // console.log(nextTile);
-
-
+        if (typeof previousCoordinates === 'undefined' || (typeof previousCoordinates !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(previousCoordinates)))) {
+            if (moves === 0) {
+                legalMoves.push(nextMove);
+            } else {
+                returnArray = returnArray.concat(getClonesLegalMoves(moves, nextMove, currentCoordinates));
+                for (let index in returnArray) {
+                    if (JSON.stringify(returnArray[index]) === JSON.stringify(currentCoordinates)) continue;
+                    legalMoves.push(returnArray[index]);
+                }
+            }
+        }
     }
-    return legalMoves;
+    return [...new Set(legalMoves)];
 }
 
 const PersonnelHelper = {
