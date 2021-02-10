@@ -82,7 +82,7 @@ const PersonnelHelper = {
     placeClone: (G, playerID, coordinates) => {
         if (G.players[playerID]['clones'].length < 5) {
             let tile = TileHelper.getClickedTileByCoordinates(coordinates);
-            if (tile.owner === playerID && tile.name !== "surface") {
+            if (tile.owner === playerID && tile.name !== "surface" && tile.type !== "warehouse") {
                 let newClone = {
                     type: "clone",
                     x: coordinates.x,

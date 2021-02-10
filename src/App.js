@@ -85,10 +85,10 @@ class SeptikonClient {
         textField.textContent = state.G.clickedCell;
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
-          const cellValue = state.G.cells[cellId];
+          const cellValue = state.G.cells[cellId].occupied;
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
-          // cell.textContent = cellValue !== null ? cellValue : '';
+          cell.textContent = cellValue === true ? 'x' : '';
         });
 
         // Get the gameover message element.
