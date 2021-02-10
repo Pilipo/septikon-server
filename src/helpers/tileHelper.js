@@ -48,7 +48,7 @@ const TileHelper = {
             let coordinates = indexToCoordinates(i);
             let tile = tilesJSON[coordinates.x][coordinates.y];
             if (tile.name === "lock" && tile.owner === playerID) {
-                returnArray.push(tile);
+                returnArray.push(coordinates);
             }
         }
         return returnArray;

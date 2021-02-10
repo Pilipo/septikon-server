@@ -1,7 +1,7 @@
 import Clone from '../tokens/Clone';
 import { TileHelper, directions } from './tileHelper';
 
-function getClonesLegalMoves(moves, currentCoordinates, previousCoordinates) {
+function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordinates) {
     if (moves < 1) {
         return false;
     } else {
@@ -10,13 +10,37 @@ function getClonesLegalMoves(moves, currentCoordinates, previousCoordinates) {
 
     const legalMoves = [];
     let returnArray = [];
-    let nextTile = null;
 
+    // first iteration
     if (typeof previousCoordinates == 'undefined') {
         // TODO: accommodate spies
         // TODO: look for locks
+
+        let locks = TileHelper.getLocks(playerID);
+        let currentTile = TileHelper.getClickedTileByCoordinates(currentCoordinates);
+
+        if (currentTile.type === 'lock') {
+            locks.forEach(thisLock => {
+                if (thisLock.x === currentTile.x && thisLock.y === currentTile.y) return;
+                let lockTile = TileHelper.getClickedTileByCoordinates(thisLock);
+                if (lockTile.occupied === true) return;
+                if (moves > 0) {
+                    // console.log('queuing it up');
+                    returnArray = returnArray.concat(getClonesLegalMoves(playerID, moves, {x:thisLock.x, y:thisLock.y}, currentCoordinates));
+                } else {
+                    // console.log(thisLock);
+                    returnArray.push(thisLock);
+                }
+                returnArray.forEach(item => {
+                    if (item.x !== currentCoordinates.x || item.y !== currentCoordinates.y) {
+                        legalMoves.push(item);
+                    }
+                });
+            })
+        }
     }
 
+    // all iterations
     for (let direction in directions) {
         let nextMove = TileHelper.getCoordinateByDirection(currentCoordinates, direction);
         if (nextMove === false) continue;
@@ -32,7 +56,7 @@ function getClonesLegalMoves(moves, currentCoordinates, previousCoordinates) {
             if (moves === 0) {
                 legalMoves.push(nextMove);
             } else {
-                returnArray = returnArray.concat(getClonesLegalMoves(moves, nextMove, currentCoordinates));
+                returnArray = returnArray.concat(getClonesLegalMoves(playerID, moves, nextMove, currentCoordinates));
                 for (let index in returnArray) {
                     if (JSON.stringify(returnArray[index]) === JSON.stringify(currentCoordinates)) continue;
                     legalMoves.push(returnArray[index]);
@@ -79,8 +103,8 @@ const PersonnelHelper = {
             });
         }
     },
-    getClonesLegalMoves: () => {
-        return getClonesLegalMoves(4, { x: 0, y: 0 });
+    getClonesLegalMoves: (playerID, moveCount, originCoordinate) => {
+        return getClonesLegalMoves(playerID, moveCount, originCoordinate);
     },
 };
 

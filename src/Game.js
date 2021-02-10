@@ -5,9 +5,12 @@ import { TileHelper, tileProperties} from './helpers/tileHelper';
 function clickCell(G, ctx, id, playerID) {
 
     // TESTING
-    let result = PersonnelHelper.getClonesLegalMoves();
+    let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
 
+    console.log(TileHelper.getClickedTileByIndex(id));
     console.log(result);
+
+    // END TESTING
 
     let coords = TileHelper.tileIndexToCoordinates(id);
     if (ctx.phase === "layout") {
