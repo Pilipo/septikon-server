@@ -1,6 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { Local, SocketIO } from 'boardgame.io/multiplayer'
 import { Septikon } from './Game';
+import Clone from './tokens/Clone';
 
 function SplashScreen(rootElement) {
   return new Promise(resolve => {
@@ -84,19 +85,20 @@ class SeptikonClient {
         // Update cells to display the values in game state.
         textField.textContent = state.G.clickedCell;
         let highlightedCellArray = state.G.stagedCells;
+        
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
           const cellValue = state.G.cells[cellId].occupied;
           const tile = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
-          // cell.classList.remove('red');
-          // state.G.stagedCells.forEach(stagedCell => {
-          //   if (stagedCell.x === x && stagedCell.y === y) {
-          //     cell.classList.add('red');
-          //   }
-          // })
-          cell.textContent = cellValue === true ? 'c' : '';
+          cell.textContent = '';
+          cell.classList.remove('red');
+          state.G.stagedCells.forEach(stagedCell => {
+            if (stagedCell.x === x && stagedCell.y === y) {
+              cell.classList.add('red');
+            }
+          })
           if (tile.type == "space") {
             cell.classList.add('black')
           }
@@ -115,6 +117,12 @@ class SeptikonClient {
             if (tile.name == 'biodrone') cell.classList.add('purple');
             if (tile.name == 'oxygen') cell.classList.add('blue');
           }
+        });
+
+        let id = this.client.playerID;
+        let clones = state.G.players[id].clones;
+        clones.forEach(clone => {
+          cells[((clone.x*21) + clone.y)].textContent = 'c';
         });
 
         // Get the gameover message element.

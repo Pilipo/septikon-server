@@ -93,11 +93,7 @@ const PersonnelHelper = {
         if (G.players[playerID]['clones'].length < 5) {
             let tile = TileHelper.getClickedTileByCoordinates(coordinates);
             if (tile.owner === playerID && tile.name !== "surface" && tile.type !== "warehouse") {
-                let newClone = {
-                    type: "clone",
-                    x: coordinates.x,
-                    y: coordinates.y,
-                };
+                let newClone = new Clone(playerID, coordinates);
                 G.players[playerID]['clones'].push(newClone);
                 TileHelper.setValueForCoordinates(G, coordinates, 'occupied', true);
             }
@@ -130,9 +126,40 @@ const PersonnelHelper = {
             });
         }
     },
+    getGunners: (G, ctx) => {
+        let gunners = [];
+        G.players[ctx.currentPlayer].clones.forEach(clone => {
+            if (clone.gunner === true) {
+                gunners.push(clone);
+            }
+        });
+        return gunners;
+    },
+    getSpies: (G, ctx) => {
+        let spies = [];
+        opponentID = ctx.currentPlayer == 0 ? 1 : 0;
+        G.players[opponentID].clones.forEach(clone => {
+            if (clone.spy === true) {
+                spies.push(clone);
+            }
+        });
+        return spies;
+    },
+    getBiodrones: (G, ctx) => {
+        return G.players[ctx.currentPlayer].biodrones;
+    },
     getClonesLegalMoves: (G, playerID, moveCount, originCoordinate) => {
         return getClonesLegalMoves(G, playerID, moveCount, originCoordinate);
     },
+    getOccupiedTiles: (G, ctx, tokenType) => {
+        let occupiedTiles = [];
+        G.players.forEach(player => {
+            player.forEach(token => {
+                occupiedTiles.push({ x: token.x, y: token.y });
+            })
+        })
+        return occupiedTiles;
+    }
 };
 
 export default PersonnelHelper;

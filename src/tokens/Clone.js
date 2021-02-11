@@ -6,6 +6,9 @@ class Clone extends Token {
         this.spy = false;
         this.gunner = false;
     }
+    move(targetCoordinates) {
+        this.coordinates = this.coordinates;
+    }
 }
 
 export default Clone;

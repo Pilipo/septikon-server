@@ -105,11 +105,7 @@ function goToNextStage(G, ctx) {
             } else {
                 switch (G.stagedObject.targetType) {
                     case 'gunner':
-                        G.players[playerID].clones.forEach(clone => {
-                            if (clone.gunner === true) {
-                                console.log('found a gunner target');
-                            }
-                        })
+                        console.log(PersonnelHelper.getGunners(G, ctx));
                         break;
                     case 'damage':
                         break;

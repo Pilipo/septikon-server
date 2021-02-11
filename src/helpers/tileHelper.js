@@ -31,6 +31,15 @@ const TileHelper = {
     tileCoordinatesToIndex: (coordinates) => {
         return coordinatesToIndex(coordinates);
     },
+    getDamagedTiles: (G, ctx) => {
+        let damagedTiles = [];
+        G.cells.forEach(cell => {
+            if (cell.owner === ctx.currentPlayer) {
+                damagedTiles.push(cell);
+            }
+        });
+        return damagedTiles;
+    },
     getClickedTileByIndex: (index) => {
         let coordinates = indexToCoordinates(index);
         return tilesJSON[coordinates.x][coordinates.y];
