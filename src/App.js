@@ -90,7 +90,7 @@ class SeptikonClient {
           const tile = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
-          state.G.stagedCells.forEach(stagedCell => cell.classList.remove('red'));
+          cell.classList.remove('red');
           state.G.stagedCells.forEach(stagedCell => {
             if (stagedCell.x === x && stagedCell.y === y) {
               cell.classList.add('red');

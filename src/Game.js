@@ -27,8 +27,19 @@ function clickCell(G, ctx, id, playerID) {
         switch(currentStage) {
             case 'moveClone':
                 if (TileHelper.getValueForCoordinates(G, coords, 'occupied') === true) {
+                    G.stagedToken = G.players[playerID]['clones'][PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords)];
                     G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollHistory[0], coords);
-                    console.log('staged');
+                } else {
+                    G.stagedCells.forEach(coordinate => {
+                        if (JSON.stringify(coordinate) === JSON.stringify(coords)) {
+                            PersonnelHelper.moveClone(G, playerID, G.stagedToken, coordinate);
+                            // clear token/cell staging
+                            G.stagedCells = [];
+                            G.stagedToken = null;
+                            // progress turn stage
+                            ctx.events.endStage();
+                        }
+                    })
                 }
                 break;
             default:
@@ -82,6 +93,7 @@ export const Septikon = {
     setup: () => ({
         cells: Array(651).fill(tileProperties),
         clickedCell: null,
+        stagedToken: null,
         stagedCells: [],
         rollValue: 0,
         rollHistory: [],

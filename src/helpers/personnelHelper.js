@@ -53,7 +53,7 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
                
                 console.log('Enemy Biodrone in the list.');
                 // TODO: iterate the biodrones to check for a match.
-                
+
             }
         }
 
@@ -101,6 +101,18 @@ const PersonnelHelper = {
                 TileHelper.setValueForCoordinates(G, coordinates, 'occupied', true);
             }
         }
+    },
+    moveClone: (G, playerID, cloneNeedle ,targetCoordinates) => {
+        G.players[playerID]['clones'].forEach((cloneHay, index) => {
+            if (cloneNeedle.x == cloneHay.x && cloneNeedle.y == cloneHay.y) {
+                // update tile occupation
+                TileHelper.setValueForCoordinates(G, { x: cloneNeedle.x, y: cloneNeedle.y }, 'occupied', false);
+                TileHelper.setValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'occupied', true);
+                // update clone coordinates
+                cloneNeedle.x = targetCoordinates.x;
+                cloneNeedle.y = targetCoordinates.y;
+            }
+        });
     },
     removeClone: (G, playerID, coordinates) => {
         if (G.players[playerID]['clones'].length > 0) {
