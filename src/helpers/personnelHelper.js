@@ -1,7 +1,7 @@
 import Clone from '../tokens/Clone';
 import { TileHelper, directions } from './tileHelper';
 
-function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordinates) {
+function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoordinates) {
     if (moves < 1) {
         return false;
     } else {
@@ -14,7 +14,6 @@ function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordi
     // first iteration
     if (typeof previousCoordinates == 'undefined') {
         // TODO: accommodate spies
-        // TODO: look for locks
 
         let locks = TileHelper.getLocks(playerID);
         let currentTile = TileHelper.getClickedTileByCoordinates(currentCoordinates);
@@ -25,10 +24,8 @@ function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordi
                 let lockTile = TileHelper.getClickedTileByCoordinates(thisLock);
                 if (lockTile.occupied === true) return;
                 if (moves > 0) {
-                    // console.log('queuing it up');
-                    returnArray = returnArray.concat(getClonesLegalMoves(playerID, moves, {x:thisLock.x, y:thisLock.y}, currentCoordinates));
+                    returnArray = returnArray.concat(getClonesLegalMoves(G, playerID, moves, {x:thisLock.x, y:thisLock.y}, currentCoordinates));
                 } else {
-                    // console.log(thisLock);
                     returnArray.push(thisLock);
                 }
                 returnArray.forEach(item => {
@@ -46,17 +43,22 @@ function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordi
         if (nextMove === false) continue;
 
         let nextTile = TileHelper.getClickedTileByCoordinates(nextMove);
-        // MOVE RULES: clones can't go on space tiles, damaged tiles, warehouse tiles, or tiles occupied by enemy biodrones. They can't finish their move on an occupied tile.
+        // MOVE RULES: clones can't go on or pass through space tiles, damaged tiles, warehouse tiles, or tiles occupied by enemy biodrones. They can't finish their move on an occupied tile.
         if (nextTile.damaged === true || nextTile.type === "space" || nextTile.type === "warehouse") continue;
         if (TileHelper.checkWall(currentCoordinates, directions[direction]) === false) continue;
 
         // TODO: check for occupants (clones and biodrones can "jump" teammates)
+        // if (nextTile.occupied === true) {
+        //     let occupant = getTileOccupantByCoordinate(nextMove);
+        // }
 
         if (typeof previousCoordinates === 'undefined' || (typeof previousCoordinates !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(previousCoordinates)))) {
-            if (moves === 0) {
+            let tileOccupied = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)].occupied;
+            
+            if (moves === 0 && tileOccupied === false) {
                 legalMoves.push(nextMove);
             } else {
-                returnArray = returnArray.concat(getClonesLegalMoves(playerID, moves, nextMove, currentCoordinates));
+                returnArray = returnArray.concat(getClonesLegalMoves(G, playerID, moves, nextMove, currentCoordinates));
                 for (let index in returnArray) {
                     if (JSON.stringify(returnArray[index]) === JSON.stringify(currentCoordinates)) continue;
                     legalMoves.push(returnArray[index]);
@@ -66,6 +68,10 @@ function getClonesLegalMoves(playerID, moves, currentCoordinates, previousCoordi
     }
     return [...new Set(legalMoves)];
 }
+
+// function getTileOccupantByCoordinate(coordinates) {
+
+// }
 
 const PersonnelHelper = {
     getCloneIndexByCoordinates: (G, playerID, coordinates) => {
@@ -103,8 +109,8 @@ const PersonnelHelper = {
             });
         }
     },
-    getClonesLegalMoves: (playerID, moveCount, originCoordinate) => {
-        return getClonesLegalMoves(playerID, moveCount, originCoordinate);
+    getClonesLegalMoves: (G, playerID, moveCount, originCoordinate) => {
+        return getClonesLegalMoves(G, playerID, moveCount, originCoordinate);
     },
 };
 

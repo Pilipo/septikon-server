@@ -42,6 +42,10 @@ const TileHelper = {
         let index = coordinatesToIndex(coordinates);
         G.cells[index][key] = value;
     },
+    getValueForCoordinates: (G, coordinates, key) => {
+        let index = coordinatesToIndex(coordinates);
+        return G.cells[index][key];
+    },
     getLocks: (playerID) => {
         const returnArray = [];
         for (let i = 0; i < 651; i++) {

@@ -83,12 +83,18 @@ class SeptikonClient {
         const textField = this.rootElement.querySelectorAll('.selectedTile');
         // Update cells to display the values in game state.
         textField.textContent = state.G.clickedCell;
+        let highlightedCellArray = state.G.stagedCells;
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
           const cellValue = state.G.cells[cellId].occupied;
           const tile = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
+          state.G.stagedCells.forEach(stagedCell => {
+            if (stagedCell.x === x && stagedCell.y === y) {
+              cell.classList.add('red');
+            }
+          })
           cell.textContent = cellValue === true ? 'x' : '';
           if (tile.name == 'metal') cell.classList.add('white');
           if (tile.name == 'rocket') cell.classList.add('red');

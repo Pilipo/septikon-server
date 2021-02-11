@@ -1,3 +1,4 @@
+import DevHelper from './helpers/devHelper';
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties} from './helpers/tileHelper';
@@ -5,10 +6,10 @@ import { TileHelper, tileProperties} from './helpers/tileHelper';
 function clickCell(G, ctx, id, playerID) {
 
     // TESTING
-    let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
+    // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
 
-    console.log(TileHelper.getClickedTileByIndex(id));
-    console.log(result);
+    // console.log(TileHelper.getClickedTileByIndex(id));
+    // console.log(result);
 
     // END TESTING
 
@@ -22,11 +23,22 @@ function clickCell(G, ctx, id, playerID) {
         }
     } else {
         G.clickedCell = TileHelper.getClickedTileByIndex(id);
+        let currentStage = ctx.activePlayers[ctx.currentPlayer];
+        switch(currentStage) {
+            case 'moveClone':
+                if (TileHelper.getValueForCoordinates(G, coords, 'occupied') === true) {
+                    G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollHistory[0], coords);
+                    console.log('staged');
+                }
+                break;
+            default:
+        }
     }
 }
 
 function rollDie(G, ctx) {
-    let roll = ctx.random.D6();
+    // let roll = ctx.random.D6();
+    let roll = 6;
     G.rollValue = roll;
     G.rollHistory.unshift(roll);
     ctx.events.endStage();
@@ -37,6 +49,10 @@ function confirmSetup(G, ctx, playerID) {
         G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
         ctx.events.endTurn();
     }
+}
+
+function selectClone(G, ctx ) {
+
 }
 
 function moveClone(G, ctx) {
@@ -66,6 +82,7 @@ export const Septikon = {
     setup: () => ({
         cells: Array(651).fill(tileProperties),
         clickedCell: null,
+        stagedCells: [],
         rollValue: 0,
         rollHistory: [],
         setupConfirmations: [
@@ -97,6 +114,7 @@ export const Septikon = {
         layout: {
             onBegin: (G, ctx) => {
                 TileHelper.setOwnership(G);
+                DevHelper.stageForMoveClone(G, ctx);
             },
             // onEnd: (G, ctx) => {
             //     ctx.events.endTurn();
@@ -134,7 +152,7 @@ export const Septikon = {
                     },
 
                     moveClone: {
-                        moves: { moveClone, clickCell },
+                        moves: { clickCell },
                         endIf: (G, ctx) => G.clone >= 1,
                         next: 'module',
                     },
