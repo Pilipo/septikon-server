@@ -1,14 +1,14 @@
 import DevHelper from './helpers/devHelper';
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
-import { TileHelper, tileProperties} from './helpers/tileHelper';
+import { TileHelper, tileProperties } from './helpers/tileHelper';
 
 function clickCell(G, ctx, id, playerID) {
 
     // TESTING
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
 
-    // console.log(TileHelper.getClickedTileByIndex(id));
+    console.log(TileHelper.getClickedTileByIndex(id));
     // console.log(result);
 
     // END TESTING
@@ -24,8 +24,9 @@ function clickCell(G, ctx, id, playerID) {
     } else {
         G.clickedCell = TileHelper.getClickedTileByIndex(id);
         let currentStage = ctx.activePlayers[ctx.currentPlayer];
-        switch(currentStage) {
+        switch (currentStage) {
             case 'moveClone':
+                // BUG: player can select opponent clone
                 if (TileHelper.getValueForCoordinates(G, coords, 'occupied') === true) {
                     G.stagedObject = G.players[playerID]['clones'][PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords)];
                     G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollHistory[0], coords);
@@ -37,30 +38,25 @@ function clickCell(G, ctx, id, playerID) {
                             G.stagedCells = [];
                             G.stagedObject = (G.clickedCell.type === "lock" ? null : G.clickedCell);
                             // advance turn stage
-                            ctx.events.endStage();
+                            goToNextStage(G, ctx);
                         }
                     })
                 }
                 break;
             case 'module':
-                if (cell.automated) {
+                console.log('here');
+                if (G.stagedObject.targetType == "gunner") {
+                    console.log("Fire module after gunner selection (if reqs allow)");
                     // check requirements
                     // activate cell
                     // clear token/cell staging 
                     // advance turn stage
                 } else {
-                    // TODO: offer targets
-                    if (cell.targetType == "gunner") {
-                        // check requirements
-                        // activate cell
-                        // clear token/cell staging 
-                        // advance turn stage
-                    } else {
-                        // check requirements
-                        // activate cell
-                        // clear token/cell staging 
-                        // advance turn stage
-                    }
+                    console.log("Fire module after valid selection (if reqs allow)");
+                    // check requirements
+                    // activate cell
+                    // clear token/cell staging 
+                    // advance turn stage
                 }
                 // Possible activations include:
                 // - BATTLE
@@ -79,12 +75,75 @@ function clickCell(G, ctx, id, playerID) {
     }
 }
 
+function goToNextStage(G, ctx) {
+    let currentStage = ctx.activePlayers[ctx.currentPlayer];
+    switch (currentStage) {
+        case 'roll':
+            ctx.events.endStage();
+            break;
+
+        case 'moveClone':
+            if (G.stagedObject.automated) {
+                console.log("Fire module without intervention (if reqs allow)");
+                // TODO: check requirements
+                // TODO: activate cell
+                // TODO: clear token/cell staging 
+
+                if (G.players[ctx.currentPlayer].biodrones.length > 0) {
+                    ctx.events.setStage('moveBiodrone');
+                    break;
+                } else if (G.players[ctx.currentPlayer].ordnance.length > 0) {
+                    ctx.events.setStage('moveOrdnance');
+                    break;
+                } else if (G.players[ctx.currentPlayer].biodrones.length > 0) {
+                    ctx.events.setStage('fire');
+                    break;
+                } else {
+                    // do cleanup
+                    ctx.events.endTurn();
+                }
+            } else {
+                switch (G.stagedObject.targetType) {
+                    case 'gunner':
+                        G.players[playerID].clones.forEach(clone => {
+                            if (clone.gunner === true) {
+                                console.log('found a gunner target');
+                            }
+                        })
+                        break;
+                    case 'damage':
+                        break;
+                    case 'spy':
+                        break;
+                    case 'biodrone':
+                        break;
+                }
+
+                ctx.events.endStage();
+            }
+            break;
+
+        case 'module':
+            break;
+
+        case 'moveBiodrones':
+            break;
+
+        case 'moveOrdnance':
+            break;
+
+        case 'fire':
+            break;
+
+    };
+}
+
 function rollDie(G, ctx) {
     // let roll = ctx.random.D6();
     let roll = 6;
     G.rollValue = roll;
     G.rollHistory.unshift(roll);
-    ctx.events.endStage();
+    goToNextStage(G, ctx);
 }
 
 function confirmSetup(G, ctx, playerID) {
@@ -122,16 +181,14 @@ export const Septikon = {
             {
                 clones: [],
                 biodrones: [],
-                rockets: [],
-                satellites: [],
+                ordnance: [],
                 shields: [],
                 resources: {},
             },
             {
                 clones: [],
                 biodrones: [],
-                rockets: [],
-                satellites: [],
+                ordnance: [],
                 shields: [],
                 resources: {},
             }
@@ -182,11 +239,13 @@ export const Septikon = {
 
                     moveClone: {
                         moves: { clickCell },
-                        endIf: (G, ctx) => G.clone >= 1,
                         next: 'module',
                     },
 
                     module: {
+                        onBegin: (G, ctx) => {
+                            console.log('starting stage');
+                        },
                         moves: { clickCell },
                         next: 'moveBiodrones'
                     },

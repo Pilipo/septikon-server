@@ -90,20 +90,22 @@ class SeptikonClient {
           const tile = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
-          cell.classList.remove('red');
-          state.G.stagedCells.forEach(stagedCell => {
-            if (stagedCell.x === x && stagedCell.y === y) {
-              cell.classList.add('red');
-            }
-          })
+          // cell.classList.remove('red');
+          // state.G.stagedCells.forEach(stagedCell => {
+          //   if (stagedCell.x === x && stagedCell.y === y) {
+          //     cell.classList.add('red');
+          //   }
+          // })
           cell.textContent = cellValue === true ? 'x' : '';
-          if (tile.name == 'metal') cell.classList.add('white');
-          if (tile.name == 'rocket') cell.classList.add('red');
-          if (tile.name == 'energy1' || cellValue.name == 'energy2') cell.classList.add('yellow');
-          if (tile.name == 'biomass') cell.classList.add('green');
-          if (tile.name == 'uranium') cell.classList.add('orange');
-          if (tile.name == 'biodrone') cell.classList.add('purple');
-          if (tile.name == 'oxygen') cell.classList.add('blue');
+          if (tile.type == "warehouse") {
+            if (tile.name == 'metal') cell.classList.add('white');
+            if (tile.name == 'rocket') cell.classList.add('red');
+            if (tile.name == 'energy1' || tile.name == 'energy2') cell.classList.add('yellow');
+            if (tile.name == 'biomass') cell.classList.add('green');
+            if (tile.name == 'uranium') cell.classList.add('orange');
+            if (tile.name == 'biodrone') cell.classList.add('purple');
+            if (tile.name == 'oxygen') cell.classList.add('blue');
+          }
         });
 
         // Get the gameover message element.

@@ -112,6 +112,11 @@ const PersonnelHelper = {
                 // update clone coordinates
                 cloneNeedle.x = targetCoordinates.x;
                 cloneNeedle.y = targetCoordinates.y;
+                // update clone properties
+                // console.log(TileHelper.getValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'type'));
+                if (TileHelper.getValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'type') === 'surface') {
+                    cloneNeedle.gunner = true;
+                }
             }
         });
     },

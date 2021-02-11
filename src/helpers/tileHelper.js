@@ -44,6 +44,7 @@ const TileHelper = {
     },
     getValueForCoordinates: (G, coordinates, key) => {
         let index = coordinatesToIndex(coordinates);
+        console.log(index);
         return G.cells[index][key];
     },
     getLocks: (playerID) => {
@@ -59,12 +60,23 @@ const TileHelper = {
     },
     setOwnership: (G) => {
         G.cells.map((cell, index) => {
-            if (index < 160) {
-                cell['owner'] = 0;
-            }
-            if (index > 460) {
-                cell['owner'] = 1;
-            }
+
+            let coordinates = indexToCoordinates(index);
+            let tileNode = tilesJSON[coordinates.x][coordinates.y];
+            Object.entries(tileNode).forEach(pair => {
+                cell[pair[0]] = pair[1];
+            });
+
+
+            // if (index < 160) {
+            //     cell['owner'] = 0;
+            // }
+            // if (index > 460) {
+            //     cell['owner'] = 1;
+            // }
+            // let coordinates = indexToCoordinates(index);
+            // let tileNode = tilesJSON[coordinates.x][coordinates.y];
+            // cell['automated'] = tileNode.automated ? tileNode.automated : null;
         });
     },
     getCoordinateByDirection(originCoordinate, direction) {

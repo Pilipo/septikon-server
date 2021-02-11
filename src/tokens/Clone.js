@@ -4,6 +4,7 @@ class Clone extends Token {
     constructor(playerID, coordinates) {
         super(playerID, coordinates);
         this.spy = false;
+        this.gunner = false;
     }
 }
 
