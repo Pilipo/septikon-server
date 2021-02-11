@@ -93,12 +93,8 @@ class SeptikonClient {
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
           cell.textContent = '';
-          cell.classList.remove('red');
-          state.G.stagedCells.forEach(stagedCell => {
-            if (stagedCell.x === x && stagedCell.y === y) {
-              cell.classList.add('red');
-            }
-          })
+          cell.classList.remove('highlighted');
+          
           if (tile.type == "space") {
             cell.classList.add('black')
           }
@@ -117,12 +113,17 @@ class SeptikonClient {
             if (tile.name == 'biodrone') cell.classList.add('purple');
             if (tile.name == 'oxygen') cell.classList.add('blue');
           }
+          state.G.stagedCells.forEach(stagedCell => {
+            if (stagedCell.x === x && stagedCell.y === y) {
+              cell.classList.add('highlighted');
+            }
+          })
         });
 
-        let id = this.client.playerID;
-        let clones = state.G.players[id].clones;
-        clones.forEach(clone => {
-          cells[((clone.x*21) + clone.y)].textContent = 'c';
+        state.G.players.forEach(player => {
+          player.clones.forEach(clone => {
+            cells[((clone.x*21) + clone.y)].textContent = 'c';
+          });
         });
 
         // Get the gameover message element.
