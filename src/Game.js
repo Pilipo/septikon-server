@@ -27,20 +27,52 @@ function clickCell(G, ctx, id, playerID) {
         switch(currentStage) {
             case 'moveClone':
                 if (TileHelper.getValueForCoordinates(G, coords, 'occupied') === true) {
-                    G.stagedToken = G.players[playerID]['clones'][PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords)];
+                    G.stagedObject = G.players[playerID]['clones'][PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords)];
                     G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollHistory[0], coords);
                 } else {
                     G.stagedCells.forEach(coordinate => {
                         if (JSON.stringify(coordinate) === JSON.stringify(coords)) {
-                            PersonnelHelper.moveClone(G, playerID, G.stagedToken, coordinate);
+                            PersonnelHelper.moveClone(G, playerID, G.stagedObject, coordinate);
                             // clear token/cell staging
                             G.stagedCells = [];
-                            G.stagedToken = null;
-                            // progress turn stage
+                            G.stagedObject = (G.clickedCell.type === "lock" ? null : G.clickedCell);
+                            // advance turn stage
                             ctx.events.endStage();
                         }
                     })
                 }
+                break;
+            case 'module':
+                if (cell.automated) {
+                    // check requirements
+                    // activate cell
+                    // clear token/cell staging 
+                    // advance turn stage
+                } else {
+                    // TODO: offer targets
+                    if (cell.requiresGunner) {
+                        // check requirements
+                        // activate cell
+                        // clear token/cell staging 
+                        // advance turn stage
+                    } else {
+                        // check requirements
+                        // activate cell
+                        // clear token/cell staging 
+                        // advance turn stage
+                    }
+                }
+                // Possible activations include:
+                // - BATTLE
+                //   - {PENDING} Gunner targetted: lasers, thermites, shield, biodrone, satellite, rocket, espionage, takeover (each gunner can be targetted)
+                //   - {PENDING} non-gunner targetted: counter-espionage, repair, repairTwo (set number of targets)
+                // - PROD
+                //   - {PENDING} automated: everything but...
+                //   - {PENDING} non-gunner targetted: repair, sensor cabin
+                // - ARMORY
+                //   - {PENDING} automated: everything
+                // - SURFACE
+                //   - {PENDING} automated: set clone.gunner: true
                 break;
             default:
         }
@@ -62,21 +94,6 @@ function confirmSetup(G, ctx, playerID) {
     }
 }
 
-function selectClone(G, ctx ) {
-
-}
-
-function moveClone(G, ctx) {
-    G.clone++;
-    console.log('move just one of yer clones ' + G.rollValue + ' spaces');
-    ctx.events.endStage();
-}
-
-function activateModule(G, ctx) {
-    console.log('activate the module yer clone just landed on (battlements are optional)');
-    ctx.events.endStage();
-}
-
 function moveBiodrone(G, ctx) {
     console.log('optional: move any or all biodrones ' + G.rollValue + ' one time each');
 }
@@ -93,7 +110,7 @@ export const Septikon = {
     setup: () => ({
         cells: Array(651).fill(tileProperties),
         clickedCell: null,
-        stagedToken: null,
+        stagedObject: null,
         stagedCells: [],
         rollValue: 0,
         rollHistory: [],
@@ -170,7 +187,7 @@ export const Septikon = {
                     },
 
                     module: {
-                        moves: { activateModule, clickCell },
+                        moves: { clickCell },
                         next: 'moveBiodrones'
                     },
 

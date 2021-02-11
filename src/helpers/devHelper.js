@@ -5,7 +5,7 @@ const DevHelper = {
         [
             { x:0, y:0 },
             { x:1, y:5 },
-            { x:6, y:10 },
+            { x:7, y:0 },
             { x:0, y:12 },
             { x:0, y:20 },
         ].forEach(coordinate => {

@@ -10,6 +10,7 @@
 			"id": "001",
 			"type": "battle",
 			"name": "thermite",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass"],
@@ -23,6 +24,7 @@
 			"id": "002",
 			"type": "battle",
 			"name": "shield",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -36,6 +38,7 @@
 			"id": "003",
 			"type": "battle",
 			"name": "biodrone",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biodrone"],
@@ -49,6 +52,7 @@
 			"id": "004",
 			"type": "battle",
 			"name": "satellite",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["metal"],
@@ -62,6 +66,7 @@
 			"id": "005",
 			"type": "battle",
 			"name": "laser",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -75,6 +80,7 @@
 			"id": "006",
 			"type": "battle",
 			"name": "repair",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["metal"],
@@ -88,6 +94,7 @@
 			"id": "007",
 			"type": "battle",
 			"name": "rocket",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["rocket"],
@@ -101,6 +108,7 @@
 			"id": "008",
 			"type": "battle",
 			"name": "espionage",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass"],
@@ -113,6 +121,7 @@
 			"id": "009",
 			"type": "battle",
 			"name": "takeover",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -125,6 +134,7 @@
 			"id": "010",
 			"type": "battle",
 			"name": "repairTwo",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy", "oxygen"],
@@ -138,6 +148,7 @@
 			"id": "011",
 			"type": "battle",
 			"name": "counterEspionage",
+			"automated": false,
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass", "oxygen"],
@@ -150,6 +161,7 @@
 			"id": "012",
 			"type": "surface",
 			"name": "surface",
+			"automated": true,
 			"locations": ["8,0", "8,1", "8,2", "8,3", "8,4", "8,5", "8,6", "8,7", "8,8", "8,9", "8,10", "8,11", "8,12", "8,13", "8,14", "8,15", "8,16", "8,17", "8,18", "8,19", "8,20", "22,0", "22,1", "22,2", "22,3", "22,4", "22,5", "22,6", "22,7", "22,8", "22,9", "22,10", "22,11", "22,12", "22,13", "22,14", "22,15", "22,16", "22,17", "22,18", "22,19", "22,20"]
 		},
 		"otherLock": {
@@ -162,24 +174,28 @@
 			"id": "014",
 			"type": "armory",
 			"name": "drill",
+			"automated": true,
 			"locations": ["4,10", "26,10"]
 		},
 		"ArmoryCannon": {
 			"id": "015",
 			"type": "armory",
 			"name": "cannon",
+			"automated": true,
 			"locations": ["3,10", "27,10"]
 		},
 		"armoryExplosives": {
 			"id": "016",
 			"type": "armory",
 			"name": "explosives",
+			"automated": true,
 			"locations": ["2,10", "28,10"]
 		},
 		"productionLichen": {
 			"id": "017",
 			"type": "production",
 			"name": "lichen",
+			"automated": true,			
 			"properties": {
                 "action": "required",
 				"resourceYieldType": ["biomass"],
@@ -191,6 +207,7 @@
 			"id": "018",
 			"type": "production",
 			"name": "lichenTwo",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceYieldType": ["biomass"],
@@ -203,6 +220,7 @@
 			"id": "019",
 			"type": "production",
 			"name": "chemicalReactor",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["biomass"],
@@ -217,6 +235,7 @@
 			"id": "020",
 			"type": "production",
 			"name": "chemicalReactorTwo",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["biomass"],
@@ -230,6 +249,7 @@
 			"id": "021",
 			"type": "production",
 			"name": "airFilter",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["oxygen"],
@@ -243,6 +263,7 @@
 			"id": "022",
 			"type": "production",
 			"name": "biocollector",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["oxygen", "biomass"],
@@ -256,6 +277,7 @@
 			"id": "023",
 			"type": "production",
 			"name": "uraniumMine",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["oxygen", "energy"],
@@ -269,6 +291,7 @@
 			"id": "024",
 			"type": "production",
 			"name": "nuclearReactor",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["uranium"],
@@ -282,6 +305,7 @@
 			"id": "025",
 			"type": "production",
 			"name": "thermalGenerator",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["biomass"],
@@ -295,6 +319,7 @@
 			"id": "026",
 			"type": "production",
 			"name": "foundry",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["energy"],
@@ -308,6 +333,7 @@
 			"id": "027",
 			"type": "production",
 			"name": "foundryTwo",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["energy"],
@@ -321,6 +347,7 @@
 			"id": "028",
 			"type": "production",
 			"name": "rocketWorkshop",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["energy"],
@@ -334,6 +361,7 @@
 			"id": "029",
 			"type": "production",
 			"name": "sensorCabin",
+			"automated": false,
 			"properties": {
                 "action": "required",
 				"callback": "killBiodrone"
@@ -344,6 +372,7 @@
 			"id": "030",
 			"type": "production",
 			"name": "nuclearArmory",
+			"automated": true,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["oxygen", "energy", "uranium"],
@@ -355,6 +384,7 @@
 			"id": "031",
 			"type": "production",
 			"name": "prodRepair",
+			"automated": false,
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["energy"],

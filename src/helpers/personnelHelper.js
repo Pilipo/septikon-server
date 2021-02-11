@@ -19,6 +19,7 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
         let currentTile = TileHelper.getClickedTileByCoordinates(currentCoordinates);
 
         if (currentTile.type === 'lock') {
+            // TODO: Fix bug in which the lock the clone is presently standing on is a legal target.
             locks.forEach(thisLock => {
                 if (thisLock.x === currentTile.x && thisLock.y === currentTile.y) return;
                 let lockTile = TileHelper.getClickedTileByCoordinates(thisLock);

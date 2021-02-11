@@ -747,7 +747,7 @@
     },
     "2": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -764,7 +764,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -781,7 +781,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -798,7 +798,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -815,7 +815,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -832,7 +832,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -849,7 +849,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -866,7 +866,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -883,7 +883,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -900,7 +900,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "0",
             "resourceCostType": [
@@ -934,7 +934,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -951,7 +951,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -968,7 +968,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -985,7 +985,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1002,7 +1002,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1019,7 +1019,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1036,7 +1036,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1053,7 +1053,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1070,7 +1070,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1087,7 +1087,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "0",
             "resourceCostType": [
@@ -1107,7 +1107,7 @@
     },
     "3": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1124,7 +1124,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1141,7 +1141,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1158,7 +1158,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1175,7 +1175,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1192,7 +1192,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1209,7 +1209,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1226,7 +1226,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1243,7 +1243,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1260,7 +1260,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "0",
             "resourceCostType": [
@@ -1294,7 +1294,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1311,7 +1311,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1328,7 +1328,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1345,7 +1345,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1362,7 +1362,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1379,7 +1379,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1396,7 +1396,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1413,7 +1413,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1430,7 +1430,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1447,7 +1447,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "0",
             "resourceCostType": [
@@ -1467,7 +1467,7 @@
     },
     "4": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1484,7 +1484,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1501,7 +1501,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1518,7 +1518,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1535,7 +1535,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1552,7 +1552,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1569,7 +1569,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1586,7 +1586,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1603,7 +1603,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1620,7 +1620,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "0",
             "resourceCostType": [
@@ -1654,7 +1654,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1671,7 +1671,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1688,7 +1688,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1705,7 +1705,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1722,7 +1722,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1739,7 +1739,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1756,7 +1756,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1773,7 +1773,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1790,7 +1790,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1807,7 +1807,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "0",
             "resourceCostType": [
@@ -1827,7 +1827,7 @@
     },
     "5": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1844,7 +1844,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1861,7 +1861,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1878,7 +1878,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1895,7 +1895,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1912,7 +1912,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1929,7 +1929,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1946,7 +1946,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1963,7 +1963,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -1980,7 +1980,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "0",
             "resourceCostType": [
@@ -2014,7 +2014,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2031,7 +2031,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2048,7 +2048,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2065,7 +2065,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2082,7 +2082,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2099,7 +2099,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2116,7 +2116,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2133,7 +2133,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2150,7 +2150,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -2167,7 +2167,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "0",
             "resourceCostType": [
@@ -9035,7 +9035,7 @@
     },
     "25": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9052,7 +9052,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9069,7 +9069,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9086,7 +9086,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9103,7 +9103,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9120,7 +9120,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9137,7 +9137,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9154,7 +9154,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9171,7 +9171,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9188,7 +9188,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biomass",
             "owner": "1",
             "resourceCostType": [
@@ -9222,7 +9222,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9239,7 +9239,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9256,7 +9256,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9273,7 +9273,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9290,7 +9290,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9307,7 +9307,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9324,7 +9324,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9341,7 +9341,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9358,7 +9358,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9375,7 +9375,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "oxygen",
             "owner": "1",
             "resourceCostType": [
@@ -9395,7 +9395,7 @@
     },
     "26": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9412,7 +9412,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9429,7 +9429,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9446,7 +9446,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9463,7 +9463,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9480,7 +9480,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9497,7 +9497,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9514,7 +9514,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9531,7 +9531,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9548,7 +9548,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "biodrone",
             "owner": "1",
             "resourceCostType": [
@@ -9582,7 +9582,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9599,7 +9599,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9616,7 +9616,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9633,7 +9633,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9650,7 +9650,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9667,7 +9667,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9684,7 +9684,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9701,7 +9701,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9718,7 +9718,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9735,7 +9735,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "rocket",
             "owner": "1",
             "resourceCostType": [
@@ -9755,7 +9755,7 @@
     },
     "27": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9772,7 +9772,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9789,7 +9789,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9806,7 +9806,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9823,7 +9823,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9840,7 +9840,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9857,7 +9857,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9874,7 +9874,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9891,7 +9891,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9908,7 +9908,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "uranium",
             "owner": "1",
             "resourceCostType": [
@@ -9942,7 +9942,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -9959,7 +9959,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -9976,7 +9976,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -9993,7 +9993,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10010,7 +10010,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10027,7 +10027,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10044,7 +10044,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10061,7 +10061,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10078,7 +10078,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10095,7 +10095,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "metal",
             "owner": "1",
             "resourceCostType": [
@@ -10115,7 +10115,7 @@
     },
     "28": {
         "0": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10132,7 +10132,7 @@
             ]
         },
         "1": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10149,7 +10149,7 @@
             ]
         },
         "2": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10166,7 +10166,7 @@
             ]
         },
         "3": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10183,7 +10183,7 @@
             ]
         },
         "4": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10200,7 +10200,7 @@
             ]
         },
         "5": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10217,7 +10217,7 @@
             ]
         },
         "6": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10234,7 +10234,7 @@
             ]
         },
         "7": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10251,7 +10251,7 @@
             ]
         },
         "8": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10268,7 +10268,7 @@
             ]
         },
         "9": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy2",
             "owner": "1",
             "resourceCostType": [
@@ -10302,7 +10302,7 @@
             ]
         },
         "11": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10319,7 +10319,7 @@
             ]
         },
         "12": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10336,7 +10336,7 @@
             ]
         },
         "13": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10353,7 +10353,7 @@
             ]
         },
         "14": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10370,7 +10370,7 @@
             ]
         },
         "15": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10387,7 +10387,7 @@
             ]
         },
         "16": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10404,7 +10404,7 @@
             ]
         },
         "17": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10421,7 +10421,7 @@
             ]
         },
         "18": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10438,7 +10438,7 @@
             ]
         },
         "19": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
@@ -10455,7 +10455,7 @@
             ]
         },
         "20": {
-            "type": "warehouse",
+            "type": "resource",
             "name": "energy1",
             "owner": "1",
             "resourceCostType": [
