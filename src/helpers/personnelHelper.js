@@ -47,14 +47,17 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
         if (nextTile.damaged === true || nextTile.type === "space" || nextTile.type === "warehouse") continue;
         if (TileHelper.checkWall(currentCoordinates, directions[direction]) === false) continue;
         let cell = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)];
-        // TODO: check for occupants (clones and biodrones can "jump" teammates)
-        // if (nextTile.occupied === true) {
-        //     let occupant = getTileOccupantByCoordinate(nextMove);
-        // }
+        if (cell.occupied === true) {
+            let opponentID = (playerID === "0" ? "1" : "0");
+            if (G.players[opponentID].biodrones.length > 0) {
+               
+                console.log('Enemy Biodrone in the list.');
+                // TODO: iterate the biodrones to check for a match.
+                
+            }
+        }
 
         if (typeof previousCoordinates === 'undefined' || (typeof previousCoordinates !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(previousCoordinates)))) {
-            
-            
             if (moves === 0 && cell.occupied === false) {
                 legalMoves.push(nextMove);
             } else {
