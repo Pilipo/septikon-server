@@ -96,7 +96,16 @@ class SeptikonClient {
           //     cell.classList.add('red');
           //   }
           // })
-          cell.textContent = cellValue === true ? 'x' : '';
+          cell.textContent = cellValue === true ? 'c' : '';
+          if (tile.type == "space") {
+            cell.classList.add('black')
+          }
+          if (tile.type == "surface") {
+            cell.classList.add('brown')
+          }
+          if (tile.type == "lock") {
+            cell.classList.add('pink')
+          }
           if (tile.type == "warehouse") {
             if (tile.name == 'metal') cell.classList.add('white');
             if (tile.name == 'rocket') cell.classList.add('red');
