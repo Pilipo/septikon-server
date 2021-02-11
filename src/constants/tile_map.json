@@ -15,7 +15,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "production",
@@ -32,7 +33,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "production",
@@ -51,7 +53,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "production",
@@ -68,7 +71,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "production",
@@ -85,7 +89,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "production",
@@ -102,7 +107,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "production",
@@ -121,7 +127,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "production",
@@ -138,7 +145,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "8": {
             "type": "production",
@@ -155,7 +163,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "9": {
             "type": "production",
@@ -172,7 +182,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "production",
@@ -189,7 +200,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "production",
@@ -206,7 +218,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "production",
@@ -223,7 +236,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "13": {
             "type": "production",
@@ -240,7 +254,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "biodrone"
         },
         "14": {
             "type": "production",
@@ -259,7 +275,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "production",
@@ -276,7 +293,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "production",
@@ -293,7 +311,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "production",
@@ -310,7 +329,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "production",
@@ -329,7 +349,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "production",
@@ -346,7 +367,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "production",
@@ -367,7 +389,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },
@@ -387,7 +410,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "production",
@@ -404,7 +428,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "production",
@@ -421,7 +446,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "production",
@@ -440,7 +466,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "production",
@@ -461,7 +488,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "production",
@@ -478,7 +506,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "production",
@@ -497,7 +526,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "production",
@@ -514,7 +544,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "8": {
             "type": "production",
@@ -531,7 +562,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "9": {
             "type": "production",
@@ -548,7 +580,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "lock",
@@ -582,7 +615,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "production",
@@ -599,7 +633,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "13": {
             "type": "production",
@@ -616,7 +651,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "14": {
             "type": "production",
@@ -633,7 +669,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "production",
@@ -650,7 +687,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "production",
@@ -667,7 +705,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "production",
@@ -686,7 +725,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "production",
@@ -707,7 +747,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "production",
@@ -724,7 +765,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "production",
@@ -741,7 +783,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },
@@ -931,7 +974,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -1291,7 +1335,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -1651,7 +1696,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -2201,7 +2247,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "1": {
             "type": "battle",
@@ -2218,7 +2266,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "2": {
             "type": "battle",
@@ -2237,7 +2287,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "spy"
         },
         "3": {
             "type": "battle",
@@ -2254,7 +2306,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "4": {
             "type": "battle",
@@ -2271,7 +2325,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "5": {
             "type": "battle",
@@ -2288,7 +2344,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "6": {
             "type": "battle",
@@ -2305,7 +2363,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "7": {
             "type": "battle",
@@ -2322,7 +2382,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "8": {
             "type": "battle",
@@ -2339,7 +2401,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "9": {
             "type": "battle",
@@ -2358,7 +2422,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "10": {
             "type": "battle",
@@ -2375,7 +2441,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "11": {
             "type": "battle",
@@ -2392,7 +2460,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "12": {
             "type": "battle",
@@ -2409,7 +2479,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "13": {
             "type": "battle",
@@ -2426,7 +2498,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "14": {
             "type": "battle",
@@ -2443,7 +2517,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "15": {
             "type": "battle",
@@ -2460,7 +2536,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "16": {
             "type": "battle",
@@ -2477,7 +2555,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "17": {
             "type": "battle",
@@ -2494,7 +2574,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "18": {
             "type": "battle",
@@ -2511,7 +2593,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "19": {
             "type": "battle",
@@ -2528,7 +2612,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "20": {
             "type": "battle",
@@ -2545,7 +2631,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "properties": []
     },
@@ -2582,7 +2670,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "2": {
             "type": "battle",
@@ -2599,7 +2689,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "3": {
             "type": "battle",
@@ -2616,7 +2708,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "4": {
             "type": "battle",
@@ -2633,7 +2727,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "5": {
             "type": "battle",
@@ -2650,7 +2746,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "6": {
             "type": "battle",
@@ -2667,7 +2765,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "7": {
             "type": "battle",
@@ -2684,7 +2784,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "8": {
             "type": "battle",
@@ -2701,7 +2803,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "9": {
             "type": "battle",
@@ -2718,7 +2822,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "10": {
             "type": "battle",
@@ -2735,7 +2841,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "11": {
             "type": "battle",
@@ -2752,7 +2860,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "12": {
             "type": "battle",
@@ -2769,7 +2879,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "13": {
             "type": "battle",
@@ -2786,7 +2898,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "14": {
             "type": "battle",
@@ -2803,7 +2917,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "15": {
             "type": "battle",
@@ -2820,7 +2936,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "16": {
             "type": "battle",
@@ -2837,7 +2955,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "17": {
             "type": "battle",
@@ -2854,7 +2974,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "18": {
             "type": "battle",
@@ -2871,7 +2993,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "19": {
             "type": "battle",
@@ -2888,7 +3012,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "20": {
             "type": "lock",
@@ -2925,7 +3051,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "surface",
@@ -2942,7 +3069,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "surface",
@@ -2959,7 +3087,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "surface",
@@ -2976,7 +3105,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "surface",
@@ -2993,7 +3123,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "surface",
@@ -3010,7 +3141,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "surface",
@@ -3027,7 +3159,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "surface",
@@ -3044,7 +3177,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "8": {
             "type": "surface",
@@ -3061,7 +3195,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "9": {
             "type": "surface",
@@ -3078,7 +3213,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "surface",
@@ -3095,7 +3231,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "surface",
@@ -3112,7 +3249,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "surface",
@@ -3129,7 +3267,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "13": {
             "type": "surface",
@@ -3146,7 +3285,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "14": {
             "type": "surface",
@@ -3163,7 +3303,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "surface",
@@ -3180,7 +3321,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "surface",
@@ -3197,7 +3339,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "surface",
@@ -3214,7 +3357,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "surface",
@@ -3231,7 +3375,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "surface",
@@ -3248,7 +3393,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "surface",
@@ -3265,7 +3411,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },
@@ -7965,7 +8112,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "surface",
@@ -7982,7 +8130,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "surface",
@@ -7999,7 +8148,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "surface",
@@ -8016,7 +8166,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "surface",
@@ -8033,7 +8184,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "surface",
@@ -8050,7 +8202,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "surface",
@@ -8067,7 +8220,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "surface",
@@ -8084,7 +8238,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "8": {
             "type": "surface",
@@ -8101,7 +8256,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "9": {
             "type": "surface",
@@ -8118,7 +8274,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "surface",
@@ -8135,7 +8292,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "surface",
@@ -8152,7 +8310,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "surface",
@@ -8169,7 +8328,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "13": {
             "type": "surface",
@@ -8186,7 +8346,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "14": {
             "type": "surface",
@@ -8203,7 +8364,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "surface",
@@ -8220,7 +8382,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "surface",
@@ -8237,7 +8400,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "surface",
@@ -8254,7 +8418,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "surface",
@@ -8271,7 +8436,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "surface",
@@ -8288,7 +8454,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "surface",
@@ -8305,7 +8472,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },
@@ -8342,7 +8510,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "2": {
             "type": "battle",
@@ -8359,7 +8529,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "3": {
             "type": "battle",
@@ -8376,7 +8548,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "4": {
             "type": "battle",
@@ -8393,7 +8567,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "5": {
             "type": "battle",
@@ -8410,7 +8586,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "6": {
             "type": "battle",
@@ -8427,7 +8605,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "7": {
             "type": "battle",
@@ -8444,7 +8624,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "8": {
             "type": "battle",
@@ -8461,7 +8643,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "9": {
             "type": "battle",
@@ -8478,7 +8662,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "10": {
             "type": "battle",
@@ -8495,7 +8681,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "11": {
             "type": "battle",
@@ -8512,7 +8700,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "12": {
             "type": "battle",
@@ -8529,7 +8719,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "13": {
             "type": "battle",
@@ -8546,7 +8738,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "14": {
             "type": "battle",
@@ -8563,7 +8757,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "15": {
             "type": "battle",
@@ -8580,7 +8776,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "16": {
             "type": "battle",
@@ -8597,7 +8795,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "17": {
             "type": "battle",
@@ -8614,7 +8814,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "18": {
             "type": "battle",
@@ -8631,7 +8833,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "19": {
             "type": "battle",
@@ -8648,7 +8852,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "20": {
             "type": "lock",
@@ -8685,7 +8891,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "1": {
             "type": "battle",
@@ -8702,7 +8910,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "2": {
             "type": "battle",
@@ -8719,7 +8929,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "3": {
             "type": "battle",
@@ -8736,7 +8948,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "4": {
             "type": "battle",
@@ -8753,7 +8967,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "5": {
             "type": "battle",
@@ -8770,7 +8986,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "6": {
             "type": "battle",
@@ -8787,7 +9005,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "7": {
             "type": "battle",
@@ -8804,7 +9024,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "8": {
             "type": "battle",
@@ -8821,7 +9043,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "9": {
             "type": "battle",
@@ -8838,7 +9062,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "10": {
             "type": "battle",
@@ -8855,7 +9081,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "11": {
             "type": "battle",
@@ -8874,7 +9102,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "12": {
             "type": "battle",
@@ -8891,7 +9121,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "13": {
             "type": "battle",
@@ -8908,7 +9140,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "14": {
             "type": "battle",
@@ -8925,7 +9159,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "15": {
             "type": "battle",
@@ -8942,7 +9178,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "16": {
             "type": "battle",
@@ -8959,7 +9197,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "17": {
             "type": "battle",
@@ -8976,7 +9216,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "18": {
             "type": "battle",
@@ -8995,7 +9237,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "spy"
         },
         "19": {
             "type": "battle",
@@ -9012,7 +9256,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "20": {
             "type": "battle",
@@ -9029,7 +9275,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "gunner"
         },
         "properties": []
     },
@@ -9579,7 +9827,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -9939,7 +10188,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -10299,7 +10549,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "resource",
@@ -10489,7 +10740,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "production",
@@ -10506,7 +10758,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "production",
@@ -10527,7 +10780,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "production",
@@ -10546,7 +10800,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "production",
@@ -10563,7 +10818,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "production",
@@ -10580,7 +10836,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "production",
@@ -10597,7 +10854,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "production",
@@ -10614,7 +10872,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "8": {
             "type": "production",
@@ -10631,7 +10890,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "9": {
             "type": "production",
@@ -10648,7 +10908,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "lock",
@@ -10682,7 +10943,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "production",
@@ -10699,7 +10961,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "13": {
             "type": "production",
@@ -10716,7 +10979,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "14": {
             "type": "production",
@@ -10735,7 +10999,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "production",
@@ -10752,7 +11017,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "production",
@@ -10773,7 +11039,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "production",
@@ -10792,7 +11059,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "production",
@@ -10809,7 +11077,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "production",
@@ -10826,7 +11095,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "production",
@@ -10843,7 +11113,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },
@@ -10867,7 +11138,8 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": true
         },
         "1": {
             "type": "production",
@@ -10884,7 +11156,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "2": {
             "type": "production",
@@ -10903,7 +11176,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "3": {
             "type": "production",
@@ -10920,7 +11194,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "4": {
             "type": "production",
@@ -10937,7 +11212,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "5": {
             "type": "production",
@@ -10954,7 +11230,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "6": {
             "type": "production",
@@ -10973,7 +11250,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "7": {
             "type": "production",
@@ -10990,7 +11268,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "biodrone"
         },
         "8": {
             "type": "production",
@@ -11007,7 +11287,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "9": {
             "type": "production",
@@ -11024,7 +11305,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "10": {
             "type": "production",
@@ -11041,7 +11323,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "11": {
             "type": "production",
@@ -11058,7 +11341,8 @@
             ],
             "resourceYieldCount": [
                 3
-            ]
+            ],
+            "automated": true
         },
         "12": {
             "type": "production",
@@ -11075,7 +11359,9 @@
             ],
             "resourceYieldCount": [
                 0
-            ]
+            ],
+            "automated": false,
+            "targetType": "damage"
         },
         "13": {
             "type": "production",
@@ -11092,7 +11378,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "14": {
             "type": "production",
@@ -11111,7 +11398,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "15": {
             "type": "production",
@@ -11128,7 +11416,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "16": {
             "type": "production",
@@ -11145,7 +11434,8 @@
             ],
             "resourceYieldCount": [
                 2
-            ]
+            ],
+            "automated": true
         },
         "17": {
             "type": "production",
@@ -11162,7 +11452,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "18": {
             "type": "production",
@@ -11181,7 +11472,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "19": {
             "type": "production",
@@ -11198,7 +11490,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "20": {
             "type": "production",
@@ -11215,7 +11508,8 @@
             ],
             "resourceYieldCount": [
                 1
-            ]
+            ],
+            "automated": true
         },
         "properties": []
     },

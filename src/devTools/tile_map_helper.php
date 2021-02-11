@@ -17,9 +17,12 @@ foreach ($legacyTileJSON['tilePropertyArray'] as $key=>$item) {
         echo "\n" . $coords[0] . "," . $coords[1] . "\n";
         $tile = $tileJSON[$coords[0]][$coords[1]];
         $tile['name'] = $item['name'];
-        // if (array_key_exists('automated', $item)) {
-        //     $tile['automated'] = $item['automated'];
-        // }
+        if (array_key_exists('automated', $item)) {
+            $tile['automated'] = $item['automated'];
+        }
+        if (array_key_exists('targetType', $item)) {
+            $tile['targetType'] = $item['targetType'];
+        }
         if (array_key_exists('properties', $item)) {
             if (array_key_exists('resourceCostType', $item['properties'])) {
                 $tile['resourceCostType'] = $item['properties']['resourceCostType'];

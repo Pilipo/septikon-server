@@ -11,6 +11,7 @@
 			"type": "battle",
 			"name": "thermite",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass"],
@@ -25,6 +26,7 @@
 			"type": "battle",
 			"name": "shield",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -39,6 +41,7 @@
 			"type": "battle",
 			"name": "biodrone",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biodrone"],
@@ -53,6 +56,7 @@
 			"type": "battle",
 			"name": "satellite",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["metal"],
@@ -67,6 +71,7 @@
 			"type": "battle",
 			"name": "laser",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -81,6 +86,7 @@
 			"type": "battle",
 			"name": "repair",
 			"automated": false,
+			"targetType": "damage",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["metal"],
@@ -95,6 +101,7 @@
 			"type": "battle",
 			"name": "rocket",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["rocket"],
@@ -109,6 +116,7 @@
 			"type": "battle",
 			"name": "espionage",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass"],
@@ -122,6 +130,7 @@
 			"type": "battle",
 			"name": "takeover",
 			"automated": false,
+			"targetType": "gunner",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy"],
@@ -135,6 +144,7 @@
 			"type": "battle",
 			"name": "repairTwo",
 			"automated": false,
+			"targetType": "damage",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["energy", "oxygen"],
@@ -149,6 +159,7 @@
 			"type": "battle",
 			"name": "counterEspionage",
 			"automated": false,
+			"targetType": "spy",
 			"properties": {
                 "action": "optional",
 				"resourceCostType": ["biomass", "oxygen"],
@@ -362,6 +373,7 @@
 			"type": "production",
 			"name": "sensorCabin",
 			"automated": false,
+			"targetType": "biodrone",
 			"properties": {
                 "action": "required",
 				"callback": "killBiodrone"
@@ -385,6 +397,7 @@
 			"type": "production",
 			"name": "prodRepair",
 			"automated": false,
+			"targetType": "damage",
 			"properties": {
                 "action": "required",
 				"resourceCostType": ["energy"],

@@ -50,7 +50,7 @@ function clickCell(G, ctx, id, playerID) {
                     // advance turn stage
                 } else {
                     // TODO: offer targets
-                    if (cell.requiresGunner) {
+                    if (cell.targetType == "gunner") {
                         // check requirements
                         // activate cell
                         // clear token/cell staging 
