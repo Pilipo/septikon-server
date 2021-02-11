@@ -46,16 +46,16 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
         // MOVE RULES: clones can't go on or pass through space tiles, damaged tiles, warehouse tiles, or tiles occupied by enemy biodrones. They can't finish their move on an occupied tile.
         if (nextTile.damaged === true || nextTile.type === "space" || nextTile.type === "warehouse") continue;
         if (TileHelper.checkWall(currentCoordinates, directions[direction]) === false) continue;
-
+        let cell = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)];
         // TODO: check for occupants (clones and biodrones can "jump" teammates)
         // if (nextTile.occupied === true) {
         //     let occupant = getTileOccupantByCoordinate(nextMove);
         // }
 
         if (typeof previousCoordinates === 'undefined' || (typeof previousCoordinates !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(previousCoordinates)))) {
-            let tileOccupied = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)].occupied;
             
-            if (moves === 0 && tileOccupied === false) {
+            
+            if (moves === 0 && cell.occupied === false) {
                 legalMoves.push(nextMove);
             } else {
                 returnArray = returnArray.concat(getClonesLegalMoves(G, playerID, moves, nextMove, currentCoordinates));
