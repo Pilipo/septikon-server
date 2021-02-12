@@ -82,7 +82,9 @@ const TileHelper = {
                     cell.isFull = false;
                 }
             }
-
+            if (index == 48) {
+                cell.damaged = true;
+            }
         });
     },
     getCoordinateByDirection(originCoordinate, direction) {
