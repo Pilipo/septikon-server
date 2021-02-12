@@ -7,7 +7,7 @@ function clickCell(G, ctx, id, playerID) {
 
     // TESTING
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
-    // console.log(id);
+    console.log('clicked id is ' + id);
     // console.log(TileHelper.getClickedTileByIndex(G, id).damaged);
     G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
     console.log('Current capacity of ' + TileHelper.getClickedTileByIndex(G, id).name);
