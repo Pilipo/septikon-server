@@ -154,6 +154,9 @@ class SeptikonClient {
                 cell.classList.add('dark-blue');
               }
             }
+            if (tile.damaged == true) {
+              cell.classList.add('black');
+            }
           }
           state.G.stagedCells.forEach(stagedCell => {
             if (stagedCell.x === x && stagedCell.y === y) {
