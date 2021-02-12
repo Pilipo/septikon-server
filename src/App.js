@@ -105,13 +105,55 @@ class SeptikonClient {
             cell.classList.add('pink')
           }
           if (tile.type == "warehouse") {
-            if (tile.name == 'metal') cell.classList.add('white');
-            if (tile.name == 'rocket') cell.classList.add('red');
-            if (tile.name == 'energy1' || tile.name == 'energy2') cell.classList.add('yellow');
-            if (tile.name == 'biomass') cell.classList.add('green');
-            if (tile.name == 'uranium') cell.classList.add('orange');
-            if (tile.name == 'biodrone') cell.classList.add('purple');
-            if (tile.name == 'oxygen') cell.classList.add('blue');
+            if (tile.name == 'metal') {
+              if (tile.isFull == true) {
+                cell.classList.add('white');
+              } else {
+                cell.classList.add('dark-white');
+              }
+            }
+            if (tile.name == 'rocket') {
+              if (tile.isFull == true) {
+                cell.classList.add('red');
+              } else {
+                cell.classList.add('dark-red');
+              }
+            }
+            if (tile.name == 'energy1' || tile.name == 'energy2') {
+              if (tile.isFull == true) {
+                cell.classList.add('yellow');
+              } else {
+                cell.classList.add('dark-yellow');
+              }
+            }
+            if (tile.name == 'biomass') {
+              if (tile.isFull == true) {
+                cell.classList.add('green');
+              } else {
+                cell.classList.add('dark-green');
+              }
+            }
+            if (tile.name == 'uranium') {
+              if (tile.isFull == true) {
+                cell.classList.add('orange');
+              } else {
+                cell.classList.add('dark-orange');
+              }
+            }
+            if (tile.name == 'biodrone') {
+              if (tile.isFull == true) {
+                cell.classList.add('purple');
+              } else {
+                cell.classList.add('dark-purple');
+              }
+            }
+            if (tile.name == 'oxygen') {
+              if (tile.isFull == true) {
+                cell.classList.add('blue');
+              } else {
+                cell.classList.add('dark-blue');
+              }
+            }
           }
           state.G.stagedCells.forEach(stagedCell => {
             if (stagedCell.x === x && stagedCell.y === y) {

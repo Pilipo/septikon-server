@@ -40,12 +40,12 @@ const TileHelper = {
         });
         return damagedTiles;
     },
-    getClickedTileByIndex: (index) => {
-        let coordinates = indexToCoordinates(index);
-        return tilesJSON[coordinates.x][coordinates.y];
+    getClickedTileByIndex: (G, index) => {
+        return G.cells[index];
     },
-    getClickedTileByCoordinates: (coordinates) => {
-        return tilesJSON[coordinates.x][coordinates.y];
+    getClickedTileByCoordinates: (G, coordinates) => {
+        let index = coordinatesToIndex(coordinates);
+        return G.cells[index];
     },
     setValueForCoordinates: (G, coordinates, key, value) => {
         let index = coordinatesToIndex(coordinates);
@@ -69,23 +69,20 @@ const TileHelper = {
     },
     setOwnership: (G) => {
         G.cells.map((cell, index) => {
-
             let coordinates = indexToCoordinates(index);
             let tileNode = tilesJSON[coordinates.x][coordinates.y];
             Object.entries(tileNode).forEach(pair => {
                 cell[pair[0]] = pair[1];
             });
+            if (cell.type == 'warehouse') {
+                let column = index % 21;
+                if (column < 5 || column > 15) {
+                    cell.isFull = true;
+                } else {
+                    cell.isFull = false;
+                }
+            }
 
-
-            // if (index < 160) {
-            //     cell['owner'] = 0;
-            // }
-            // if (index > 460) {
-            //     cell['owner'] = 1;
-            // }
-            // let coordinates = indexToCoordinates(index);
-            // let tileNode = tilesJSON[coordinates.x][coordinates.y];
-            // cell['automated'] = tileNode.automated ? tileNode.automated : null;
         });
     },
     getCoordinateByDirection(originCoordinate, direction) {

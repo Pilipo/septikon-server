@@ -16,21 +16,6 @@ const ResourceHelper = {
     },
     spendResource: (G, playerID, type) => {
     },
-    populatePlayerResources: (G) => {
-        let recItemArray = Array(5).fill({
-                damaged: false,
-                isFull: true,
-            }).concat(Array(5).fill({
-                damaged: false,
-                isFull: false,
-            }));
-
-        for (let playerID in G.players) {
-            for (let k in TYPE) {
-                G.players[playerID]['resources'][k] = recItemArray;
-            }
-        }
-    },
 };
 
 export default ResourceHelper;

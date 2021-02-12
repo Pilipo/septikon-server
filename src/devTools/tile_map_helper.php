@@ -20,6 +20,9 @@ foreach ($legacyTileJSON['tilePropertyArray'] as $key=>$item) {
         if (array_key_exists('automated', $item)) {
             $tile['automated'] = $item['automated'];
         }
+        if (array_key_exists('isFull', $item)) {
+            $tile['isFull'] = $item['isFull'];
+        }
         if (array_key_exists('targetType', $item)) {
             $tile['targetType'] = $item['targetType'];
         }

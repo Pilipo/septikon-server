@@ -16,13 +16,13 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
         // TODO: accommodate spies
 
         let locks = TileHelper.getLocks(playerID);
-        let currentTile = TileHelper.getClickedTileByCoordinates(currentCoordinates);
+        let currentTile = TileHelper.getClickedTileByCoordinates(G, currentCoordinates);
 
         if (currentTile.type === 'lock') {
             // TODO: Fix bug in which the lock the clone is presently standing on is a legal target.
             locks.forEach(thisLock => {
                 if (thisLock.x === currentTile.x && thisLock.y === currentTile.y) return;
-                let lockTile = TileHelper.getClickedTileByCoordinates(thisLock);
+                let lockTile = TileHelper.getClickedTileByCoordinates(G, thisLock);
                 if (lockTile.occupied === true) return;
                 if (moves > 0) {
                     returnArray = returnArray.concat(getClonesLegalMoves(G, playerID, moves, {x:thisLock.x, y:thisLock.y}, currentCoordinates));
@@ -43,7 +43,7 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
         let nextMove = TileHelper.getCoordinateByDirection(currentCoordinates, direction);
         if (nextMove === false) continue;
 
-        let nextTile = TileHelper.getClickedTileByCoordinates(nextMove);
+        let nextTile = TileHelper.getClickedTileByCoordinates(G, nextMove);
         // MOVE RULES: clones can't go on or pass through space tiles, damaged tiles, warehouse tiles, or tiles occupied by enemy biodrones. They can't finish their move on an occupied tile.
         if (nextTile.damaged === true || nextTile.type === "space" || nextTile.type === "warehouse") continue;
         if (TileHelper.checkWall(currentCoordinates, directions[direction]) === false) continue;
@@ -91,7 +91,7 @@ const PersonnelHelper = {
     },
     placeClone: (G, playerID, coordinates) => {
         if (G.players[playerID]['clones'].length < 5) {
-            let tile = TileHelper.getClickedTileByCoordinates(coordinates);
+            let tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
             if (tile.owner === playerID && tile.name !== "surface" && tile.type !== "warehouse") {
                 let newClone = new Clone(playerID, coordinates);
                 G.players[playerID]['clones'].push(newClone);

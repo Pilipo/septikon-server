@@ -8,7 +8,7 @@ function clickCell(G, ctx, id, playerID) {
     // TESTING
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
 
-    console.log(TileHelper.getClickedTileByIndex(id));
+    console.log(TileHelper.getClickedTileByIndex(G, id).isFull);
     // console.log(result);
 
     // END TESTING
@@ -22,7 +22,7 @@ function clickCell(G, ctx, id, playerID) {
             PersonnelHelper.removeClone(G, playerID, coords)
         }
     } else {
-        G.clickedCell = TileHelper.getClickedTileByIndex(id);
+        G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
         let currentStage = ctx.activePlayers[ctx.currentPlayer];
         switch (currentStage) {
             case 'moveClone':
@@ -184,7 +184,6 @@ export const Septikon = {
                     ctx.events.setActivePlayers({
                         currentPlayer: 'rollDie',
                     });
-                    ResourceHelper.populatePlayerResources(G);
                 },
                 stages: {
                     rollDie: {
