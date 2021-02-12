@@ -59,7 +59,12 @@ function getLastFreeTileIndex (G, ctx, type) {
         if (shouldSkip) {
             return;
         }
-        if (warehouseTile.damaged == true || warehouseTile.isFull == true) {
+        if (warehouseTile.damaged == true) {
+            shouldSkip = true;
+            returnTile = null;
+            return;
+        }
+        if (warehouseTile.isFull == true) {
             shouldSkip = true;
             return;
         } else {
@@ -72,11 +77,14 @@ function getLastFreeTileIndex (G, ctx, type) {
 function addResource (G, ctx, type) {
     let curCap = getCurrentCapacity(G, ctx, type);
     if (curCap <= 0) {
-        console.log('no can do, partner.');
         return false;
     }
     let tile = getLastFreeTileIndex(G, ctx, type);
-    G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = true;
+    if (tile == null) {
+        return false;
+    } else {
+        G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = true;
+    }
 }
 
 const ResourceHelper = {

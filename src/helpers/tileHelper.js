@@ -8,7 +8,6 @@ function indexToCoordinates(index) {
 }
 
 function coordinatesToIndex(coordinates) {
-    console.log(coordinates);
     return coordinates.x * 21 + coordinates.y;
 }
 

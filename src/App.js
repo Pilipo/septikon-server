@@ -121,7 +121,6 @@ class SeptikonClient {
               }
             }
             if (tile.name == 'energy1' || tile.name == 'energy2') {
-              console.log(tile);
               if (tile.isFull == true) {
                 cell.classList.add('yellow');
               } else {
