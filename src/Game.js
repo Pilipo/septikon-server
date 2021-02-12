@@ -43,7 +43,7 @@ function clickCell(G, ctx, id, playerID) {
                     })
                 }
                 break;
-            case 'module':
+            case 'activateModule':
                 console.log('here');
                 if (G.stagedObject.targetType == "gunner") {
                     console.log("Fire module after gunner selection (if reqs allow)");
@@ -78,59 +78,31 @@ function clickCell(G, ctx, id, playerID) {
 function goToNextStage(G, ctx) {
     let currentStage = ctx.activePlayers[ctx.currentPlayer];
     switch (currentStage) {
-        case 'roll':
+        case 'rollDie':
             ctx.events.endStage();
             break;
 
         case 'moveClone':
-            if (G.stagedObject.automated) {
-                console.log("Fire module without intervention (if reqs allow)");
-                // TODO: check requirements
-                // TODO: activate cell
-                // TODO: clear token/cell staging 
+            // TODO: Calculate Requirements
+            // Potential Reqs include: resource cost, damaged tile, gunner, spy, enemy biodrone, satellite in gunner line of sight, enemy clone in gunner line of sight
+            // Free modules include: surface, armory, lichen, lichenTwo
+            // if player meets requirements
+            //     activate automatics modules and fall through
+            //     if not automatic, setStage('activateModule')
+            // else
+            //     fall through
 
-                if (G.players[ctx.currentPlayer].biodrones.length > 0) {
-                    ctx.events.setStage('moveBiodrone');
-                    break;
-                } else if (G.players[ctx.currentPlayer].ordnance.length > 0) {
-                    ctx.events.setStage('moveOrdnance');
-                    break;
-                } else if (G.players[ctx.currentPlayer].biodrones.length > 0) {
-                    ctx.events.setStage('fire');
-                    break;
-                } else {
-                    // do cleanup
-                    ctx.events.endTurn();
-                }
-            } else {
-                switch (G.stagedObject.targetType) {
-                    case 'gunner':
-                        console.log(PersonnelHelper.getGunners(G, ctx));
-                        break;
-                    case 'damage':
-                        break;
-                    case 'spy':
-                        break;
-                    case 'biodrone':
-                        break;
-                }
-
-                ctx.events.endStage();
-            }
-            break;
-
-        case 'module':
-            break;
+        case 'activateModule':
+            // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
 
         case 'moveBiodrones':
-            break;
+            // TODO: if ordnance.length > 0 then setStage('moveOrdnance')
 
         case 'moveOrdnance':
-            break;
+            // TODO: if arms.length > 0 then setStage('fireArms')
 
-        case 'fire':
-            break;
-
+        case 'fireArms':
+            // TODO: clean up for next turn and endTurn()
     };
 }
 
@@ -147,18 +119,6 @@ function confirmSetup(G, ctx, playerID) {
         G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
         ctx.events.endTurn();
     }
-}
-
-function moveBiodrone(G, ctx) {
-    console.log('optional: move any or all biodrones ' + G.rollValue + ' one time each');
-}
-
-function moveOrdnance(G, ctx) {
-    console.log('choose the order ALL (even opponent owned) ordnance moves ' + G.rollValue + ' tiles each');
-}
-
-function fire(G, ctx) {
-    console.log('choose the fire order of yer satellites and armaments');
 }
 
 export const Septikon = {
@@ -222,12 +182,12 @@ export const Septikon = {
             turn: {
                 onBegin: (G, ctx) => {
                     ctx.events.setActivePlayers({
-                        currentPlayer: 'roll',
+                        currentPlayer: 'rollDie',
                     });
                     ResourceHelper.populatePlayerResources(G);
                 },
                 stages: {
-                    roll: {
+                    rollDie: {
                         moves: { rollDie, clickCell },
                         next: 'moveClone',
                         start: true,
@@ -235,29 +195,26 @@ export const Septikon = {
 
                     moveClone: {
                         moves: { clickCell },
-                        next: 'module',
+                        next: 'activateModule',
                     },
 
-                    module: {
-                        onBegin: (G, ctx) => {
-                            console.log('starting stage');
-                        },
+                    activateModule: {
                         moves: { clickCell },
                         next: 'moveBiodrones'
                     },
 
                     moveBiodrones: {
-                        moves: { moveBiodrone, clickCell },
+                        moves: { clickCell },
                         next: 'moveOrdnance'
                     },
 
                     moveOrdnance: {
-                        moves: { moveOrdnance, clickCell },
+                        moves: { clickCell },
                         next: 'fire'
                     },
 
-                    fire: {
-                        moves: { fire, clickCell },
+                    fireArms: {
+                        moves: { clickCell },
                     },
                 },
             },
