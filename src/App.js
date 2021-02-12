@@ -93,8 +93,9 @@ class SeptikonClient {
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
           cell.textContent = '';
-          cell.classList.remove('highlighted');
-          
+          // cell.classList.remove('highlighted');
+          cell.className = "";
+          cell.classList.add('cell');
           if (tile.type == "space") {
             cell.classList.add('black')
           }
@@ -120,6 +121,7 @@ class SeptikonClient {
               }
             }
             if (tile.name == 'energy1' || tile.name == 'energy2') {
+              console.log(tile);
               if (tile.isFull == true) {
                 cell.classList.add('yellow');
               } else {
