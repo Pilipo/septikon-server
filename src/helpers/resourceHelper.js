@@ -29,6 +29,26 @@ function loadWarehouseInOrder (G, ctx, type) {
 
     return warehouseArray;
 };
+function getCurrentSpendCapacity (G, ctx, type) {
+    let warehouseArray = loadWarehouseInOrder(G, ctx, type);
+    let spendCount = 0;
+    let shouldSkip = false;
+
+    warehouseArray.forEach((warehouseTile) => {
+        if (shouldSkip) {
+            return;
+        }
+        if (warehouseTile.damaged == true) {
+            shouldSkip = true;
+            return;
+        }
+        if (warehouseTile.isFull == true) {
+            spendCount++;
+        }
+    });
+
+    return spendCount;
+}
 
 function getCurrentCapacity (G, ctx, type) {
     let warehouseArray = loadWarehouseInOrder(G, ctx, type);
@@ -74,6 +94,30 @@ function getLastFreeTileIndex (G, ctx, type) {
     return returnTile;
 }
 
+function getFirstFullTileIndex (G, ctx, type) {
+    let warehouseArray = loadWarehouseInOrder(G, ctx, type);
+    let shouldSkip = false;
+    let returnTile = null;
+
+    warehouseArray.forEach((warehouseTile, index) => {
+        if (shouldSkip) {
+            return;
+        }
+        if (warehouseTile.damaged == true) {
+            shouldSkip = true;
+            returnTile = null;
+            return;
+        }
+        if (warehouseTile.isFull == true) {
+            returnTile = warehouseTile;
+            shouldSkip = true;
+            return;
+        } 
+    });
+
+    return returnTile;
+}
+
 function addResource (G, ctx, type) {
     let curCap = getCurrentCapacity(G, ctx, type);
     if (curCap <= 0) {
@@ -87,11 +131,27 @@ function addResource (G, ctx, type) {
     }
 }
 
+function removeResource (G, ctx, type) {
+    let tile = getFirstFullTileIndex(G, ctx, type);
+    G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = false;
+}
+
 const ResourceHelper = {
     TYPE: TYPE,
     addResource: (G, ctx, type, count) => {
         console.log('adding ' + count);
-        addResource(G, ctx, type);
+        for (let i = 0; i < count; i++) {
+            addResource(G, ctx, type);
+        }
+    },
+    removeResource: (G, ctx, type, count) => {
+        let curCap = getCurrentSpendCapacity(G, ctx, type);
+        if (curCap < count) {
+            return false;
+        }   
+        for (let i = 0; i < count; i++) {
+            removeResource(G, ctx, type);
+        }
     },
     getCurrentCapacity: (G, ctx, type) => {
         return getCurrentCapacity(G, ctx, type);

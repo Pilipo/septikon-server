@@ -6,12 +6,13 @@ import { TileHelper, tileProperties } from './helpers/tileHelper';
 function clickCell(G, ctx, id, playerID) {
 
     // TESTING
+    
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
     console.log('clicked id is ' + id);
-    // console.log(TileHelper.getClickedTileByIndex(G, id).damaged);
     G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-    console.log('Current capacity of ' + TileHelper.getClickedTileByIndex(G, id).name);
-    ResourceHelper.addResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 4);
+    // console.log(TileHelper.getClickedTileByIndex(G, id).damaged);
+    // ResourceHelper.addResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 1);
+    // ResourceHelper.removeResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 1);
     // console.log(result);
 
     // END TESTING

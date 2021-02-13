@@ -82,7 +82,7 @@ const TileHelper = {
                     cell.isFull = false;
                 }
             }
-            if (index == 48) {
+            if (index == 46) {
                 cell.damaged = true;
             }
         });
