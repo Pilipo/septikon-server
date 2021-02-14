@@ -1,8 +1,11 @@
 import Token from './Token';
+import { TileHelper } from '../helpers/tileHelper';
 
-class Clone extends Token {
+class Clone {
     constructor(coordinates) {
-        super(coordinates);
+        this.x = coordinates.x;
+        this.y = coordinates.y;
+        this.tileHelper = TileHelper;
         this.spy = false;
         this.gunner = false;
     }
