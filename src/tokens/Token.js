@@ -1,7 +1,6 @@
 import { TileHelper } from '../helpers/tileHelper';
 class Token {
-    constructor(playerID, coordinates) {
-        this.playerID = playerID;
+    constructor(coordinates) {
         this.x = coordinates.x;
         this.y = coordinates.y;
         this.tileHelper = TileHelper;

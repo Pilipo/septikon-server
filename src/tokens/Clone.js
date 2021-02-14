@@ -1,8 +1,8 @@
 import Token from './Token';
 
 class Clone extends Token {
-    constructor(playerID, coordinates) {
-        super(playerID, coordinates);
+    constructor(coordinates) {
+        super(coordinates);
         this.spy = false;
         this.gunner = false;
     }
