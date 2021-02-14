@@ -8,11 +8,14 @@ function clickCell(G, ctx, id, playerID) {
     // TESTING
     
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
-    console.log('clicked id is ' + id);
+    console.log('click registered');
+    // console.log(id);
+    // console.log(id % 21);
+    // console.log(TileHelper.tileIndexToCoordinates(id));
     G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
     // console.log(TileHelper.getClickedTileByIndex(G, id).damaged);
     // ResourceHelper.addResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 1);
-    // ResourceHelper.removeResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 1);
+    // ResourceHelper.removeResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 2);
     // console.log(result);
 
     // END TESTING
@@ -37,7 +40,10 @@ function clickCell(G, ctx, id, playerID) {
                 } else {
                     G.stagedCells.forEach(coordinate => {
                         if (JSON.stringify(coordinate) === JSON.stringify(coords)) {
-                            PersonnelHelper.moveClone(G, playerID, G.stagedObject, coordinate);
+                            // PersonnelHelper.moveClone(G, playerID, G.stagedObject, coordinate);
+                            
+                            G.stagedObject.move(G, ctx, coords);
+
                             // clear token/cell staging
                             G.stagedCells = [];
                             G.stagedObject = (G.clickedCell.type === "lock" ? null : G.clickedCell);
@@ -112,7 +118,7 @@ function goToNextStage(G, ctx) {
 
 function rollDie(G, ctx) {
     // let roll = ctx.random.D6();
-    let roll = 6;
+    let roll = 2;
     G.rollValue = roll;
     G.rollHistory.unshift(roll);
     goToNextStage(G, ctx);

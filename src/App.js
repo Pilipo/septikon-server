@@ -34,11 +34,11 @@ class SeptikonClient {
   
     createBoard() {
       const rows = [];
-      for (let i = 0; i < 31; i++) {
+      for (let y = 0; y < 21; y++) {
         const cells = [];
-        for (let j = 0; j < 21; j++) {
-          const id = 21 * i + j;
-          cells.push(`<td class="cell" data-id="${id}"></td>`);
+        for (let x = 0; x < 31; x++) {
+          const id = 21 * x + y;
+          cells.push(`<td class="cell" data-id="${id}">${id}</td>`);
         }
         rows.push(`<tr>${cells.join('')}</tr>`);
       }
@@ -88,10 +88,10 @@ class SeptikonClient {
         
         cells.forEach(cell => {
           const cellId = parseInt(cell.dataset.id);
-          const cellValue = state.G.cells[cellId].occupied;
           const tile = state.G.cells[cellId];
           let x = (Math.floor(cellId / 21));
           let y = (cellId % 21);
+          // console.log(cellId + " :: " + x + ", " + y);
           cell.textContent = '';
           // cell.classList.remove('highlighted');
           cell.className = "";
@@ -164,13 +164,19 @@ class SeptikonClient {
               cell.classList.add('highlighted');
             }
           })
-        });
+          state.G.players.forEach(player => {
+            player.clones.forEach(clone => {
+              if (clone.x == x && clone.y == y) {
+                cell.textContent = 'c'
+              // console.log('placing clone at ' + clone.x + ', ' + clone.y + ' which is cell ' + ((clone.x*21) + clone.y));
 
-        state.G.players.forEach(player => {
-          player.clones.forEach(clone => {
-            cells[((clone.x*21) + clone.y)].textContent = 'c';
+              }
+              // cells[((clone.x*21) + clone.y)].textContent = 'c';
+            });
           });
         });
+
+        
 
         // Get the gameover message element.
         const messageEl = this.rootElement.querySelector('.winner');

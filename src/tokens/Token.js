@@ -1,10 +1,12 @@
+import { TileHelper } from '../helpers/tileHelper';
 class Token {
-    constructor(playerID, coordinates, owner) {
+    constructor(playerID, coordinates) {
         this.playerID = playerID;
         this.x = coordinates.x;
         this.y = coordinates.y;
-        this.owner = owner;
+        this.tileHelper = TileHelper;
     }
+
 }
 
 export default Token;

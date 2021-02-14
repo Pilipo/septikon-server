@@ -64,12 +64,14 @@ function getClonesLegalMoves(G, playerID, moves, currentCoordinates, previousCoo
             } else {
                 returnArray = returnArray.concat(getClonesLegalMoves(G, playerID, moves, nextMove, currentCoordinates));
                 for (let index in returnArray) {
+
                     if (JSON.stringify(returnArray[index]) === JSON.stringify(currentCoordinates)) continue;
                     legalMoves.push(returnArray[index]);
                 }
             }
         }
     }
+    // console.log(legalMoves);
     return [...new Set(legalMoves)];
 }
 
@@ -98,23 +100,6 @@ const PersonnelHelper = {
                 TileHelper.setValueForCoordinates(G, coordinates, 'occupied', true);
             }
         }
-    },
-    moveClone: (G, playerID, cloneNeedle ,targetCoordinates) => {
-        G.players[playerID]['clones'].forEach((cloneHay, index) => {
-            if (cloneNeedle.x == cloneHay.x && cloneNeedle.y == cloneHay.y) {
-                // update tile occupation
-                TileHelper.setValueForCoordinates(G, { x: cloneNeedle.x, y: cloneNeedle.y }, 'occupied', false);
-                TileHelper.setValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'occupied', true);
-                // update clone coordinates
-                cloneNeedle.x = targetCoordinates.x;
-                cloneNeedle.y = targetCoordinates.y;
-                // update clone properties
-                // console.log(TileHelper.getValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'type'));
-                if (TileHelper.getValueForCoordinates(G, { x: targetCoordinates.x, y: targetCoordinates.y }, 'type') === 'surface') {
-                    cloneNeedle.gunner = true;
-                }
-            }
-        });
     },
     removeClone: (G, playerID, coordinates) => {
         if (G.players[playerID]['clones'].length > 0) {
