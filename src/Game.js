@@ -1,6 +1,7 @@
 import DevHelper from './helpers/devHelper';
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
+import clone from './tokens/Clone';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
 
 function clickCell(G, ctx, id, playerID) {
@@ -8,8 +9,8 @@ function clickCell(G, ctx, id, playerID) {
     // TESTING
     
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
-    console.log('click registered');
-    // console.log(id);
+    // console.log('click registered');
+    console.log('clickCell( ' + id + ', ' + playerID + ')');
     // console.log(id % 21);
     // console.log(TileHelper.tileIndexToCoordinates(id));
     G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
@@ -117,8 +118,8 @@ function goToNextStage(G, ctx) {
 }
 
 function rollDie(G, ctx) {
-    // let roll = ctx.random.D6();
-    let roll = 2;
+    let roll = ctx.random.D6();
+    // let roll = 2;
     G.rollValue = roll;
     G.rollHistory.unshift(roll);
     goToNextStage(G, ctx);
@@ -166,7 +167,7 @@ export const Septikon = {
         layout: {
             onBegin: (G, ctx) => {
                 TileHelper.setOwnership(G);
-                DevHelper.stageForMoveClone(G, ctx);
+                // DevHelper.stageForMoveClone(G, ctx);
             },
             // onEnd: (G, ctx) => {
             //     ctx.events.endTurn();
