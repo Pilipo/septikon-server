@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
         "airbnb-base"
@@ -12,5 +13,6 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-param-reassign": [2, { "props": false }]
     }
 }
