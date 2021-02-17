@@ -2,41 +2,63 @@ import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { Septikon } from './Game';
 
-const client =  Client({ game: { ...Septikon, seed: 42 }, multiplayer: Local(), playerID: '0' });
-client.start();
+// const client =  Client({ game: { ...Septikon, seed: 42 }, multiplayer: Local(), playerID: '0' });
+// client.start();
+
+const matchID = 'sputnik';
+const client0 = Client({ game: Septikon, playerID: '0', multiplayer: Local(), matchID });
+client0.start();
+const client1 = Client({ game: Septikon, playerID: '1', multiplayer: Local(), matchID });
+client1.start();
+
 
 test('player 0 placing clones', () => {
     
-    client.moves.clickCell(0, '0');
-    client.moves.clickCell(0, '0');
-    client.moves.clickCell(1, '0');
-    client.moves.clickCell(2, '0');
-    client.moves.clickCell(3, '0');
-    client.moves.clickCell(4, '0');
-    client.moves.clickCell(5, '0');
-    const { G } = client.store.getState();
+    client0.moves.clickCell(0, '0');
+    client0.moves.clickCell(0, '0');
+    client0.moves.clickCell(164, '0');
+    client0.moves.clickCell(147, '0');
+    client0.moves.clickCell(136, '0');
+    client0.moves.clickCell(30, '0');
+    client0.moves.clickCell(14, '0');
+    const { G: g0 } = client0.store.getState();
 
-    expect(G.players[0].clones).toEqual([
-        { x: 0, y: 1, spy: false, gunner: false },
-        { x: 0, y: 2, spy: false, gunner: false },
-        { x: 0, y: 3, spy: false, gunner: false },
-        { x: 0, y: 4, spy: false, gunner: false },
-        { x: 0, y: 5, spy: false, gunner: false }
+    expect(g0.players[0].clones).toEqual([
+        { x: 7, y: 17, spy: false, gunner: false },
+        { x: 7, y: 0, spy: false, gunner: false },
+        { x: 6, y: 10, spy: false, gunner: false },
+        { x: 1, y: 9, spy: false, gunner: false },
+        { x: 0, y: 14, spy: false, gunner: false }
       ]);
 
 });
 
+test('player 0 ready to start', () => {
+    client0.moves.confirmSetup('0');
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    expect(g0.setupConfirmations).toEqual([ true, false ]);
+    expect(c0.currentPlayer).toEqual("1");
+});
+
+test('states should match', () => {
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    const { G: g1, ctx: c1 } = client1.store.getState();
+    const { setupConfirmations: gsc0 } = g0;
+    const { setupConfirmations: gsc1 } = g1;
+    expect(gsc0).toEqual(gsc1);
+    expect(c1.currentPlayer).toEqual("1");
+});
+
 test('player 1 placing clones', () => {
     
-    client.moves.clickCell(650, '1');
-    client.moves.clickCell(0, '1');
-    client.moves.clickCell(649, '1');
-    client.moves.clickCell(648, '1');
-    client.moves.clickCell(647, '1');
-    client.moves.clickCell(646, '1');
-    const { G } = client.store.getState();
+    client1.moves.clickCell(650, '1');
+    client1.moves.clickCell(649, '1');
+    client1.moves.clickCell(648, '1');
+    client1.moves.clickCell(647, '1');
+    client1.moves.clickCell(646, '1');
+    const { G: g1 } = client1.store.getState();
 
-    expect(G.players[1].clones).toEqual([
+    expect(g1.players[1].clones).toEqual([
         { x: 30, y: 20, spy: false, gunner: false },
         { x: 30, y: 19, spy: false, gunner: false },
         { x: 30, y: 18, spy: false, gunner: false },
@@ -45,50 +67,29 @@ test('player 1 placing clones', () => {
       ]);
 });
 
-// test('player 0 ready to start', () => {
-//     client.moves.confirmSetup('0');
-//     const { G: G, ctx: ctx } = client.store.getState();
-//     expect(G.setupConfirmations).toEqual([ true, false ]);
-//     expect(ctx.currentPlayer).toEqual("1");
-// });
+test('player 1 ready to start', () => {
+    client1.moves.confirmSetup('1');
+    const { G: g1, ctx: c1 } = client1.store.getState();
+    expect(g1.setupConfirmations).toEqual([ true, true ]);
+    expect(c1.currentPlayer).toEqual("0");
+});
 
-// test('player 1 ready to start', () => {
-//     client.moves.confirmSetup('1');
-//     const { G: G, ctx: ctx } = client.store.getState();
-//     expect(G.setupConfirmations).toEqual([ true, true ]);
-//     expect(ctx.currentPlayer).toEqual("0");
-// });
+test('player 0 rolls a five', () => {
+    client0.moves.rollDie();
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    expect(g0.rollValue).toEqual(5);
+})
 
-// test('player 2 placing clones', () => {
-    
-//     client.moves.clickCell(650, '1');
-//     client.moves.clickCell(649, '1');
-//     client.moves.clickCell(648, '1');
-//     client.moves.clickCell(647, '1');
-//     client.moves.clickCell(646, '1');
-
-//     // should have 5 clones loaded on player 1
-// });
-
-// test('player 2 placing an extra clones', () => {
-//     client.moves.clickCell(645, '1');
-//     // this should fail
-// });
-
-// test('cut for deal state changes', () => {
-//     let matchID = 'boomer';
-//     let clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
-//     clientN.start();
-//     let clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
-//     clientS.start();
-//     clientN.moves.cutForDeal(1);
-//     let { G: gN, ctx: cN } = clientN.store.getState();
-//     let { G: gS, ctx: cS } = clientS.store.getState();
-//     let { activePlayers: actN } = cN;
-//     let { activePlayers: actS } = cS;
-//     let { hands: hN } = gN;
-//     let { hands: hS } = gS;
-//     expect(actN).toEqual(actS);
-//     expect(hN.north.played[0].id).toEqual(cardEnum.SK);
-//     expect(hS.north.played[0].id).toEqual(cardEnum.SK);
-//   });
+test('verify clone move options', () => {});
+test('move onto production tile', () => {});
+test('move onto surface', () => {});
+test('move through lock', () => {});
+test('move onto battle tile', () => {});
+test('select gunner', () => {});
+test('fire laser and verify damage/cost', () => {});
+test('test clone movement near damage', () => {});
+test('fire rocket', () => {});
+test('arm clones (and move rocket)', () => {});
+test('fire thermite (and move rocket)', () => {});
+test('repair tile', () => {});
+test('fire biodrone', () => {});

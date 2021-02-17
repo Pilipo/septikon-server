@@ -10,7 +10,7 @@ function clickCell(G, ctx, id, playerID) {
     
     // let result = PersonnelHelper.getClonesLegalMoves(playerID, 6, TileHelper.tileIndexToCoordinates(id));
     // console.log('click registered');
-    console.log('clickCell( ' + id + ', ' + playerID + ')');
+    // console.log('clickCell( ' + id + ', ' + playerID + ')');
     // console.log(id % 21);
     // console.log(TileHelper.tileIndexToCoordinates(id));
     G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
@@ -126,6 +126,7 @@ function rollDie(G, ctx) {
 }
 
 function confirmSetup(G, ctx, playerID) {
+    // console.log('called by ' + playerID);
     if (G.players[playerID]['clones'].length === 5) {
         G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
         ctx.events.endTurn();
@@ -133,6 +134,7 @@ function confirmSetup(G, ctx, playerID) {
 }
 
 export const Septikon = {
+    seed: 42,
     setup: () => ({
         cells: Array(651).fill(tileProperties),
         clickedCell: null,
