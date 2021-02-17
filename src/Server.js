@@ -1,5 +1,5 @@
 import { Server } from 'boardgame.io/server';
-import { Septikon } from './Game';
+import Septikon from './Game';
 
 const server = Server({ games: [Septikon] });
 
