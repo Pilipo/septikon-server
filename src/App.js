@@ -49,6 +49,7 @@ class SeptikonClient {
         <button class="rollButton">Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
+        <code class="clickedCell">testing</code>
       `;
   }
 
@@ -80,9 +81,9 @@ class SeptikonClient {
     if (state === null) return;
     // Get all the board cells.
     const cells = this.rootElement.querySelectorAll('.cell');
-    const textField = this.rootElement.querySelectorAll('.selectedTile');
+    const textField = this.rootElement.querySelector('.clickedCell');
     // Update cells to display the values in game state.
-    textField.textContent = state.G.clickedCell;
+    textField.innerText = JSON.stringify(state.G.clickedCell);
 
     cells.forEach((cell) => {
       const cellId = parseInt(cell.dataset.id, 10);
