@@ -12,7 +12,7 @@ const client1 = Client({
 });
 client1.start();
 
-test('player 0 placing clones', () => {
+test('player 0: place clones', () => {
   client0.moves.clickCell(0, '0');
   client0.moves.clickCell(0, '0');
   client0.moves.clickCell(164, '0');
@@ -41,7 +41,7 @@ test('player 0 placing clones', () => {
   ]);
 });
 
-test('player 0 ready to start', () => {
+test('player 0: ready to start', () => {
   client0.moves.confirmSetup('0');
   const { G: g0, ctx: c0 } = client0.store.getState();
   expect(g0.setupConfirmations).toEqual([true, false]);
@@ -57,7 +57,7 @@ test('states should match', () => {
   expect(c1.currentPlayer).toEqual('1');
 });
 
-test('player 1 placing clones', () => {
+test('player 1: place clones', () => {
   client1.moves.clickCell(650, '1');
   client1.moves.clickCell(649, '1');
   client1.moves.clickCell(648, '1');
@@ -84,29 +84,38 @@ test('player 1 placing clones', () => {
   ]);
 });
 
-test('player 1 ready to start', () => {
+test('player 1: ready to start', () => {
   client1.moves.confirmSetup('1');
   const { G: g1, ctx: c1 } = client1.store.getState();
   expect(g1.setupConfirmations).toEqual([true, true]);
   expect(c1.currentPlayer).toEqual('0');
 });
 
-test('player 0 rolls a five', () => {
+test('player 0: roll a five', () => {
   client0.moves.rollDie();
   const { G: g0 } = client0.store.getState();
   expect(g0.rollValue).toEqual(5);
 });
 
-test('verify clone move options', () => { });
-test('move onto production tile', () => { });
-test('move onto surface', () => { });
-test('move through lock', () => { });
-test('move onto battle tile', () => { });
-test('select gunner', () => { });
-test('fire laser and verify damage/cost', () => { });
-test('test clone movement near damage', () => { });
-test('fire rocket', () => { });
-test('arm clones (and move rocket)', () => { });
-test('fire thermite (and move rocket)', () => { });
-test('repair tile', () => { });
-test('fire biodrone', () => { });
+test('player 0: verify clone move options', () => {
+  // TODO: click a clone
+  // TODO: check legal moves
+  // TODO: click illegal tile to release moves
+  // TODO: check for no legal moves
+});
+test('player 0: roll & move onto surface', () => { });
+test('player 1: move onto production tile', () => {
+  // TODO: click a clone
+  // TODO: move to a production tile
+  // TODO: check for resource swap
+});
+test('player 0: move onto battle tile', () => { });
+test('player 0: select gunner', () => { });
+test('player 0: fire laser and verify damage/cost', () => { });
+test('player 1: move through lock', () => { });
+test('player 1: test clone movement near damage', () => { });
+test('player 0: fire rocket', () => { });
+test('player 1: arm clones (and move rocket)', () => { });
+test('player 0: fire thermite (and move rocket)', () => { });
+test('player 1: repair tile', () => { });
+test('player 0: fire biodrone', () => { });
