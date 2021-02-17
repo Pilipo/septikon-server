@@ -67,6 +67,7 @@ function clickCell(G, ctx, id, playerID) {
       case 'moveClone':
         // BUG: player can select opponent clone
         if (TileHelper.getValueForCoordinates(G, coords, 'occupied') === true) {
+          // console.log(playerID);
           const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
           G.stagedObject = G.players[playerID].clones[cloneIndex];
           G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);

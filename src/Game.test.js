@@ -98,11 +98,25 @@ test('player 0: roll a five', () => {
 });
 
 test('player 0: verify clone move options', () => {
-  // TODO: click a clone
-  // TODO: check legal moves
-  // TODO: click illegal tile to release moves
-  // TODO: check for no legal moves
+  client0.moves.clickCell(147, '0');
+  const { G: g0 } = client0.store.getState();
+  // console.log(g0.stagedCells);
+  expect(g0.stagedCells).toEqual([
+    { x: 1, y: 6 },
+    { x: 5, y: 10 },
+    { x: 1, y: 14 },
+    { x: 6, y: 7 },
+    { x: 6, y: 13 },
+    { x: 1, y: 10 },
+    { x: 7, y: 16 },
+    { x: 8, y: 17 },
+    { x: 6, y: 17 },
+    { x: 8, y: 4 },
+    { x: 7, y: 5 },
+    { x: 6, y: 4 },
+  ]);
 });
+
 test('player 0: roll & move onto surface', () => { });
 test('player 1: move onto production tile', () => {
   // TODO: click a clone

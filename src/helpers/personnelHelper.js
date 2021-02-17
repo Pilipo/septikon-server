@@ -1,7 +1,7 @@
 import Clone from '../tokens/Clone';
 import { TileHelper, directions } from './tileHelper';
 
-function getClonesLegalMoves(G, playerID, moves, curCoords, previousCoordinates) {
+function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
   let movesLeft = moves;
   if (movesLeft < 1) {
     return false;
@@ -10,34 +10,33 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, previousCoordinates)
 
   const legalMoves = [];
   let returnArray = [];
+  const curTile = TileHelper.getClickedTileByCoordinates(G, curCoords);
 
-  // first iteration
-  if (typeof previousCoordinates === 'undefined') {
+  // check for allLocks on first iteration
+  if (typeof prevCoords === 'undefined' && curTile.type === 'lock') {
     // TODO: accommodate spies
 
-    const locks = TileHelper.getLocks(playerID);
-    const currentTile = TileHelper.getClickedTileByCoordinates(G, curCoords);
+    const allLocks = TileHelper.getLocks(playerID);
 
-    if (currentTile.type === 'lock') {
-      // TODO: Fix bug in which the lock the clone is presently standing on is a legal target.
-      locks.forEach((thisLock) => {
-        if (thisLock.x === currentTile.x && thisLock.y === currentTile.y) return;
-        const lockTile = TileHelper.getClickedTileByCoordinates(G, thisLock);
-        if (lockTile.occupied === true) return;
-        if (movesLeft > 0) {
-          const lockCoords = { x: thisLock.x, y: thisLock.y };
-          const thisLegalMoves = getClonesLegalMoves(G, playerID, movesLeft, lockCoords, curCoords);
-          returnArray = returnArray.concat(thisLegalMoves);
-        } else {
-          returnArray.push(thisLock);
+    // TODO: Fix bug in which the lock the clone is presently standing on is a legal target.
+    allLocks.forEach((curLock) => {
+      if (curLock.x === curTile.x && curLock.y === curTile.y) return;
+      const curLockTile = TileHelper.getClickedTileByCoordinates(G, curLock);
+      if (curLockTile.occupied === true) return;
+      // More moves to check, so queue it up
+      if (movesLeft > 0) {
+        const lockCoords = { x: curLock.x, y: curLock.y };
+        const curLegalMoves = getClonesLegalMoves(G, playerID, movesLeft, lockCoords, curCoords);
+        returnArray = returnArray.concat(curLegalMoves);
+      } else {
+        returnArray.push(curLock);
+      }
+      returnArray.forEach((item) => {
+        if (item.x !== curCoords.x || item.y !== curCoords.y) {
+          legalMoves.push(item);
         }
-        returnArray.forEach((item) => {
-          if (item.x !== curCoords.x || item.y !== curCoords.y) {
-            legalMoves.push(item);
-          }
-        });
       });
-    }
+    });
   }
 
   // all iterations
@@ -65,15 +64,15 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, previousCoordinates)
       }
     }
 
-    if (typeof previousCoordinates === 'undefined' || (typeof previousCoordinates !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(previousCoordinates)))) {
+    if (typeof prevCoords === 'undefined' || (typeof prevCoords !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(prevCoords)))) {
       if (movesLeft === 0 && cell.occupied === false) {
         legalMoves.push(nextMove);
       } else {
-        const thisLegalMoves = getClonesLegalMoves(G, playerID, movesLeft, nextMove, curCoords);
-        returnArray = returnArray.concat(thisLegalMoves);
-        returnArray.forEach((index) => {
-          if (JSON.stringify(returnArray[index]) === JSON.stringify(curCoords)) return;
-          legalMoves.push(returnArray[index]);
+        const curLegalMoves = getClonesLegalMoves(G, playerID, movesLeft, nextMove, curCoords);
+        returnArray = returnArray.concat(curLegalMoves);
+        returnArray.forEach((entry) => {
+          if (JSON.stringify(entry) === JSON.stringify(curCoords)) return;
+          legalMoves.push(entry);
         });
       }
     }

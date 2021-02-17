@@ -49,6 +49,9 @@ class SeptikonClient {
         <button class="rollButton">Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
+        ID: 
+        <code class="cellID">null</code>
+        Cell:
         <code class="clickedCell">testing</code>
       `;
   }
@@ -59,6 +62,8 @@ class SeptikonClient {
     const handleCellClick = (event) => {
       const id = parseInt(event.target.dataset.id, 10);
       this.client.moves.clickCell(id, playerID);
+      const cellIDText = this.rootElement.querySelector('.cellID');
+      cellIDText.innerText = id;
     };
     const handleRoll = () => {
       this.client.moves.rollDie();
