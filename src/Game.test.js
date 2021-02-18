@@ -123,7 +123,7 @@ test('player 0: move onto surface', () => {
   console.log(g0.cells[147]);
   // TODO: check occupation rules on previous and current tiles
   // console.log(g0.cells[147].occupied);
-  // expect(g0.cells[147].occupied).toEqual(false);
+  expect(g0.cells[147].occupied).toEqual(false);
   // console.log(g0.cells[172].occupied);
   expect(g0.cells[172].occupied).toEqual(true);
   // TODO: check that clone is now a gunner
