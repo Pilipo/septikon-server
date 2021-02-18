@@ -11,8 +11,13 @@ class Clone {
   move(G, ctx, tarCoords) {
     const originIndex = TileHelper.tileCoordinatesToIndex({ x: this.x, y: this.y });
     const tarIndex = TileHelper.tileCoordinatesToIndex({ x: tarCoords.x, y: tarCoords.y });
+    console.log(`BEFORE: origin cell ${originIndex} occupied? ${G.cells[originIndex].occupied}`);
     G.cells[originIndex].occupied = false;
+    console.log(`AFTER: origin cell ${originIndex} occupied? ${G.cells[originIndex].occupied}`);
+
+    console.log(`BEFORE: target cell ${tarIndex} occupied? ${G.cells[tarIndex].occupied}`);
     G.cells[tarIndex].occupied = true;
+    console.log(`AFTER: target cell ${tarIndex} occupied? ${G.cells[tarIndex].occupied}`);
 
     this.x = tarCoords.x;
     this.y = tarCoords.y;
