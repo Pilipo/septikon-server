@@ -8,14 +8,14 @@ class Clone {
     this.gunner = false;
   }
 
-  move(G, ctx, targetCoordinates) {
+  move(G, ctx, tarCoords) {
     const originIndex = TileHelper.tileCoordinatesToIndex({ x: this.x, y: this.y });
-    // console.log('tile origin ' + originIndex);
-    // console.log(G.cells[originIndex].occupied);
+    const tarIndex = TileHelper.tileCoordinatesToIndex({ x: tarCoords.x, y: tarCoords.y });
     G.cells[originIndex].occupied = false;
-    // console.log(G.cells[originIndex].occupied);
-    this.x = targetCoordinates.x;
-    this.y = targetCoordinates.y;
+    G.cells[tarIndex].occupied = true;
+
+    this.x = tarCoords.x;
+    this.y = tarCoords.y;
   }
 }
 
