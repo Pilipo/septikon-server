@@ -8,7 +8,7 @@ function indexToCoordinates(index) {
 }
 
 function coordinatesToIndex(coordinates) {
-  return coordinates.x * 21 + coordinates.y;
+  return parseInt(coordinates.x * 21 + coordinates.y, 10);
 }
 
 const tileProperties = {

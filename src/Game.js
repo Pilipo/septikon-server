@@ -38,20 +38,7 @@ function goToNextStage(G, ctx) {
 }
 
 function clickCell(G, ctx, id, playerID) {
-  // TESTING
-
-  // console.log('click registered');
-  // console.log('clickCell( ' + id + ', ' + playerID + ')');
-  // console.log(id % 21);
-  // console.log(TileHelper.tileIndexToCoordinates(id));
   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-  // console.log(TileHelper.getClickedTileByIndex(G, id).damaged);
-  // ResourceHelper.addResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 1);
-  // ResourceHelper.removeResource(G, ctx, TileHelper.getClickedTileByIndex(G, id).name, 2);
-  // console.log(result);
-
-  // END TESTING
-
   const coords = TileHelper.tileIndexToCoordinates(id);
   if (ctx.phase === 'layout') {
     const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
@@ -61,24 +48,27 @@ function clickCell(G, ctx, id, playerID) {
       PersonnelHelper.removeClone(G, playerID, coords);
     }
   } else {
-    G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
     const currentStage = ctx.activePlayers[ctx.currentPlayer];
     switch (currentStage) {
       case 'moveClone':
-        if (G.stagedObject === null) {
+        if (G.stagedObject === null || typeof G.stagedObject === 'undefined') {
           const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
           G.stagedObject = G.players[playerID].clones[cloneIndex];
           G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
         } else {
+          let stagedClone = null;
           G.stagedCells.forEach((legalCoord) => {
             if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
-              G.stagedObject.move(G, ctx, coords);
-              G.stagedCells = [];
-              G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
-              // advance turn stage
-              goToNextStage(G, ctx);
+              stagedClone = G.stagedObject;
             }
           });
+          if (stagedClone !== null) {
+            stagedClone.move(G, ctx, coords);
+            G.stagedCells = [];
+            G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
+            // advance turn stage
+            goToNextStage(G, ctx);
+          }
         }
         break;
       case 'activateModule':
@@ -181,7 +171,13 @@ const Septikon = {
         }
         return false;
       },
-      moves: { clickCell, confirmSetup },
+      moves: {
+        clickCell: {
+          move: clickCell,
+          client: false,
+        },
+        confirmSetup,
+      },
       start: true,
       next: 'play',
     },
