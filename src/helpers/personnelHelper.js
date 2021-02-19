@@ -1,4 +1,3 @@
-import Clone from '../tokens/Clone';
 import { TileHelper, directions } from './tileHelper';
 
 function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
@@ -97,8 +96,12 @@ const PersonnelHelper = {
     if (G.players[playerID].clones.length < 5) {
       const tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
-        const newClone = new Clone(playerID, coordinates);
-        G.players[playerID].clones.push(newClone);
+        G.players[playerID].clones.push({
+          x: coordinates.x,
+          y: coordinates.y,
+          spy: false,
+          gunner: false,
+        });
         TileHelper.setValueForCoordinates(G, coordinates, 'occupied', true);
       }
     }
@@ -112,6 +115,16 @@ const PersonnelHelper = {
         }
       });
     }
+  },
+  moveClone: (G, playerID, orgCoords, tarCoords) => {
+    const orgIdx = TileHelper.tileCoordinatesToIndex(orgCoords);
+    const tarIdx = TileHelper.tileCoordinatesToIndex(tarCoords);
+    if (JSON.stringify(orgIdx) === JSON.stringify(tarIdx)) {
+      return;
+    }
+    G.cells[orgIdx].occupied = false;
+    G.cells[tarIdx].occupied = true;
+    // TODO: check for gunner?
   },
   getGunners: (G, ctx) => {
     const gunners = [];

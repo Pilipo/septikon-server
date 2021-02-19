@@ -119,17 +119,13 @@ test('player 0: verify clone move options', () => {
 
 test('player 0: move onto surface', () => {
   client0.moves.clickCell(172, '0');
-  const { G: g0 } = client0.store.getState();
-  // console.log(`cell ${147} .occupied should be false`);
-  // console.log(g0.cells[147]);
-  // TODO: check occupation rules on previous and current tiles
+  const { G: g0, ctx: c0 } = client0.store.getState();
   expect(g0.cells[147].occupied).toEqual(false);
-  // console.log(g0.cells[172].occupied);
   expect(g0.cells[172].occupied).toEqual(true);
   // TODO: check that clone is now a gunner
-  // expect(g0.players[0].clones[1].gunner).toEqual(true);
+  expect(g0.players[0].clones[1].gunner).toEqual(true);
   // TODO: check that game advances to player 1's turn
-  // console.log(c0);
+  console.log(c0);
 });
 test('player 1: move onto production tile', () => {
   // TODO: click a clone

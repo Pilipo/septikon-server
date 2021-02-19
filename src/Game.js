@@ -63,7 +63,7 @@ function clickCell(G, ctx, id, playerID) {
             }
           });
           if (stagedClone !== null) {
-            stagedClone.move(G, ctx, coords);
+            PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
             G.stagedCells = [];
             G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
             // advance turn stage
