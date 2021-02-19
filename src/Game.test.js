@@ -122,10 +122,13 @@ test('player 0: move onto surface', () => {
   const { G: g0, ctx: c0 } = client0.store.getState();
   expect(g0.cells[147].occupied).toEqual(false);
   expect(g0.cells[172].occupied).toEqual(true);
+  // check that clone is now at 172
+  expect(g0.players[0].clones[1].x).toEqual(8);
+  expect(g0.players[0].clones[1].y).toEqual(4);
   // TODO: check that clone is now a gunner
   expect(g0.players[0].clones[1].gunner).toEqual(true);
   // TODO: check that game advances to player 1's turn
-  console.log(c0);
+  expect(c0.currentPlayer).toEqual('1');
 });
 test('player 1: move onto production tile', () => {
   // TODO: click a clone

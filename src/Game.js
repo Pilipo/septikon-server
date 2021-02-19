@@ -3,24 +3,43 @@ import { TileHelper, tileProperties } from './helpers/tileHelper';
 
 function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
+  const playerID = ctx.currentPlayer;
   switch (currentStage) {
     case 'rollDie':
       ctx.events.endStage();
       break;
 
     case 'moveClone':
-    // TODO: Calculate Requirements
-    // Potential Reqs include: resource cost, damaged tile, gunner,
-    // spy, enemy biodrone, satellite in gunner line of sight, enemy clone in gunner line of sight
-    //
-    // Free modules include: surface, armory, lichen, lichenTwo
-    // if player meets requirements
-    //     activate automatics modules and fall through
-    //     if not automatic, setStage('activateModule')
-    // else
-    //     fall through
-
+      // TODO: Calculate Requirements
+      // Potential Reqs include: resource cost, damaged tile, gunner,
+      // spy, enemy biodrone, satellite in gunner line of sight, enemy clone in gunner line of sight
+      //
+      // if player meets requirements
+      //     activate automatics modules and fall through
+      //     if not automatic, setStage('activateModule')
+      // else
+      // fall through
     case 'activateModule':
+      switch (G.stagedObject.type) {
+        case 'surface': {
+          const tarCoords = { x: G.stagedObject.x, y: G.stagedObject.y };
+          const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
+          tarClone.gunner = true;
+          ctx.endStage();
+          break;
+        }
+        case 'armory':
+          console.log('arm clones and biodrones');
+          break;
+        case 'lichen':
+          console.log('produce 1 biomass');
+          break;
+        case 'lichenTwo':
+          console.log('produce 1 biomass');
+          break;
+        default:
+          throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
+      }
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
     // falls through
     case 'moveBiodrones':

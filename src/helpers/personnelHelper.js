@@ -80,21 +80,32 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
   return [...new Set(legalMoves)];
 }
 
+function getCloneByCoordinates(G, playerID, coords) {
+  let clone = null;
+  G.players[playerID].clones.forEach((el) => {
+    // console.log(`comparison: ${el.x},${el.y} to ${coords.x},${coords.y}`);
+    if (el.x === coords.x && el.y === coords.y) {
+      clone = el;
+    }
+  });
+  return clone;
+}
+
 const PersonnelHelper = {
   getCloneIndexByCoordinates: (G, playerID, coordinates) => {
-    let cloneIndex = false;
-    if (G.players[playerID].clones.length > 0) {
-      G.players[playerID].clones.forEach((element, index) => {
-        if (element.x === coordinates.x && element.y === coordinates.y) {
-          cloneIndex = index;
-        }
-      });
-    }
-    return cloneIndex;
+    let cloneIdx = false;
+    G.players[playerID].clones.forEach((el, idx) => {
+      if (el.x === coordinates.x && el.y === coordinates.y) {
+        cloneIdx = idx;
+      }
+    });
+    return cloneIdx;
   },
+  getCloneByCoordinates: (G, playerID, coords) => getCloneByCoordinates(G, playerID, coords),
   placeClone: (G, playerID, coordinates) => {
     if (G.players[playerID].clones.length < 5) {
       const tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
+      const tarIdx = TileHelper.tileCoordinatesToIndex(coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
         G.players[playerID].clones.push({
           x: coordinates.x,
@@ -102,7 +113,7 @@ const PersonnelHelper = {
           spy: false,
           gunner: false,
         });
-        TileHelper.setValueForCoordinates(G, coordinates, 'occupied', true);
+        G.cells[tarIdx].occupied = true;
       }
     }
   },
@@ -122,9 +133,11 @@ const PersonnelHelper = {
     if (JSON.stringify(orgIdx) === JSON.stringify(tarIdx)) {
       return;
     }
+    const tarClone = getCloneByCoordinates(G, playerID, orgCoords);
+    tarClone.x = tarCoords.x;
+    tarClone.y = tarCoords.y;
     G.cells[orgIdx].occupied = false;
     G.cells[tarIdx].occupied = true;
-    // TODO: check for gunner?
   },
   getGunners: (G, ctx) => {
     const gunners = [];
