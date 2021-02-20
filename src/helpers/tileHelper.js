@@ -76,9 +76,6 @@ const TileHelper = {
           cell.isFull = false;
         }
       }
-      if (index === 46) {
-        cell.damaged = true;
-      }
     });
   },
   getCoordinateByDirection(originCoordinate, direction) {

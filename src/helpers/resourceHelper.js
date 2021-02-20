@@ -11,11 +11,11 @@ const TYPE = {
   biodrone: 7,
 };
 
-function loadWarehouseInOrder(G, ctx, type) {
+function getOrderedWarehouse(G, ctx, playerID, type) {
   const warehouseArray = [];
 
   G.cells.forEach((cell, index) => {
-    if (ctx.currentPlayer === 0 && index < 126) {
+    if (playerID === cell.owner && (index < 126 || index > 524)) {
       if (type === cell.name) {
         if (index % 21 < 10) {
           warehouseArray.unshift(cell);
@@ -28,8 +28,8 @@ function loadWarehouseInOrder(G, ctx, type) {
 
   return warehouseArray;
 }
-function getCurrentSpendCapacity(G, ctx, type) {
-  const warehouseArray = loadWarehouseInOrder(G, ctx, type);
+function getSpendCapacity(G, ctx, playerID, type) {
+  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
   let spendCount = 0;
   let shouldSkip = false;
 
@@ -49,8 +49,8 @@ function getCurrentSpendCapacity(G, ctx, type) {
   return spendCount;
 }
 
-function getCurrentCapacity(G, ctx, type) {
-  const warehouseArray = loadWarehouseInOrder(G, ctx, type);
+function getCapacity(G, ctx, playerID, type) {
+  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
   let emptyCount = 0;
   let shouldSkip = false;
 
@@ -69,8 +69,8 @@ function getCurrentCapacity(G, ctx, type) {
   return emptyCount;
 }
 
-function getLastFreeTileIndex(G, ctx, type) {
-  const warehouseArray = loadWarehouseInOrder(G, ctx, type);
+function getLastFreeTileIndex(G, ctx, playerID, type) {
+  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
   let shouldSkip = false;
   let returnTile = null;
 
@@ -92,8 +92,8 @@ function getLastFreeTileIndex(G, ctx, type) {
   return returnTile;
 }
 
-function getFirstFullTileIndex(G, ctx, type) {
-  const warehouseArray = loadWarehouseInOrder(G, ctx, type);
+function getFirstFullTileIndex(G, ctx, playerID, type) {
+  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
   let shouldSkip = false;
   let returnTile = null;
 
@@ -115,12 +115,13 @@ function getFirstFullTileIndex(G, ctx, type) {
   return returnTile;
 }
 
-function addResource(G, ctx, type) {
-  const curCap = getCurrentCapacity(G, ctx, type);
+function addResource(G, ctx, playerID, type) {
+  const curCap = getCapacity(G, ctx, playerID, type);
+
   if (curCap <= 0) {
     return false;
   }
-  const tile = getLastFreeTileIndex(G, ctx, type);
+  const tile = getLastFreeTileIndex(G, ctx, playerID, type);
   if (tile == null) {
     return false;
   }
@@ -128,29 +129,41 @@ function addResource(G, ctx, type) {
   return true;
 }
 
-function removeResource(G, ctx, type) {
-  const tile = getFirstFullTileIndex(G, ctx, type);
+function removeResource(G, ctx, playerID, type) {
+  const tile = getFirstFullTileIndex(G, ctx, playerID, type);
   G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = false;
 }
 
 const ResourceHelper = {
   TYPE,
-  addResource: (G, ctx, type, count) => {
+  addResource: (G, ctx, playerID, type, count) => {
     for (let i = 0; i < count; i += 1) {
-      addResource(G, ctx, type);
+      addResource(G, ctx, playerID, type);
     }
   },
-  removeResource: (G, ctx, type, count) => {
-    const curCap = getCurrentSpendCapacity(G, ctx, type);
+  removeResource: (G, ctx, playerID, type, count) => {
+    let curCap = null;
+    let convertedType = null;
+    if (type === 'energy') {
+      const curCapE1 = getSpendCapacity(G, ctx, playerID, 'energy1');
+      const curCapE2 = getSpendCapacity(G, ctx, playerID, 'energy2');
+      curCap = curCapE1 > curCapE2 ? curCapE1 : curCapE2;
+      convertedType = curCapE2 > curCapE1 ? 'energy2' : 'energy1';
+    } else {
+      curCap = getSpendCapacity(G, ctx, playerID, type);
+      convertedType = type;
+    }
+
     if (curCap < count) {
       return false;
     }
     for (let i = 0; i < count; i += 1) {
-      removeResource(G, ctx, type);
+      removeResource(G, ctx, playerID, convertedType);
     }
     return true;
   },
-  getCurrentCapacity: (G, ctx, type) => getCurrentCapacity(G, ctx, type),
+  getCapacity: (G, ctx, type) => getCapacity(G, ctx, type),
+  getSpendCapacity: (G, ctx, playerID, type) => getSpendCapacity(G, ctx, playerID, type),
 };
 
 export default ResourceHelper;

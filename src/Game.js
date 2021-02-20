@@ -1,4 +1,5 @@
 import PersonnelHelper from './helpers/personnelHelper';
+import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
 
 function goToNextStage(G, ctx) {
@@ -11,6 +12,7 @@ function goToNextStage(G, ctx) {
 
     case 'moveClone':
       // TODO: Calculate Requirements
+      // console.log('check cost (if any)');
       // Potential Reqs include: resource cost, damaged tile, gunner,
       // spy, enemy biodrone, satellite in gunner line of sight, enemy clone in gunner line of sight
       //
@@ -25,15 +27,44 @@ function goToNextStage(G, ctx) {
           const tarCoords = { x: G.stagedObject.x, y: G.stagedObject.y };
           const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
           tarClone.gunner = true;
-          ctx.endStage();
           break;
         }
         case 'armory':
           console.log('arm clones and biodrones');
           break;
-        case 'lichen':
-          console.log('produce 1 biomass');
+        case 'production': {
+          switch (G.stagedObject.name) {
+            case 'lichen':
+            case 'lichenTwo':
+            case 'nuclearReactor':
+            case 'nuclearArmory':
+            case 'biocollector':
+            case 'rocketWorkshop':
+            case 'foundry':
+            case 'airFilter':
+            case 'chemicalReactor':
+            case 'chemicalReactorTwo':
+            case 'uraniumMine':
+            case 'foundryTwo':
+            case 'thermalGenerator': {
+              // TODO: take cost and give yield
+              const ct = G.stagedObject.resourceCostType;
+              const cc = G.stagedObject.resourceCostCount;
+              const yt = G.stagedObject.resourceYieldType;
+              const yc = G.stagedObject.resourceYieldCount;
+              ct.forEach((type, idx) => {
+                ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
+              });
+              yt.forEach((type, idx) => {
+                ResourceHelper.addResource(G, ctx, playerID, type, yc[idx]);
+              });
+              break;
+            }
+            default:
+              break;
+          }
           break;
+        }
         case 'lichenTwo':
           console.log('produce 1 biomass');
           break;
@@ -52,6 +83,9 @@ function goToNextStage(G, ctx) {
     // TODO: clean up for next turn and endTurn()
     // falls through
     default:
+      G.stagedObject = null;
+      G.stagedCells = [];
+      ctx.events.endTurn();
       break;
   }
 }
@@ -82,6 +116,7 @@ function clickCell(G, ctx, id, playerID) {
             }
           });
           if (stagedClone !== null) {
+            // console.log(`moving ${stagedClone.x}, ${stagedClone.y}`);
             PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
             G.stagedCells = [];
             G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
@@ -157,14 +192,12 @@ const Septikon = {
         biodrones: [],
         ordnance: [],
         shields: [],
-        resources: {},
       },
       {
         clones: [],
         biodrones: [],
         ordnance: [],
         shields: [],
-        resources: {},
       },
     ],
   }),
@@ -193,7 +226,6 @@ const Septikon = {
       moves: {
         clickCell: {
           move: clickCell,
-          client: false,
         },
         confirmSetup,
       },

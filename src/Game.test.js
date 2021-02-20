@@ -1,6 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import Septikon from './Game';
+import ResourceHelper from './helpers/resourceHelper';
 
 const matchID = 'sputnik';
 const client0 = Client({
@@ -125,15 +126,28 @@ test('player 0: move onto surface', () => {
   // check that clone is now at 172
   expect(g0.players[0].clones[1].x).toEqual(8);
   expect(g0.players[0].clones[1].y).toEqual(4);
-  // TODO: check that clone is now a gunner
+  // check that clone is now a gunner
   expect(g0.players[0].clones[1].gunner).toEqual(true);
-  // TODO: check that game advances to player 1's turn
+  // check that game advances to player 1's turn
   expect(c0.currentPlayer).toEqual('1');
 });
+
 test('player 1: move onto production tile', () => {
-  // TODO: click a clone
-  // TODO: move to a production tile
-  // TODO: check for resource swap
+  client1.moves.rollDie(); // 4
+
+  // click a clone
+  client1.moves.clickCell(647, '1');
+
+  // move to a production tile
+  client1.moves.clickCell(643, '1');
+  const { G: g1, ctx: c1 } = client1.store.getState();
+
+  expect(g1.players[1].clones[3].x).toEqual(30);
+  expect(g1.players[1].clones[3].y).toEqual(13);
+
+  // TODO: check for resource swap (spends 1 energy and yields 1 rocket)
+  expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'energy1')).toEqual(4);
+  expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'rocket')).toEqual(6);
 });
 test('player 0: move onto battle tile', () => { });
 test('player 0: select gunner', () => { });
