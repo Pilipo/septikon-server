@@ -54,16 +54,22 @@ function goToNextStage(G, ctx) {
           break;
         }
         case 'battle': {
+          let hasReqs = false;
           switch (G.stagedObject.name) {
             case 'thermite':
             case 'shield':
             case 'biodrone':
             case 'satellite':
             case 'laser':
-            case 'rocket':
-              // TODO: check for gunners
+            case 'rocket': {
+              const gunners = PersonnelHelper.getGunners(G, ctx);
+              if (gunners.length > 0) {
+                hasReqs = true;
+                G.stagedCells = gunners;
+              }
               // TODO: check for gunnerCap (based on resources)
-              // fall through
+            }
+            // fall through
             case 'espionage':
             case 'takeover':
               // TODO: check gunners' fire line for targets (clones or satellites)
@@ -83,11 +89,15 @@ function goToNextStage(G, ctx) {
             default:
               break;
           }
-          const ct = G.stagedObject.resourceCostType;
-          const cc = G.stagedObject.resourceCostCount;
-          ct.forEach((type, idx) => {
-            ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
-          });
+          if (hasReqs) {
+            ctx.events.endStage();
+            return;
+          }
+          // const ct = G.stagedObject.resourceCostType;
+          // const cc = G.stagedObject.resourceCostCount;
+          // ct.forEach((type, idx) => {
+          //   ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
+          // });
           break;
         }
         default:

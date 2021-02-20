@@ -152,19 +152,16 @@ test('player 1: move onto production tile', () => {
 test('player 0: move onto battle tile', () => {
   // roll
   client0.moves.rollDie(); // 6
-  // TODO: select clone
+  // select clone
   client0.moves.clickCell(136, '0');
 
-  // TODO: select laser battle tile
+  // select laser battle tile
   client0.moves.clickCell(142, '0');
-
-  // TODO: test that stage is now 'activateModule'
 
   const { G: g0, ctx: c0 } = client0.store.getState();
   expect(c0.activePlayers[c0.currentPlayer]).toEqual('activateModule');
-console.log(c0.activePlayers[c0.currentPlayer]);
-  // TODO: test queued gunners
-  // TODO: test turn stage
+  // test queued gunners
+  expect(g0.stagedCells.length).toBeGreaterThan(0);
 });
 test('player 0: select gunner', () => {
   // TODO: select gunner
