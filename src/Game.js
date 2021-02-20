@@ -11,17 +11,6 @@ function goToNextStage(G, ctx) {
       break;
 
     case 'moveClone':
-      // TODO: Calculate Requirements
-      // console.log('check cost (if any)');
-      // Potential Reqs include: resource cost, damaged tile, gunner,
-      // spy, enemy biodrone, satellite in gunner line of sight, enemy clone in gunner line of sight
-      //
-      // if player meets requirements
-      //     activate automatics modules and fall through
-      //     if not automatic, setStage('activateModule')
-      // else
-      // fall through
-    case 'activateModule':
       switch (G.stagedObject.type) {
         case 'surface': {
           const tarCoords = { x: G.stagedObject.x, y: G.stagedObject.y };
@@ -30,7 +19,7 @@ function goToNextStage(G, ctx) {
           break;
         }
         case 'armory':
-          console.log('arm clones and biodrones');
+          // console.log('arm clones and biodrones');
           break;
         case 'production': {
           switch (G.stagedObject.name) {
@@ -47,7 +36,6 @@ function goToNextStage(G, ctx) {
             case 'uraniumMine':
             case 'foundryTwo':
             case 'thermalGenerator': {
-              // TODO: take cost and give yield
               const ct = G.stagedObject.resourceCostType;
               const cc = G.stagedObject.resourceCostCount;
               const yt = G.stagedObject.resourceYieldType;
@@ -65,12 +53,48 @@ function goToNextStage(G, ctx) {
           }
           break;
         }
-        case 'lichenTwo':
-          console.log('produce 1 biomass');
+        case 'battle': {
+          switch (G.stagedObject.name) {
+            case 'thermite':
+            case 'shield':
+            case 'biodrone':
+            case 'satellite':
+            case 'laser':
+            case 'rocket':
+              // TODO: check for gunners
+              // TODO: check for gunnerCap (based on resources)
+              // fall through
+            case 'espionage':
+            case 'takeover':
+              // TODO: check gunners' fire line for targets (clones or satellites)
+              // TODO: if checks out set Stage to 'activateModule' and assign stagedCells of gunners
+              break;
+            case 'repair':
+            case 'repairTwo':
+              // TODO: check for damaged tiles
+              // TODO: check for resources
+              // TODO: if true set Stage to 'activateModule' and assign stagedCells of damaged tiles
+              break;
+            case 'counterespionage':
+              // TODO: check for spies among us
+              // TODO: check for resources
+              // TODO: if true set Stage to 'activateModule' and assign stagedCells of spies
+              break;
+            default:
+              break;
+          }
+          const ct = G.stagedObject.resourceCostType;
+          const cc = G.stagedObject.resourceCostCount;
+          ct.forEach((type, idx) => {
+            ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
+          });
           break;
+        }
         default:
           throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
       }
+      // fall through
+    case 'activateModule':
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
     // falls through
     case 'moveBiodrones':

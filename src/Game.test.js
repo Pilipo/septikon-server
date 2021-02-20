@@ -145,13 +145,38 @@ test('player 1: move onto production tile', () => {
   expect(g1.players[1].clones[3].x).toEqual(30);
   expect(g1.players[1].clones[3].y).toEqual(13);
 
-  // TODO: check for resource swap (spends 1 energy and yields 1 rocket)
+  // check for resource swap (spends 1 energy and yields 1 rocket)
   expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'energy1')).toEqual(4);
   expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'rocket')).toEqual(6);
 });
-test('player 0: move onto battle tile', () => { });
-test('player 0: select gunner', () => { });
-test('player 0: fire laser and verify damage/cost', () => { });
+test('player 0: move onto battle tile', () => {
+  // roll
+  client0.moves.rollDie(); // 6
+  // TODO: select clone
+  client0.moves.clickCell(136, '0');
+
+  // TODO: select laser battle tile
+  client0.moves.clickCell(142, '0');
+
+  // TODO: test that stage is now 'activateModule'
+
+  const { G: g0, ctx: c0 } = client0.store.getState();
+  expect(c0.activePlayers[c0.currentPlayer]).toEqual('activateModule');
+console.log(c0.activePlayers[c0.currentPlayer]);
+  // TODO: test queued gunners
+  // TODO: test turn stage
+});
+test('player 0: select gunner', () => {
+  // TODO: select gunner
+  // TODO: test queued spending
+  // TODO: test turn stage
+});
+test('player 0: fire laser and verify damage/cost', () => {
+  // TODO: fire?
+  // TODO: test spend
+  // TODO: test damage
+  // TODO: test turn stage
+});
 test('player 1: move through lock', () => { });
 test('player 1: test clone movement near damage', () => { });
 test('player 0: fire rocket', () => { });
