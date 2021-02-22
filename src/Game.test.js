@@ -7,12 +7,21 @@ const matchID = 'sputnik';
 const client0 = Client({
   game: Septikon, playerID: '0', multiplayer: Local(), matchID,
 });
-client0.start();
 const client1 = Client({
   game: Septikon, playerID: '1', multiplayer: Local(), matchID,
 });
-client1.start();
-describe('basic game runthrough', () => {
+
+describe.skip('basic game runthrough', () => {
+  const matchID = 'sputnik';
+  const client0 = Client({
+    game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+  });
+  client0.start();
+  const client1 = Client({
+    game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+  });
+  client1.start();
+
   test('player 0: place clones', () => {
     client0.moves.placeClone(0, '0');
     client0.moves.placeClone(0, '0');
@@ -63,7 +72,7 @@ describe('basic game runthrough', () => {
     client1.moves.placeClone(649, '1');
     client1.moves.placeClone(648, '1');
     client1.moves.placeClone(647, '1');
-    client1.moves.placeClone(646, '1');
+    client1.moves.placeClone(485, '1');
     const { G: g1 } = client1.store.getState();
 
     expect(g1.players[1].clones).toEqual([
@@ -80,7 +89,7 @@ describe('basic game runthrough', () => {
         x: 30, y: 17, spy: false, gunner: false,
       },
       {
-        x: 30, y: 16, spy: false, gunner: false,
+        x: 23, y: 2, spy: false, gunner: false,
       },
     ]);
   });
@@ -186,9 +195,19 @@ describe('basic game runthrough', () => {
     expect(c0.currentPlayer).toEqual('1');
   });
 
-  test('player 1: move through lock', () => { });
-  test('player 1: test clone movement near damage', () => { });
+  test('player 1: test clone movement near damage', () => {
+    client1.moves.rollDie(); // 2
+    client1.moves.selectClone(485, '1');
+    const { G: g1, ctx: c1 } = client1.store.getState();
+    client1.moves.selectCloneMoveTarget(483, '1');
+    expect(g1.stagedModuleOptions).toEqual([{ x: 23, y: 0 }]);
+    console.log(c1.activePlayers[c1.currentPlayer]);
+
+    expect(c1.currentPlayer).toEqual('0');
+  });
+
   test('player 0: fire rocket', () => { });
+  test('player 1: test lock', () => {});
   test('player 1: arm clones (and move rocket)', () => { });
   test('player 0: fire thermite (and move rocket)', () => { });
   test('player 1: repair tile', () => { });
@@ -200,8 +219,26 @@ describe('basic game runthrough', () => {
 });
 
 describe('battle and armory tiles', () => {
+  beforeEach(() => {
+    client0.start();
+    client1.start();
+  });
+
   test('thermite', () => {
     // TODO: setup
+    client0.moves.placeClone(164, '0');
+    client0.moves.placeClone(147, '0');
+    client0.moves.placeClone(136, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+    client1.moves.placeClone(650, '1');
+    client1.moves.placeClone(649, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(485, '1');
+    client1.moves.confirmSetup('1');
+
     // TODO: fire
     // TODO: check damage
   });

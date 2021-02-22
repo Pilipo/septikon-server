@@ -2,6 +2,7 @@ const tilesJSON = require('../constants/tile_map.json');
 const wallsJSON = require('../constants/wallGrid.json');
 
 function indexToCoordinates(index) {
+  if (index > 650 || index < 0) throw new Error('index exceeds limit');
   const x = (Math.floor(index / 21));
   const y = (index % 21);
   return { x, y };

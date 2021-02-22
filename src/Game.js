@@ -13,6 +13,8 @@ function goToNextStage(G, ctx) {
   switch (currentStage) {
     case 'moveClone':
       switch (G.selectedModuleForMove.type) {
+        case 'lock':
+          break;
         case 'surface': {
           const tarCoords = { x: G.selectedModuleForMove.x, y: G.selectedModuleForMove.y };
           const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
@@ -128,6 +130,7 @@ function goToNextStage(G, ctx) {
     default:
       G.selectedModuleForMove = null;
       G.stagedModuleOptions = [];
+      G.stagedActors = [];
       ctx.events.endTurn();
       break;
   }
@@ -187,7 +190,7 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
   if (stagedClone !== null) {
     PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
     G.stagedModuleOptions = [];
-    G.selectedModuleForMove = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
+    G.selectedModuleForMove = G.clickedCell;
     // advance turn stage
     goToNextStage(G, ctx);
   }

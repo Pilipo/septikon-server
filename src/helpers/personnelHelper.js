@@ -104,6 +104,7 @@ const PersonnelHelper = {
   getCloneByCoordinates: (G, playerID, coords) => getCloneByCoordinates(G, playerID, coords),
   placeClone: (G, playerID, coordinates) => {
     if (G.players[playerID].clones.length < 5) {
+      // console.log(coordinates);
       const tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
       const tarIdx = TileHelper.tileCoordinatesToIndex(coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
