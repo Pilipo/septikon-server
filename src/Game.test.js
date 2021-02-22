@@ -14,13 +14,13 @@ const client1 = Client({
 client1.start();
 describe('basic game runthrough', () => {
   test('player 0: place clones', () => {
-    client0.moves.clickCell(0, '0');
-    client0.moves.clickCell(0, '0');
-    client0.moves.clickCell(164, '0');
-    client0.moves.clickCell(147, '0');
-    client0.moves.clickCell(136, '0');
-    client0.moves.clickCell(30, '0');
-    client0.moves.clickCell(14, '0');
+    client0.moves.placeClone(0, '0');
+    client0.moves.placeClone(0, '0');
+    client0.moves.placeClone(164, '0');
+    client0.moves.placeClone(147, '0');
+    client0.moves.placeClone(136, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
     const { G: g0 } = client0.store.getState();
 
     expect(g0.players[0].clones).toEqual([
@@ -59,11 +59,11 @@ describe('basic game runthrough', () => {
   });
 
   test('player 1: place clones', () => {
-    client1.moves.clickCell(650, '1');
-    client1.moves.clickCell(649, '1');
-    client1.moves.clickCell(648, '1');
-    client1.moves.clickCell(647, '1');
-    client1.moves.clickCell(646, '1');
+    client1.moves.placeClone(650, '1');
+    client1.moves.placeClone(649, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(646, '1');
     const { G: g1 } = client1.store.getState();
 
     expect(g1.players[1].clones).toEqual([
@@ -99,7 +99,7 @@ describe('basic game runthrough', () => {
   });
 
   test('player 0: verify clone move options', () => {
-    client0.moves.clickCell(147, '0');
+    client0.moves.selectClone(147, '0');
     const { G: g0 } = client0.store.getState();
     // console.log(g0.stagedCells);
     expect(g0.stagedCells).toEqual([
@@ -119,7 +119,7 @@ describe('basic game runthrough', () => {
   });
 
   test('player 0: move onto surface', () => {
-    client0.moves.clickCell(172, '0');
+    client0.moves.selectCloneMoveTarget(172, '0');
     const { G: g0, ctx: c0 } = client0.store.getState();
     expect(g0.cells[147].occupied).toEqual(false);
     expect(g0.cells[172].occupied).toEqual(true);
@@ -136,10 +136,10 @@ describe('basic game runthrough', () => {
     client1.moves.rollDie(); // 4
 
     // click a clone
-    client1.moves.clickCell(647, '1');
+    client1.moves.selectClone(647, '1');
 
     // move to a production tile
-    client1.moves.clickCell(643, '1');
+    client1.moves.selectCloneMoveTarget(643, '1');
     const { G: g1, ctx: c1 } = client1.store.getState();
 
     expect(g1.players[1].clones[3].x).toEqual(30);
@@ -149,23 +149,25 @@ describe('basic game runthrough', () => {
     expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'energy1')).toEqual(4);
     expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'rocket')).toEqual(6);
   });
+
   test('player 0: move onto battle tile', () => {
     // roll
     client0.moves.rollDie(); // 6
     // select clone
-    client0.moves.clickCell(136, '0');
+    client0.moves.selectClone(136, '0');
 
     // select laser battle tile
-    client0.moves.clickCell(142, '0');
+    client0.moves.selectCloneMoveTarget(142, '0');
 
     const { G: g0, ctx: c0 } = client0.store.getState();
     expect(c0.activePlayers[c0.currentPlayer]).toEqual('activateModule');
     // test queued gunners
     expect(g0.stagedCells.length).toBeGreaterThan(0);
   });
+
   test('player 0: select gunner', () => {
     // select gunner
-    client0.moves.clickCell(172, '0');
+    client0.moves.selectModuleTargets(172, '0');
     client0.moves.confirmNext();
     const { G: g0, ctx: c0 } = client0.store.getState();
     expect(g0.stagedTokens).toEqual([{

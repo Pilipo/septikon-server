@@ -105,7 +105,7 @@ function goToNextStage(G, ctx) {
         default:
           throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
       }
-      // fall through
+    // fall through
     case 'activateModule': {
       if (G.stagedTokens.length) {
         const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedObject);
@@ -131,79 +131,20 @@ function goToNextStage(G, ctx) {
   }
 }
 
-function clickCell(G, ctx, id, playerID) {
+function clickCell(G, ctx, id) {
   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-  const coords = TileHelper.tileIndexToCoordinates(id);
-  if (ctx.phase === 'layout') {
-    const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-    if (cloneIndex === false) {
-      PersonnelHelper.placeClone(G, playerID, coords);
-    } else {
-      PersonnelHelper.removeClone(G, playerID, coords);
-    }
-  } else {
-    const currentStage = ctx.activePlayers[ctx.currentPlayer];
-    switch (currentStage) {
-      case 'moveClone':
-        if (G.stagedObject === null || typeof G.stagedObject === 'undefined') {
-          const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-          G.stagedObject = G.players[playerID].clones[cloneIndex];
-          G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
-        } else {
-          let stagedClone = null;
-          G.stagedCells.forEach((legalCoord) => {
-            if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
-              stagedClone = G.stagedObject;
-            }
-          });
-          if (stagedClone !== null) {
-            // console.log(`moving ${stagedClone.x}, ${stagedClone.y}`);
-            PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
-            G.stagedCells = [];
-            G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
-            // advance turn stage
-            goToNextStage(G, ctx);
-          }
-        }
-        break;
-      case 'activateModule':
-        if (G.stagedObject.targetType === 'gunner') {
-          const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
-          // TODO: check cost per gunner
-          if (gunner !== null && gunner.gunner === true) {
-            G.stagedTokens.push(gunner);
-          }
-          // TODO: Fire module after gunner selection (if reqs allow)");
-        } else {
-          // TODO: Fire module after valid selection (if reqs allow)");
-          // check requirements
-          // activate cell
-          // clear token/cell staging
-          // advance turn stage
-        }
-        // Possible activations include:
-        // - BATTLE
-        // TODO: Gunner targetted: lasers, thermites, shield, biodrone,
-        //       satellite, rocket, espionage, takeover
-        // TODO: non-gunner targetted: counter-espionage, repair, repairTwo (set number of targets)
-        // - PROD
-        // TODO: automated: everything but...
-        // TODO: non-gunner targetted: repair, sensor cabin
-        // - ARMORY
-        // TODO: automated: everything
-        // - SURFACE
-        // TODO: automated: set clone.gunner: true
-        break;
-      default:
-    }
-  }
 }
 
-function rollDie(G, ctx) {
-  const roll = ctx.random.D6();
-  G.rollValue = roll;
-  G.rollHistory.unshift(roll);
-  goToNextStage(G, ctx);
+// PHASE: layout
+// placeClone
+function placeClone(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
+  if (cloneIndex === false) {
+    PersonnelHelper.placeClone(G, playerID, coords);
+  } else {
+    PersonnelHelper.removeClone(G, playerID, coords);
+  }
 }
 
 function confirmSetup(G, ctx, playerID) {
@@ -211,6 +152,103 @@ function confirmSetup(G, ctx, playerID) {
     G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
     ctx.events.endTurn();
   }
+}
+
+// PHASE: play
+// STAGE: rollDie
+function rollDie(G, ctx) {
+  const roll = ctx.random.D6();
+  G.rollValue = roll;
+  G.rollHistory.unshift(roll);
+  goToNextStage(G, ctx);
+}
+
+// STAGE: moveClone
+function selectClone(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
+  G.stagedObject = G.players[playerID].clones[cloneIndex];
+  G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
+}
+
+function selectCloneMoveTarget(G, ctx, id, playerID) {
+  let stagedClone = null;
+  G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  G.stagedCells.forEach((legalCoord) => {
+    if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
+      stagedClone = G.stagedObject;
+    }
+  });
+  if (stagedClone !== null) {
+    // console.log(`moving ${stagedClone.x}, ${stagedClone.y}`);
+    PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
+    G.stagedCells = [];
+    G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
+    // advance turn stage
+    goToNextStage(G, ctx);
+  }
+}
+
+// STAGE: activateModule
+// TODO: selectModuleTargets
+function selectModuleTargets(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  if (G.stagedObject.targetType === 'gunner') {
+    const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
+    // TODO: check cost per gunner
+    if (gunner !== null && gunner.gunner === true) {
+      G.stagedTokens.push(gunner);
+    }
+    // TODO: Fire module after gunner selection (if reqs allow)");
+  } else {
+    // TODO: Fire module after valid selection (if reqs allow)");
+    // check requirements
+    // activate cell
+    // clear token/cell staging
+    // advance turn stage
+  }
+}
+// TODO: confirmSelection
+function confirmModuleTargetSelection() {
+  const tarAry = [];
+  return tarAry;
+}
+
+// STAGE: moveBiodrones
+// TODO: selectBiodrones
+function selectBiodrones() {
+  const tarAry = [];
+  return tarAry;
+}
+// TODO: selectBiodroneMoveTarget
+function selectBiodroneMoveTarget(G, ctx) {
+  const tarTile = {};
+  return tarTile;
+}
+
+// STAGE: moveOrdnance
+// TODO: selectOrdnance
+function selectOrdnance() {
+  const tarAry = [];
+  return tarAry;
+}
+// TODO: confirmBiodroneTargetSelection
+function confirmBiodroneTargetSelection() {
+  const tarAry = [];
+  return tarAry;
+}
+
+// STAGE: fireArms
+// TODO: select arms (clones, satellites, and biodrones)
+function selectArms() {
+  const tarAry = [];
+  return tarAry;
+}
+// TODO: confirmArmsTargetSelection
+function confirmArmsTargetSelection() {
+  const tarAry = [];
+  return tarAry;
 }
 
 function confirmNext(G, ctx) {
@@ -253,11 +291,7 @@ const Septikon = {
     layout: {
       onBegin: (G) => {
         TileHelper.setOwnership(G);
-        // DevHelper.stageForMoveClone(G, ctx);
       },
-      // onEnd: (G, ctx) => {
-      //     ctx.events.endTurn();
-      // },
       endIf: (G) => {
         let playersReady = true;
         G.setupConfirmations.forEach((player) => {
@@ -271,9 +305,7 @@ const Septikon = {
         return false;
       },
       moves: {
-        clickCell: {
-          move: clickCell,
-        },
+        placeClone,
         confirmSetup,
       },
       start: true,
@@ -288,18 +320,18 @@ const Septikon = {
         },
         stages: {
           rollDie: {
-            moves: { rollDie, clickCell },
+            moves: { rollDie },
             next: 'moveClone',
             start: true,
           },
 
           moveClone: {
-            moves: { clickCell },
+            moves: { selectClone, selectCloneMoveTarget, selectModuleTargets },
             next: 'activateModule',
           },
 
           activateModule: {
-            moves: { clickCell, confirmNext },
+            moves: { selectModuleTargets, confirmNext },
             next: 'moveBiodrones',
           },
 
