@@ -7,23 +7,19 @@ function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
   const playerID = ctx.currentPlayer;
   switch (currentStage) {
-    case 'rollDie':
-      ctx.events.endStage();
-      break;
-
     case 'moveClone':
-      switch (G.stagedObject.type) {
+      switch (G.stagedModuleForMove.type) {
         case 'surface': {
-          const tarCoords = { x: G.stagedObject.x, y: G.stagedObject.y };
+          const tarCoords = { x: G.stagedModuleForMove.x, y: G.stagedModuleForMove.y };
           const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
           tarClone.gunner = true;
           break;
         }
         case 'armory':
-          // console.log('arm clones and biodrones');
+          // TODO: set arms somehow??
           break;
         case 'production': {
-          switch (G.stagedObject.name) {
+          switch (G.stagedModuleForMove.name) {
             case 'lichen':
             case 'lichenTwo':
             case 'nuclearReactor':
@@ -37,10 +33,10 @@ function goToNextStage(G, ctx) {
             case 'uraniumMine':
             case 'foundryTwo':
             case 'thermalGenerator': {
-              const ct = G.stagedObject.resourceCostType;
-              const cc = G.stagedObject.resourceCostCount;
-              const yt = G.stagedObject.resourceYieldType;
-              const yc = G.stagedObject.resourceYieldCount;
+              const ct = G.stagedModuleForMove.resourceCostType;
+              const cc = G.stagedModuleForMove.resourceCostCount;
+              const yt = G.stagedModuleForMove.resourceYieldType;
+              const yc = G.stagedModuleForMove.resourceYieldCount;
               ct.forEach((type, idx) => {
                 ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
               });
@@ -56,7 +52,7 @@ function goToNextStage(G, ctx) {
         }
         case 'battle': {
           let hasReqs = false;
-          switch (G.stagedObject.name) {
+          switch (G.stagedModuleForMove.name) {
             case 'thermite':
             case 'shield':
             case 'biodrone':
@@ -66,9 +62,8 @@ function goToNextStage(G, ctx) {
               const gunners = PersonnelHelper.getGunners(G, ctx);
               if (gunners.length > 0) {
                 hasReqs = true;
-                G.stagedCells = gunners;
+                G.stagedTargetOptions = gunners;
               }
-              // TODO: check for gunnerCap (based on resources)
             }
             // fall through
             case 'espionage':
@@ -95,20 +90,15 @@ function goToNextStage(G, ctx) {
             ctx.events.endStage();
             return;
           }
-          // const ct = G.stagedObject.resourceCostType;
-          // const cc = G.stagedObject.resourceCostCount;
-          // ct.forEach((type, idx) => {
-          //   ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
-          // });
           break;
         }
         default:
-          throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
+          throw new Error(`Expected a "free" module. Instead got ${G.stagedModuleForMove.type}`);
       }
     // fall through
     case 'activateModule': {
       if (G.stagedTokens.length) {
-        const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedObject);
+        const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedModuleForMove);
         console.log('blow stuff up');
       }
     }
@@ -124,7 +114,7 @@ function goToNextStage(G, ctx) {
     // TODO: clean up for next turn and endTurn()
     // falls through
     default:
-      G.stagedObject = null;
+      G.stagedModuleForMove = null;
       G.stagedCells = [];
       ctx.events.endTurn();
       break;
@@ -136,7 +126,6 @@ function clickCell(G, ctx, id) {
 }
 
 // PHASE: layout
-// placeClone
 function placeClone(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
   const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
@@ -160,14 +149,14 @@ function rollDie(G, ctx) {
   const roll = ctx.random.D6();
   G.rollValue = roll;
   G.rollHistory.unshift(roll);
-  goToNextStage(G, ctx);
+  ctx.events.endStage();
 }
 
 // STAGE: moveClone
 function selectClone(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
   const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-  G.stagedObject = G.players[playerID].clones[cloneIndex];
+  G.stagedActors = G.players[playerID].clones[cloneIndex];
   G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
 }
 
@@ -177,24 +166,22 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
   G.stagedCells.forEach((legalCoord) => {
     if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
-      stagedClone = G.stagedObject;
+      stagedClone = G.stagedActors;
     }
   });
   if (stagedClone !== null) {
-    // console.log(`moving ${stagedClone.x}, ${stagedClone.y}`);
     PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
     G.stagedCells = [];
-    G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
+    G.stagedModuleForMove = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
     // advance turn stage
     goToNextStage(G, ctx);
   }
 }
 
 // STAGE: activateModule
-// TODO: selectModuleTargets
 function selectModuleTargets(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
-  if (G.stagedObject.targetType === 'gunner') {
+  if (G.stagedActors.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
     // TODO: check cost per gunner
     if (gunner !== null && gunner.gunner === true) {
@@ -210,9 +197,9 @@ function selectModuleTargets(G, ctx, id, playerID) {
   }
 }
 // TODO: confirmSelection
-function confirmModuleTargetSelection() {
-  const tarAry = [];
-  return tarAry;
+function confirmModuleTargetSelection(G, ctx) {
+  G.stageConfirmed = true;
+  goToNextStage(G, ctx);
 }
 
 // STAGE: moveBiodrones
@@ -260,8 +247,10 @@ const Septikon = {
   seed: 42,
   setup: () => ({
     cells: Array(651).fill(tileProperties),
+    stagedTargetOptions: [], // potential selections for action (gunners, damaged tiles, etc)
+    stagedActors: [], // selected gunners, biodrones, satellites, etc.
+    stagedModuleForMove: null,
     clickedCell: null,
-    stagedObject: null,
     stagedCells: [],
     stagedTokens: [],
     stageConfirmed: false,
@@ -331,7 +320,7 @@ const Septikon = {
           },
 
           activateModule: {
-            moves: { selectModuleTargets, confirmNext },
+            moves: { selectModuleTargets, confirmModuleTargetSelection },
             next: 'moveBiodrones',
           },
 

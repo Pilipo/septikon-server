@@ -162,15 +162,15 @@ describe('basic game runthrough', () => {
     const { G: g0, ctx: c0 } = client0.store.getState();
     expect(c0.activePlayers[c0.currentPlayer]).toEqual('activateModule');
     // test queued gunners
-    expect(g0.stagedCells.length).toBeGreaterThan(0);
+    expect(g0.stagedTargetOptions.length).toBeGreaterThan(0);
   });
 
   test('player 0: select gunner', () => {
     // select gunner
     client0.moves.selectModuleTargets(172, '0');
-    client0.moves.confirmNext();
+    client0.moves.confirmModuleTargetSelection();
     const { G: g0, ctx: c0 } = client0.store.getState();
-    expect(g0.stagedTokens).toEqual([{
+    expect(g0.stagedTargetOptions).toEqual([{
       x: 8, y: 4, spy: false, gunner: true,
     }]);
     // test turn stage
