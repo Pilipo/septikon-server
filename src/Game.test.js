@@ -152,35 +152,38 @@ describe('basic game runthrough', () => {
   test('player 0: move onto battle tile', () => {
     // roll
     client0.moves.rollDie(); // 6
-    // select clone
+    // select a clone
     client0.moves.selectClone(136, '0');
-
     // select laser battle tile
     client0.moves.selectCloneMoveTarget(142, '0');
-
     const { G: g0, ctx: c0 } = client0.store.getState();
     expect(c0.activePlayers[c0.currentPlayer]).toEqual('activateModule');
     // test queued gunners
     expect(g0.stagedTargetOptions.length).toBeGreaterThan(0);
+    expect(g0.stagedTargetOptions).toEqual([{
+      x: 8, y: 4, spy: false, gunner: true,
+    }]);
   });
 
   test('player 0: select gunner', () => {
     // select gunner
     client0.moves.selectModuleTargets(172, '0');
-    client0.moves.confirmModuleTargetSelection();
-    const { G: g0, ctx: c0 } = client0.store.getState();
-    expect(g0.stagedTargetOptions).toEqual([{
+    const { G: g0 } = client0.store.getState();
+    expect(g0.stagedActors).toEqual([{
       x: 8, y: 4, spy: false, gunner: true,
     }]);
-    // test turn stage
-    console.log(`stage is ${c0.activePlayers[c0.currentPlayer]}`);
   });
 
   test('player 0: fire laser and verify damage/cost', () => {
-    // TODO: fire?
-    // TODO: test spend
-    // TODO: test damage
-    // TODO: test turn stage
+    // fire
+    client0.moves.confirmModuleTargetSelection();
+    // test damage
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    expect(g0.cells[487].damaged).toEqual(true);
+    // test spend
+    expect(ResourceHelper.getSpendCapacity(g0, c0, '0', 'energy1')).toEqual(4);
+    // test turn stage
+    expect(c0.currentPlayer).toEqual('1');
   });
 
   test('player 1: move through lock', () => { });

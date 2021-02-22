@@ -98,8 +98,17 @@ function goToNextStage(G, ctx) {
     // fall through
     case 'activateModule': {
       if (G.stagedActors.length) {
-        const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, G.selectedModuleForMove);
-        console.log('blow stuff up');
+        const tile = G.selectedModuleForMove;
+        if (tile.targetType === 'gunner') {
+          const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, tile);
+          targets.forEach((tar) => {
+            // TODO: Spend resources
+            tile.resourceCostType.forEach((ct, idx) => {
+              ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
+            });
+            tar.damaged = true;
+          });
+        }
       }
     }
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
@@ -121,9 +130,9 @@ function goToNextStage(G, ctx) {
   }
 }
 
-function clickCell(G, ctx, id) {
-  G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-}
+// function clickCell(G, ctx, id) {
+//   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
+// }
 
 // PHASE: layout
 function placeClone(G, ctx, id, playerID) {
@@ -156,7 +165,7 @@ function rollDie(G, ctx) {
 function selectClone(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
   const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-  G.stagedActors = G.players[playerID].clones[cloneIndex];
+  G.stagedActors.push(G.players[playerID].clones[cloneIndex]);
   G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
 }
 
@@ -166,7 +175,10 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
   G.stagedModuleOptions.forEach((legalCoord) => {
     if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
-      stagedClone = G.stagedActors;
+      // if (G.stagedActors.length > 1) throw new Error('too many clones');
+
+      // eslint-disable-next-line prefer-destructuring
+      stagedClone = G.stagedActors.pop();
     }
   });
   if (stagedClone !== null) {
@@ -181,13 +193,19 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
 // STAGE: activateModule
 function selectModuleTargets(G, ctx, id, playerID) {
   const coords = TileHelper.tileIndexToCoordinates(id);
-  if (G.stagedActors.targetType === 'gunner') {
+  const tile = G.selectedModuleForMove;
+  if (tile.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
-    // TODO: check cost per gunner
     if (gunner !== null && gunner.gunner === true) {
-      G.stagedActors.push(gunner);
+      let canAfford = false;
+      tile.resourceCostType.forEach((ct, idx) => {
+        const spendCap = ResourceHelper.getSpendCapacity(G, ctx, playerID, ct);
+        if (tile.resourceCostCount[idx] * G.stagedActors.length <= spendCap) {
+          canAfford = true;
+        }
+      });
+      if (canAfford) G.stagedActors.push(gunner);
     }
-    // TODO: Fire module after gunner selection (if reqs allow)");
   } else {
     // TODO: Fire module after valid selection (if reqs allow)");
     // check requirements
@@ -196,8 +214,11 @@ function selectModuleTargets(G, ctx, id, playerID) {
     // advance turn stage
   }
 }
+
 // TODO: confirmSelection
 function confirmModuleTargetSelection(G, ctx) {
+  // TODO: Spend resources
+  // TODO: Fire module after gunner selection (if reqs allow)");
   G.stageConfirmed = true;
   goToNextStage(G, ctx);
 }
