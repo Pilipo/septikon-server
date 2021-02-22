@@ -201,10 +201,12 @@ describe('basic game runthrough', () => {
 
 describe('battle and armory tiles', () => {
   test('thermite', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check damage
   });
   test('shield', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check placement
     // TODO: block laser
@@ -214,27 +216,32 @@ describe('battle and armory tiles', () => {
     // TODO: check destroy
   });
   test('biodrone', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check flight
     // TODO: check landing on surface, warehouse, and battle/armory/prod
   });
   test('satellite', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check placement
     // TODO: fire on rocket
     // TODO: check rocket destroyed
   });
   test('laser', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check damage
   });
   test('repair and repairTwo', () => {
+    // TODO: setup
     // TODO: fire 1
     // TODO: check 1 damage state
     // TODO: fire 2
     // TODO: check 2 damage state
   });
   test('rocket', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check flight
     // TODO: check touchdown
@@ -245,23 +252,28 @@ describe('battle and armory tiles', () => {
     // TODO: check NUKE damage
   });
   test('espionage', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check spy state
     // TODO: check spy controls
   });
   test('takeover', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check satellite owner
   });
   test('counterEspionage', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check spy state
   });
   test('armory 1 and 2', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check kill zone
   });
   test('bomb', () => {
+    // TODO: setup
     // TODO: fire
     // TODO: check slash & burn with a clone
   });

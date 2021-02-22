@@ -102,7 +102,6 @@ function goToNextStage(G, ctx) {
         if (tile.targetType === 'gunner') {
           const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, tile);
           targets.forEach((tar) => {
-            // TODO: Spend resources
             tile.resourceCostType.forEach((ct, idx) => {
               ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
             });
@@ -111,13 +110,13 @@ function goToNextStage(G, ctx) {
         }
       }
     }
-    // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
+    // TODO: if biodrone.length > 0 then setStage('moveBiodrones') else
     // falls through
     case 'moveBiodrones':
-    // TODO: if ordnance.length > 0 then setStage('moveOrdnance')
+    // TODO: if ordnance.length > 0 then setStage('moveOrdnance') else
     // falls through
     case 'moveOrdnance':
-    // TODO: if arms.length > 0 then setStage('fireArms')
+    // TODO: if arms.length > 0 then setStage('fireArms') else
     // falls through
     case 'fireArms':
     // TODO: clean up for next turn and endTurn()
