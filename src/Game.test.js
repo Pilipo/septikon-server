@@ -164,9 +164,15 @@ describe('basic game runthrough', () => {
     expect(g0.stagedCells.length).toBeGreaterThan(0);
   });
   test('player 0: select gunner', () => {
-    // TODO: select gunner
-    // TODO: test queued spending
-    // TODO: test turn stage
+    // select gunner
+    client0.moves.clickCell(172, '0');
+    client0.moves.confirmNext();
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    expect(g0.stagedTokens).toEqual([{
+      x: 8, y: 4, spy: false, gunner: true,
+    }]);
+    // test turn stage
+    console.log(`stage is ${c0.activePlayers[c0.currentPlayer]}`);
   });
   test('player 0: fire laser and verify damage/cost', () => {
     // TODO: fire?

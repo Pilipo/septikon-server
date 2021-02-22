@@ -121,6 +121,10 @@ const TileHelper = {
         return false;
     }
   },
+  upperX: 30,
+  lowerX: 0,
+  upperY: 20,
+  lowerY: 0,
 };
 
 export { TileHelper, tileProperties, directions };

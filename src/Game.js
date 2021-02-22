@@ -1,6 +1,7 @@
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
+import WeaponHelper from './helpers/weaponHelper';
 
 function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
@@ -90,6 +91,7 @@ function goToNextStage(G, ctx) {
               break;
           }
           if (hasReqs) {
+            G.stageConfirmed = false;
             ctx.events.endStage();
             return;
           }
@@ -104,7 +106,12 @@ function goToNextStage(G, ctx) {
           throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
       }
       // fall through
-    case 'activateModule':
+    case 'activateModule': {
+      if (G.stagedTokens.length) {
+        const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedObject);
+        console.log('blow stuff up');
+      }
+    }
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
     // falls through
     case 'moveBiodrones':
@@ -161,11 +168,12 @@ function clickCell(G, ctx, id, playerID) {
         break;
       case 'activateModule':
         if (G.stagedObject.targetType === 'gunner') {
+          const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
+          // TODO: check cost per gunner
+          if (gunner !== null && gunner.gunner === true) {
+            G.stagedTokens.push(gunner);
+          }
           // TODO: Fire module after gunner selection (if reqs allow)");
-          // check requirements
-          // activate cell
-          // clear token/cell staging
-          // advance turn stage
         } else {
           // TODO: Fire module after valid selection (if reqs allow)");
           // check requirements
@@ -193,18 +201,21 @@ function clickCell(G, ctx, id, playerID) {
 
 function rollDie(G, ctx) {
   const roll = ctx.random.D6();
-  // let roll = 2;
   G.rollValue = roll;
   G.rollHistory.unshift(roll);
   goToNextStage(G, ctx);
 }
 
 function confirmSetup(G, ctx, playerID) {
-  // console.log('called by ' + playerID);
   if (G.players[playerID].clones.length === 5) {
     G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
     ctx.events.endTurn();
   }
+}
+
+function confirmNext(G, ctx) {
+  G.stageConfirmed = true;
+  goToNextStage(G, ctx);
 }
 
 const Septikon = {
@@ -214,6 +225,8 @@ const Septikon = {
     clickedCell: null,
     stagedObject: null,
     stagedCells: [],
+    stagedTokens: [],
+    stageConfirmed: false,
     rollValue: 0,
     rollHistory: [],
     setupConfirmations: [
@@ -286,12 +299,12 @@ const Septikon = {
           },
 
           activateModule: {
-            moves: { clickCell },
+            moves: { clickCell, confirmNext },
             next: 'moveBiodrones',
           },
 
           moveBiodrones: {
-            moves: { clickCell },
+            moves: { clickCell, confirmNext },
             next: 'moveOrdnance',
           },
 
