@@ -204,12 +204,19 @@ function confirmModuleTargetSelection(G, ctx) {
 
 // STAGE: moveBiodrones
 // TODO: selectBiodrones
-function selectBiodrones() {
+function selectBiodrones(G, ctx, id, playerID) {
   const tarAry = [];
   return tarAry;
 }
+
 // TODO: selectBiodroneMoveTarget
-function selectBiodroneMoveTarget(G, ctx) {
+function selectBiodroneMoveTarget(G, ctx, id, playerID) {
+  const tarTile = {};
+  return tarTile;
+}
+
+// TODO: selectBiodroneMoveTarget
+function confirmBiodroneMoves(G, ctx, id, playerID) {
   const tarTile = {};
   return tarTile;
 }
@@ -221,7 +228,7 @@ function selectOrdnance() {
   return tarAry;
 }
 // TODO: confirmBiodroneTargetSelection
-function confirmBiodroneTargetSelection() {
+function confirmOrdnanceSelection() {
   const tarAry = [];
   return tarAry;
 }
@@ -232,15 +239,10 @@ function selectArms() {
   const tarAry = [];
   return tarAry;
 }
-// TODO: confirmArmsTargetSelection
-function confirmArmsTargetSelection() {
+// TODO: confirmArmsSelections
+function confirmArmsSelections() {
   const tarAry = [];
   return tarAry;
-}
-
-function confirmNext(G, ctx) {
-  G.stageConfirmed = true;
-  goToNextStage(G, ctx);
 }
 
 const Septikon = {
@@ -324,17 +326,17 @@ const Septikon = {
           },
 
           moveBiodrones: {
-            moves: { clickCell, confirmNext },
+            moves: { selectBiodrones, selectBiodroneMoveTarget, confirmBiodroneMoves },
             next: 'moveOrdnance',
           },
 
           moveOrdnance: {
-            moves: { clickCell },
+            moves: { selectOrdnance, confirmOrdnanceSelection },
             next: 'fire',
           },
 
           fireArms: {
-            moves: { clickCell },
+            moves: { selectArms, confirmArmsSelections },
           },
         },
       },
