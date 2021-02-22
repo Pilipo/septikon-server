@@ -97,8 +97,8 @@ function goToNextStage(G, ctx) {
       }
     // fall through
     case 'activateModule': {
-      if (G.stagedTokens.length) {
-        const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedModuleForMove);
+      if (G.stagedActors.length) {
+        const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, G.stagedModuleForMove);
         console.log('blow stuff up');
       }
     }
@@ -185,7 +185,7 @@ function selectModuleTargets(G, ctx, id, playerID) {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
     // TODO: check cost per gunner
     if (gunner !== null && gunner.gunner === true) {
-      G.stagedTokens.push(gunner);
+      G.stagedActors.push(gunner);
     }
     // TODO: Fire module after gunner selection (if reqs allow)");
   } else {
@@ -252,7 +252,6 @@ const Septikon = {
     stagedModuleForMove: null,
     clickedCell: null,
     stagedCells: [],
-    stagedTokens: [],
     stageConfirmed: false,
     rollValue: 0,
     rollHistory: [],
