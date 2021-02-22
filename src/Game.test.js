@@ -101,8 +101,7 @@ describe('basic game runthrough', () => {
   test('player 0: verify clone move options', () => {
     client0.moves.selectClone(147, '0');
     const { G: g0 } = client0.store.getState();
-    // console.log(g0.stagedCells);
-    expect(g0.stagedCells).toEqual([
+    expect(g0.stagedModuleOptions).toEqual([
       { x: 1, y: 6 },
       { x: 5, y: 10 },
       { x: 1, y: 14 },
@@ -176,12 +175,14 @@ describe('basic game runthrough', () => {
     // test turn stage
     console.log(`stage is ${c0.activePlayers[c0.currentPlayer]}`);
   });
+
   test('player 0: fire laser and verify damage/cost', () => {
     // TODO: fire?
     // TODO: test spend
     // TODO: test damage
     // TODO: test turn stage
   });
+
   test('player 1: move through lock', () => { });
   test('player 1: test clone movement near damage', () => { });
   test('player 0: fire rocket', () => { });
