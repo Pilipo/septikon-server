@@ -3,6 +3,10 @@ import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
 import WeaponHelper from './helpers/weaponHelper';
 
+function clickCell(G, ctx, id, playerID) {
+  G.clickedCell = G.cells[id];
+}
+
 function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
   const playerID = ctx.currentPlayer;
@@ -315,6 +319,7 @@ const Septikon = {
         return false;
       },
       moves: {
+        clickCell,
         placeClone,
         confirmSetup,
       },

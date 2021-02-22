@@ -49,9 +49,7 @@ class SeptikonClient {
         <button class="rollButton">Roll</button>
         <table>${rows.join('')}</table>
         <p class="winner"></p>
-        ID: 
-        <code class="cellID">null</code>
-        Cell:
+        <code class="cellID"></code><br />
         <code class="clickedCell">testing</code>
       `;
   }
@@ -60,10 +58,11 @@ class SeptikonClient {
     // This event handler will read the cell id from a cell’s
     // `data-id` attribute and make the `clickCell` move.
     const handleCellClick = (event) => {
+      event.preventDefault();
       const id = parseInt(event.target.dataset.id, 10);
       this.client.moves.clickCell(id, playerID);
-      const cellIDText = this.rootElement.querySelector('.cellID');
-      cellIDText.innerText = id;
+      const idUpdate = this.rootElement.querySelector('.cellID');
+      idUpdate.innerHTML = id;
     };
     const handleRoll = () => {
       this.client.moves.rollDie();
@@ -74,7 +73,7 @@ class SeptikonClient {
     // Attach the event listener to each of the board cells.
     const cells = this.rootElement.querySelectorAll('.cell');
     cells.forEach((cell) => {
-      cell.onclick = handleCellClick;
+      cell.addEventListener('contextmenu', handleCellClick);
     });
     const rollButton = this.rootElement.querySelector('.rollButton');
     rollButton.onclick = handleRoll;
@@ -163,7 +162,7 @@ class SeptikonClient {
           cell.classList.add('black');
         }
       }
-      state.G.stagedCells.forEach((stagedCell) => {
+      state.G.stagedModuleOptions.forEach((stagedCell) => {
         if (stagedCell.x === x && stagedCell.y === y) {
           cell.classList.add('highlighted');
         }
@@ -173,7 +172,6 @@ class SeptikonClient {
           if (clone.x === x && clone.y === y) {
             cell.textContent = 'c';
           }
-          // cells[((clone.x*21) + clone.y)].textContent = 'c';
         });
       });
     });
