@@ -7,23 +7,19 @@ function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
   const playerID = ctx.currentPlayer;
   switch (currentStage) {
-    case 'rollDie':
-      ctx.events.endStage();
-      break;
-
     case 'moveClone':
-      switch (G.stagedObject.type) {
+      switch (G.selectedModuleForMove.type) {
         case 'surface': {
-          const tarCoords = { x: G.stagedObject.x, y: G.stagedObject.y };
+          const tarCoords = { x: G.selectedModuleForMove.x, y: G.selectedModuleForMove.y };
           const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
           tarClone.gunner = true;
           break;
         }
         case 'armory':
-          // console.log('arm clones and biodrones');
+          // TODO: set arms somehow??
           break;
         case 'production': {
-          switch (G.stagedObject.name) {
+          switch (G.selectedModuleForMove.name) {
             case 'lichen':
             case 'lichenTwo':
             case 'nuclearReactor':
@@ -37,10 +33,10 @@ function goToNextStage(G, ctx) {
             case 'uraniumMine':
             case 'foundryTwo':
             case 'thermalGenerator': {
-              const ct = G.stagedObject.resourceCostType;
-              const cc = G.stagedObject.resourceCostCount;
-              const yt = G.stagedObject.resourceYieldType;
-              const yc = G.stagedObject.resourceYieldCount;
+              const ct = G.selectedModuleForMove.resourceCostType;
+              const cc = G.selectedModuleForMove.resourceCostCount;
+              const yt = G.selectedModuleForMove.resourceYieldType;
+              const yc = G.selectedModuleForMove.resourceYieldCount;
               ct.forEach((type, idx) => {
                 ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
               });
@@ -56,7 +52,7 @@ function goToNextStage(G, ctx) {
         }
         case 'battle': {
           let hasReqs = false;
-          switch (G.stagedObject.name) {
+          switch (G.selectedModuleForMove.name) {
             case 'thermite':
             case 'shield':
             case 'biodrone':
@@ -66,26 +62,25 @@ function goToNextStage(G, ctx) {
               const gunners = PersonnelHelper.getGunners(G, ctx);
               if (gunners.length > 0) {
                 hasReqs = true;
-                G.stagedCells = gunners;
+                G.stagedTargetOptions = gunners;
               }
-              // TODO: check for gunnerCap (based on resources)
             }
             // fall through
             case 'espionage':
             case 'takeover':
               // TODO: check gunners' fire line for targets (clones or satellites)
-              // TODO: if checks out set Stage to 'activateModule' and assign stagedCells of gunners
+              // TODO: if checks out set Stage to 'activateModule' and track gunners
               break;
             case 'repair':
             case 'repairTwo':
               // TODO: check for damaged tiles
               // TODO: check for resources
-              // TODO: if true set Stage to 'activateModule' and assign stagedCells of damaged tiles
+              // TODO: if true set Stage to 'activateModule' and track damaged tiles
               break;
             case 'counterespionage':
               // TODO: check for spies among us
               // TODO: check for resources
-              // TODO: if true set Stage to 'activateModule' and assign stagedCells of spies
+              // TODO: if true set Stage to 'activateModule' and track spies
               break;
             default:
               break;
@@ -95,115 +90,58 @@ function goToNextStage(G, ctx) {
             ctx.events.endStage();
             return;
           }
-          // const ct = G.stagedObject.resourceCostType;
-          // const cc = G.stagedObject.resourceCostCount;
-          // ct.forEach((type, idx) => {
-          //   ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
-          // });
           break;
         }
         default:
-          throw new Error(`Expected a "free" module. Instead got ${G.stagedObject.type}`);
+          throw new Error(`Expected a "free" module. Instead got ${G.selectedModuleForMove.type}`);
       }
-      // fall through
+    // fall through
     case 'activateModule': {
-      if (G.stagedTokens.length) {
-        const targets = WeaponHelper.getGunnersTargets(G, G.stagedTokens, G.stagedObject);
-        console.log('blow stuff up');
+      if (G.stagedActors.length) {
+        const tile = G.selectedModuleForMove;
+        if (tile.targetType === 'gunner') {
+          const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, tile);
+          targets.forEach((tar) => {
+            tile.resourceCostType.forEach((ct, idx) => {
+              ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
+            });
+            tar.damaged = true;
+          });
+        }
       }
     }
-    // TODO: if biodrone.length > 0 then setStage('moveBiodrones')
+    // TODO: if biodrone.length > 0 then setStage('moveBiodrones') else
     // falls through
     case 'moveBiodrones':
-    // TODO: if ordnance.length > 0 then setStage('moveOrdnance')
+    // TODO: if ordnance.length > 0 then setStage('moveOrdnance') else
     // falls through
     case 'moveOrdnance':
-    // TODO: if arms.length > 0 then setStage('fireArms')
+    // TODO: if arms.length > 0 then setStage('fireArms') else
     // falls through
     case 'fireArms':
     // TODO: clean up for next turn and endTurn()
     // falls through
     default:
-      G.stagedObject = null;
-      G.stagedCells = [];
+      G.selectedModuleForMove = null;
+      G.stagedModuleOptions = [];
       ctx.events.endTurn();
       break;
   }
 }
 
-function clickCell(G, ctx, id, playerID) {
-  G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-  const coords = TileHelper.tileIndexToCoordinates(id);
-  if (ctx.phase === 'layout') {
-    const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-    if (cloneIndex === false) {
-      PersonnelHelper.placeClone(G, playerID, coords);
-    } else {
-      PersonnelHelper.removeClone(G, playerID, coords);
-    }
-  } else {
-    const currentStage = ctx.activePlayers[ctx.currentPlayer];
-    switch (currentStage) {
-      case 'moveClone':
-        if (G.stagedObject === null || typeof G.stagedObject === 'undefined') {
-          const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-          G.stagedObject = G.players[playerID].clones[cloneIndex];
-          G.stagedCells = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
-        } else {
-          let stagedClone = null;
-          G.stagedCells.forEach((legalCoord) => {
-            if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
-              stagedClone = G.stagedObject;
-            }
-          });
-          if (stagedClone !== null) {
-            // console.log(`moving ${stagedClone.x}, ${stagedClone.y}`);
-            PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
-            G.stagedCells = [];
-            G.stagedObject = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
-            // advance turn stage
-            goToNextStage(G, ctx);
-          }
-        }
-        break;
-      case 'activateModule':
-        if (G.stagedObject.targetType === 'gunner') {
-          const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
-          // TODO: check cost per gunner
-          if (gunner !== null && gunner.gunner === true) {
-            G.stagedTokens.push(gunner);
-          }
-          // TODO: Fire module after gunner selection (if reqs allow)");
-        } else {
-          // TODO: Fire module after valid selection (if reqs allow)");
-          // check requirements
-          // activate cell
-          // clear token/cell staging
-          // advance turn stage
-        }
-        // Possible activations include:
-        // - BATTLE
-        // TODO: Gunner targetted: lasers, thermites, shield, biodrone,
-        //       satellite, rocket, espionage, takeover
-        // TODO: non-gunner targetted: counter-espionage, repair, repairTwo (set number of targets)
-        // - PROD
-        // TODO: automated: everything but...
-        // TODO: non-gunner targetted: repair, sensor cabin
-        // - ARMORY
-        // TODO: automated: everything
-        // - SURFACE
-        // TODO: automated: set clone.gunner: true
-        break;
-      default:
-    }
-  }
-}
+// function clickCell(G, ctx, id) {
+//   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
+// }
 
-function rollDie(G, ctx) {
-  const roll = ctx.random.D6();
-  G.rollValue = roll;
-  G.rollHistory.unshift(roll);
-  goToNextStage(G, ctx);
+// PHASE: layout
+function placeClone(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
+  if (cloneIndex === false) {
+    PersonnelHelper.placeClone(G, playerID, coords);
+  } else {
+    PersonnelHelper.removeClone(G, playerID, coords);
+  }
 }
 
 function confirmSetup(G, ctx, playerID) {
@@ -213,19 +151,129 @@ function confirmSetup(G, ctx, playerID) {
   }
 }
 
-function confirmNext(G, ctx) {
+// PHASE: play
+// STAGE: rollDie
+function rollDie(G, ctx) {
+  const roll = ctx.random.D6();
+  G.rollValue = roll;
+  G.rollHistory.unshift(roll);
+  ctx.events.endStage();
+}
+
+// STAGE: moveClone
+function selectClone(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
+  G.stagedActors.push(G.players[playerID].clones[cloneIndex]);
+  G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
+}
+
+function selectCloneMoveTarget(G, ctx, id, playerID) {
+  let stagedClone = null;
+  G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  G.stagedModuleOptions.forEach((legalCoord) => {
+    if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
+      // if (G.stagedActors.length > 1) throw new Error('too many clones');
+
+      // eslint-disable-next-line prefer-destructuring
+      stagedClone = G.stagedActors.pop();
+    }
+  });
+  if (stagedClone !== null) {
+    PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
+    G.stagedModuleOptions = [];
+    G.selectedModuleForMove = (G.clickedCell.type === 'lock' ? null : G.clickedCell);
+    // advance turn stage
+    goToNextStage(G, ctx);
+  }
+}
+
+// STAGE: activateModule
+function selectModuleTargets(G, ctx, id, playerID) {
+  const coords = TileHelper.tileIndexToCoordinates(id);
+  const tile = G.selectedModuleForMove;
+  if (tile.targetType === 'gunner') {
+    const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
+    if (gunner !== null && gunner.gunner === true) {
+      let canAfford = false;
+      tile.resourceCostType.forEach((ct, idx) => {
+        const spendCap = ResourceHelper.getSpendCapacity(G, ctx, playerID, ct);
+        if (tile.resourceCostCount[idx] * G.stagedActors.length <= spendCap) {
+          canAfford = true;
+        }
+      });
+      if (canAfford) G.stagedActors.push(gunner);
+    }
+  } else {
+    // TODO: Fire module after valid selection (if reqs allow)");
+    // check requirements
+    // activate cell
+    // clear token/cell staging
+    // advance turn stage
+  }
+}
+
+// TODO: confirmSelection
+function confirmModuleTargetSelection(G, ctx) {
+  // TODO: Spend resources
+  // TODO: Fire module after gunner selection (if reqs allow)");
   G.stageConfirmed = true;
   goToNextStage(G, ctx);
+}
+
+// STAGE: moveBiodrones
+// TODO: selectBiodrones
+function selectBiodrones(G, ctx, id, playerID) {
+  const tarAry = [];
+  return tarAry;
+}
+
+// TODO: selectBiodroneMoveTarget
+function selectBiodroneMoveTarget(G, ctx, id, playerID) {
+  const tarTile = {};
+  return tarTile;
+}
+
+// TODO: selectBiodroneMoveTarget
+function confirmBiodroneMoves(G, ctx, id, playerID) {
+  const tarTile = {};
+  return tarTile;
+}
+
+// STAGE: moveOrdnance
+// TODO: selectOrdnance
+function selectOrdnance() {
+  const tarAry = [];
+  return tarAry;
+}
+// TODO: confirmBiodroneTargetSelection
+function confirmOrdnanceSelection() {
+  const tarAry = [];
+  return tarAry;
+}
+
+// STAGE: fireArms
+// TODO: select arms (clones, satellites, and biodrones)
+function selectArms() {
+  const tarAry = [];
+  return tarAry;
+}
+// TODO: confirmArmsSelections
+function confirmArmsSelections() {
+  const tarAry = [];
+  return tarAry;
 }
 
 const Septikon = {
   seed: 42,
   setup: () => ({
     cells: Array(651).fill(tileProperties),
+    stagedTargetOptions: [], // potential selections for action (gunners, damaged tiles, etc)
+    stagedActors: [], // selected gunners, biodrones, satellites, etc.
+    selectedModuleForMove: null,
+    stagedModuleOptions: [],
     clickedCell: null,
-    stagedObject: null,
-    stagedCells: [],
-    stagedTokens: [],
     stageConfirmed: false,
     rollValue: 0,
     rollHistory: [],
@@ -253,11 +301,7 @@ const Septikon = {
     layout: {
       onBegin: (G) => {
         TileHelper.setOwnership(G);
-        // DevHelper.stageForMoveClone(G, ctx);
       },
-      // onEnd: (G, ctx) => {
-      //     ctx.events.endTurn();
-      // },
       endIf: (G) => {
         let playersReady = true;
         G.setupConfirmations.forEach((player) => {
@@ -271,9 +315,7 @@ const Septikon = {
         return false;
       },
       moves: {
-        clickCell: {
-          move: clickCell,
-        },
+        placeClone,
         confirmSetup,
       },
       start: true,
@@ -288,33 +330,33 @@ const Septikon = {
         },
         stages: {
           rollDie: {
-            moves: { rollDie, clickCell },
+            moves: { rollDie },
             next: 'moveClone',
             start: true,
           },
 
           moveClone: {
-            moves: { clickCell },
+            moves: { selectClone, selectCloneMoveTarget, selectModuleTargets },
             next: 'activateModule',
           },
 
           activateModule: {
-            moves: { clickCell, confirmNext },
+            moves: { selectModuleTargets, confirmModuleTargetSelection },
             next: 'moveBiodrones',
           },
 
           moveBiodrones: {
-            moves: { clickCell, confirmNext },
+            moves: { selectBiodrones, selectBiodroneMoveTarget, confirmBiodroneMoves },
             next: 'moveOrdnance',
           },
 
           moveOrdnance: {
-            moves: { clickCell },
+            moves: { selectOrdnance, confirmOrdnanceSelection },
             next: 'fire',
           },
 
           fireArms: {
-            moves: { clickCell },
+            moves: { selectArms, confirmArmsSelections },
           },
         },
       },
