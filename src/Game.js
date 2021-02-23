@@ -106,12 +106,19 @@ function goToNextStage(G, ctx) {
       if (G.stagedActors.length) {
         const tile = G.selectedModuleForMove;
         if (tile.targetType === 'gunner') {
-          const targets = WeaponHelper.getGunnersTargets(G, G.stagedActors, tile);
+          const targets = WeaponHelper.getGunnersTargets(G, ctx, G.stagedActors, tile);
           targets.forEach((tar) => {
             tile.resourceCostType.forEach((ct, idx) => {
               ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
             });
-            tar.damaged = true;
+            switch (tile.name) {
+              case 'laser':
+              case 'thermite':
+                tar.damaged = true;
+                break;
+              default:
+                break;
+            }
           });
         }
       }
@@ -294,12 +301,14 @@ const Septikon = {
         biodrones: [],
         ordnance: [],
         shields: [],
+        satellites: [],
       },
       {
         clones: [],
         biodrones: [],
         ordnance: [],
         shields: [],
+        satellites: [],
       },
     ],
   }),

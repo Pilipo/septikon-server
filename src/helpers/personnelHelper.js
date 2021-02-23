@@ -93,6 +93,7 @@ function getCloneByCoordinates(G, playerID, coords) {
 
 const PersonnelHelper = {
   getCloneIndexByCoordinates: (G, playerID, coordinates) => {
+    if (typeof playerID === 'undefined') throw new Error('playerID undefined');
     let cloneIdx = false;
     G.players[playerID].clones.forEach((el, idx) => {
       if (el.x === coordinates.x && el.y === coordinates.y) {

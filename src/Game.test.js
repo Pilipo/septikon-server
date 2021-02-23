@@ -225,22 +225,47 @@ describe('battle and armory tiles', () => {
   });
 
   test('thermite', () => {
-    // TODO: setup
-    client0.moves.placeClone(164, '0');
-    client0.moves.placeClone(147, '0');
+    client0.moves.placeClone(167, '0');
+    client0.moves.placeClone(140, '0');
     client0.moves.placeClone(136, '0');
     client0.moves.placeClone(30, '0');
     client0.moves.placeClone(14, '0');
     client0.moves.confirmSetup('0');
-    client1.moves.placeClone(650, '1');
-    client1.moves.placeClone(649, '1');
+
+    client1.moves.placeClone(483, '1');
+    client1.moves.placeClone(506, '1');
     client1.moves.placeClone(648, '1');
     client1.moves.placeClone(647, '1');
     client1.moves.placeClone(485, '1');
     client1.moves.confirmSetup('1');
 
-    // TODO: fire
-    // TODO: check damage
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(167, '0');
+    client0.moves.selectCloneMoveTarget(184, '0');
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(483, '1');
+    client1.moves.selectCloneMoveTarget(465, '1');
+
+    // fire thermite
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(140, '0');
+    client0.moves.selectCloneMoveTarget(146, '0');
+    client0.moves.selectModuleTargets(184, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // TODO: player1 fire thermite
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(506, '1');
+    client1.moves.selectCloneMoveTarget(504, '1');
+    client1.moves.selectModuleTargets(465, '1');
+    client1.moves.confirmModuleTargetSelection('1');
+
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    expect(g0.cells[541].damaged).toEqual(true);
+    expect(g0.cells[24].damaged).toEqual(true);
   });
   test('shield', () => {
     // TODO: setup
