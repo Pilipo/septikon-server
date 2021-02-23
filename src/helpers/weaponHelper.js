@@ -34,11 +34,11 @@ function getRBSTarget(G, ctx, gunner) {
   const it = ctx.currentPlayer === '0' ? 1 : -1;
   let tile = TileHelper.getClickedTileByCoordinates(G, { x, y: gunner.y });
   let i = 0;
-  while (tile.damaged === true) {
-    i += 1;
+  do {
     tile = TileHelper.getClickedTileByCoordinates(G, { x: (x + it * i), y: gunner.y });
     target = tile;
-  }
+    i += 1;
+  } while (tile.damaged === true);
 
   return target;
 }

@@ -57,10 +57,8 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
     }
     const cell = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)];
     if (cell.occupied === true) {
-      const opponentID = (playerID === '0' ? '1' : '0');
-      if (G.players[opponentID].biodrones.length > 0) {
-        // TODO: iterate the biodrones to check for a match.
-      }
+      // const opponentID = (playerID === '0' ? '1' : '0');
+      // TODO: iterate the biodrones to check for a match.
     }
 
     if (typeof prevCoords === 'undefined' || (typeof prevCoords !== 'undefined' && (JSON.stringify(nextMove) !== JSON.stringify(prevCoords)))) {

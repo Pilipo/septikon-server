@@ -108,6 +108,7 @@ function goToNextStage(G, ctx) {
         if (tile.targetType === 'gunner') {
           const targets = WeaponHelper.getGunnersTargets(G, ctx, G.stagedActors, tile);
           targets.forEach((tar) => {
+            if (tar === null) throw new Error('no target found!');
             tile.resourceCostType.forEach((ct, idx) => {
               ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
             });
@@ -115,6 +116,17 @@ function goToNextStage(G, ctx) {
               case 'laser':
               case 'thermite':
                 tar.damaged = true;
+                break;
+              case 'shield':
+              case 'satellite':
+              case 'rocket':
+              case 'biodrone':
+                G.players[playerID].rbss.push({
+                  type: tile.name,
+                  x: tar.x,
+                  y: tar.y,
+                  owner: playerID,
+                });
                 break;
               default:
                 break;
@@ -298,17 +310,11 @@ const Septikon = {
     players: [
       {
         clones: [],
-        biodrones: [],
-        ordnance: [],
-        shields: [],
-        satellites: [],
+        rbss: [],
       },
       {
         clones: [],
-        biodrones: [],
-        ordnance: [],
-        shields: [],
-        satellites: [],
+        rbss: [],
       },
     ],
   }),
