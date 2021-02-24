@@ -1,3 +1,4 @@
+import { Stage } from 'boardgame.io/core';
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
@@ -102,6 +103,7 @@ function goToNextStage(G, ctx) {
           throw new Error(`Expected a "free" module. Instead got ${G.selectedModuleForMove.type}`);
       }
     // fall through
+    case 'repairShield':
     case 'activateModule': {
       if (G.stagedActors.length) {
         const tile = G.selectedModuleForMove;
@@ -127,7 +129,7 @@ function goToNextStage(G, ctx) {
                   G.players[oppID].rbss.forEach((ord, idx) => {
                     if (ord.x === tar.x && ord.y === tar.y) {
                       if (ord.type === 'shield') {
-                        ord.damaged = true;
+                        G.players[oppID].rbss[idx].damaged = true;
                       } else {
                         // remove ord and de-occupy
                         G.players[oppID].rbss.splice(idx, 1);
@@ -142,15 +144,16 @@ function goToNextStage(G, ctx) {
               case 'thermite':
                 tar.damaged = true;
                 break;
-              case 'shield':
               case 'satellite':
               case 'rocket':
               case 'biodrone':
+              case 'shield':
                 G.players[playerID].rbss.push({
                   type: tile.name,
                   x: tar.x,
                   y: tar.y,
                   owner: playerID,
+                  damaged: false,
                 });
                 // TODO: should this live elsewhere?
                 tar.occupied = true;
@@ -161,8 +164,25 @@ function goToNextStage(G, ctx) {
           });
         }
       }
+      // check for damaged shield(s) which result in phase shift
+      const oppID = playerID === '0' ? 1 : 0;
+      let phaseShift = false;
+      G.stagedTargetOptions.splice(0, G.stagedTargetOptions.length);
+      G.players[oppID].rbss.forEach((ord) => {
+        if (ord.damaged === true) {
+          phaseShift = true;
+          G.stagedTargetOptions.push(ord);
+        }
+      });
+      const c = ResourceHelper.getSpendCapacity(G, ctx, ctx.currentPlayer, 'energy');
+      if (phaseShift && c > 0) {
+        ctx.events.setActivePlayers({
+          revert: true,
+          others: 'repairShield',
+        });
+        break;
+      }
     }
-    // TODO: check for damaged shield(s) which result in phase shift
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones') else
     // falls through
     case 'moveBiodrones':
@@ -320,14 +340,29 @@ function confirmArmsSelections() {
   return tarAry;
 }
 
-// PHASE: repairShield
-function repairShield(G, ctx, attemptRepair) {
-  if (attemptRepair === false) {
-    // back to the game
+// (optional) repairShield
+function repairShield(G, ctx, playerID, tileID) {
+  const c = ResourceHelper.getSpendCapacity(G, ctx, playerID, 'energy');
+  if (c > 0) {
+    const shield = WeaponHelper.getRBSSByTileIndex(G, ctx, tileID);
+    shield.damaged = false;
+    ResourceHelper.removeResource(G, ctx, playerID, 'energy', 1);
   }
-  // TODO: check cost
-  // TODO: get shield selection (multiple shields could be damaged)
-  // TODO: set shield.damaged = false
+}
+
+function confirmShieldRepairs(G, ctx, playerID) {
+  // TODO: destroy damaged shields
+  const ds = WeaponHelper.getDamagedShields(G, ctx, playerID);
+  if (ds.length) {
+    ds.forEach((shield) => {
+      G.players[playerID].rbss.forEach((ps, idx) => {
+        if (JSON.stringify(shield) === JSON.stringify(ps)) {
+          G.players[playerID].rbss.splice(idx, 1);
+        }
+      });
+    });
+  }
+  goToNextStage(G, ctx);
 }
 
 const Septikon = {
@@ -420,11 +455,12 @@ const Septikon = {
           fireArms: {
             moves: { selectArms, confirmArmsSelections },
           },
+
+          repairShield: {
+            moves: { repairShield, confirmShieldRepairs },
+          },
         },
       },
-    },
-    repairShield: {
-      moves: { repairShield },
     },
   },
 };

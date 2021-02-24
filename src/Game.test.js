@@ -58,9 +58,9 @@ describe('battle and armory tiles', () => {
     expect(g0.cells[24].damaged).toEqual(true);
   });
 
-  test('shield', () => {
-    // TODO: setup
-    const matchID = 'shchit';
+  test('shield repair', () => {
+    // setup
+    const matchID = 'remontnyy shchit';
     const client0 = Client({
       game: Septikon, playerID: '0', multiplayer: Local(), matchID,
     });
@@ -103,28 +103,105 @@ describe('battle and armory tiles', () => {
 
     const { G: g0, ctx: c0 } = client0.store.getState();
     // check initial cost
-    expect(ResourceHelper.getSpendCapacity(g0, c0, '0', 'energy')).toEqual(9);
+    const cap0a = ResourceHelper.getSpendCapacity(g0, c0, '0', 'energy');
+    expect(cap0a).toEqual(9);
     // check placement
     expect(g0.players[0].rbss).toEqual([{
-      type: 'shield', x: 14, y: 0, owner: '0',
+      damaged: false, type: 'shield', x: 14, y: 0, owner: '0',
     }]);
 
-    // TODO: block laser (this requires prompting player 0 for spend approval)
+    // block laser and damage shield
     client1.moves.rollDie('1'); // 6
     client1.moves.selectClone(486, '1');
     client1.moves.selectCloneMoveTarget(484, '1');
     client1.moves.selectModuleTargets(462, '1');
     client1.moves.confirmModuleTargetSelection('1');
-
-    // TODO: check blocking cost
-    // TODO: check no damage
+    // player 0 repairs and submits confirmation
+    client0.moves.repairShield('0', 294);
+    client0.moves.confirmShieldRepairs('0');
     const { G: g1, ctx: c1 } = client1.store.getState();
-    // console.log(c1);
-    // expect(g1.cells[168].damaged).toEqual(false);
+    // check no damage
+    expect(g1.cells[168].damaged).toEqual(false);
+    // check blocking cost
+    const cap0b = ResourceHelper.getSpendCapacity(g1, c1, '0', 'energy');
+    expect(cap0b).toEqual(8);
 
-    // TODO: block again
-    // TODO: check destroyed
+    // check return to roll through p1 and end turn
+    expect(c1.activePlayers).toEqual({ 0: 'rollDie' });
   });
+
+  test('shield destroy', () => {
+    // TODO: setup
+    const matchID = 'slomat shchit';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(139, '0');
+    client0.moves.placeClone(136, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(486, '1');
+    client1.moves.placeClone(506, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(485, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0');
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(506, '1');
+    client1.moves.selectCloneMoveTarget(462, '1');
+
+    // deploy shield
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(139, '0');
+    client0.moves.selectCloneMoveTarget(145, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    const { G: g0, ctx: c0 } = client0.store.getState();
+    // check initial cost
+    const cap0a = ResourceHelper.getSpendCapacity(g0, c0, '0', 'energy');
+    expect(cap0a).toEqual(9);
+    // check placement
+    expect(g0.players[0].rbss).toEqual([{
+      damaged: false, type: 'shield', x: 14, y: 0, owner: '0',
+    }]);
+
+    // block laser and damage shield
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(486, '1');
+    client1.moves.selectCloneMoveTarget(484, '1');
+    client1.moves.selectModuleTargets(462, '1');
+    client1.moves.confirmModuleTargetSelection('1');
+    // player 0 repairs and submits confirmation
+    client0.moves.confirmShieldRepairs('0');
+    const { G: g1, ctx: c1 } = client1.store.getState();
+    // check no damage
+    expect(g1.cells[168].damaged).toEqual(false);
+    // check blocking cost
+    const cap0b = ResourceHelper.getSpendCapacity(g1, c1, '0', 'energy');
+    expect(cap0b).toEqual(9);
+    // TODO: check destroyed
+    expect(g1.players[0].rbss.length).toEqual(0);
+    // check return to roll through p1 and end turn
+    expect(c1.activePlayers).toEqual({ 0: 'rollDie' });
+  });
+
   test('biodrone', () => {
     // TODO: setup
     // TODO: fire

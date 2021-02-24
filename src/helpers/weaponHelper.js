@@ -27,6 +27,33 @@ function getThermiteTarget(G, ctx, gunner) {
   return target;
 }
 
+function getDamagedShields(G, ctx, playerID) {
+  if (typeof playerID === 'undefined') throw new Error('playerID undefined!');
+  const damagedShields = [];
+  G.players[playerID].rbss.forEach((shield) => {
+    if (shield.type !== 'shield') return;
+    if (shield.damaged === true) damagedShields.push(shield);
+  });
+
+  return damagedShields;
+}
+
+function getRBSSByTileIndex(G, ctx, tileID) {
+  let RBSS = null;
+  const coord = TileHelper.tileIndexToCoordinates(tileID);
+
+  G.players.forEach((player) => {
+    if (RBSS) return;
+    player.rbss.forEach((rbss) => {
+      if (RBSS) return;
+      if (rbss.x === coord.x && rbss.y === coord.y) {
+        RBSS = rbss;
+      }
+    });
+  });
+  return RBSS;
+}
+
 function getRBSTarget(G, ctx, gunner) {
   // gets target for Rocket, Biodrone, Shield, or Satellite
   let target = null;
@@ -94,6 +121,8 @@ function getTakeoverTarget(G, ctx, gunner) {
 }
 
 const WeaponHelper = {
+  getRBSSByTileIndex,
+  getDamagedShields,
   getGunnersTargets: (G, ctx, gunners, battleTile) => {
     const returnTargets = [];
     if (gunners.length === 0) return returnTargets;

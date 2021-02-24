@@ -171,7 +171,7 @@ const ResourceHelper = {
     return true;
   },
   getCapacity: (G, ctx, type) => getCapacity(G, ctx, type),
-  getSpendCapacity: (G, ctx, playerID, type) => getSpendCapacity(G, ctx, playerID, type),
+  getSpendCapacity,
 };
 
 export default ResourceHelper;
