@@ -114,6 +114,31 @@ function goToNextStage(G, ctx) {
             });
             switch (tile.name) {
               case 'laser':
+                if (tar.name === 'space' || tar.name === 'surface') {
+                  // get occupant
+                  const oppID = playerID === '0' ? 1 : 0;
+                  G.players[oppID].clones.forEach((clone, idx) => {
+                    if (clone.x === tar.x && clone.y === tar.y) {
+                      // kill clone and de-occupy
+                      G.players[oppID].clones.splice(idx, 1);
+                      tar.occupied = false;
+                    }
+                  });
+                  G.players[oppID].rbss.forEach((ord, idx) => {
+                    if (ord.x === tar.x && ord.y === tar.y) {
+                      if (ord.type === 'shield') {
+                        ord.damaged = true;
+                      } else {
+                        // remove ord and de-occupy
+                        G.players[oppID].rbss.splice(idx, 1);
+                        tar.occupied = false;
+                      }
+                    }
+                  });
+                } else {
+                  tar.damaged = true;
+                }
+                break;
               case 'thermite':
                 tar.damaged = true;
                 break;
@@ -127,6 +152,8 @@ function goToNextStage(G, ctx) {
                   y: tar.y,
                   owner: playerID,
                 });
+                // TODO: should this live elsewhere?
+                tar.occupied = true;
                 break;
               default:
                 break;
@@ -135,6 +162,7 @@ function goToNextStage(G, ctx) {
         }
       }
     }
+    // TODO: check for damaged shield(s) which result in phase shift
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones') else
     // falls through
     case 'moveBiodrones':
@@ -285,10 +313,21 @@ function selectArms() {
   const tarAry = [];
   return tarAry;
 }
+
 // TODO: confirmArmsSelections
 function confirmArmsSelections() {
   const tarAry = [];
   return tarAry;
+}
+
+// PHASE: repairShield
+function repairShield(G, ctx, attemptRepair) {
+  if (attemptRepair === false) {
+    // back to the game
+  }
+  // TODO: check cost
+  // TODO: get shield selection (multiple shields could be damaged)
+  // TODO: set shield.damaged = false
 }
 
 const Septikon = {
@@ -383,6 +422,9 @@ const Septikon = {
           },
         },
       },
+    },
+    repairShield: {
+      moves: { repairShield },
     },
   },
 };

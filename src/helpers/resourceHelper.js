@@ -29,8 +29,16 @@ function getOrderedWarehouse(G, ctx, playerID, type) {
   return warehouseArray;
 }
 function getSpendCapacity(G, ctx, playerID, type) {
-  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
+  if (Number.isNaN(parseInt(playerID, 10))) throw new Error('PlayerID is not a number!');
   let spendCount = 0;
+
+  if (type === 'energy') {
+    spendCount += getSpendCapacity(G, ctx, playerID, 'energy1');
+    spendCount += getSpendCapacity(G, ctx, playerID, 'energy2');
+    return spendCount;
+  }
+
+  const warehouseArray = getOrderedWarehouse(G, ctx, playerID, type);
   let shouldSkip = false;
 
   warehouseArray.forEach((warehouseTile) => {
