@@ -133,13 +133,13 @@ function addResource(G, ctx, playerID, type) {
   if (tile == null) {
     return false;
   }
-  G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = true;
+  G.cells[TileHelper.coordinatesToIndex({ x: tile.x, y: tile.y })].isFull = true;
   return true;
 }
 
 function removeResource(G, ctx, playerID, type) {
   const tile = getFirstFullTileIndex(G, ctx, playerID, type);
-  G.cells[TileHelper.tileCoordinatesToIndex({ x: tile.x, y: tile.y })].isFull = false;
+  G.cells[TileHelper.coordinatesToIndex({ x: tile.x, y: tile.y })].isFull = false;
 }
 
 const ResourceHelper = {

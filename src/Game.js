@@ -1,4 +1,3 @@
-import { Stage } from 'boardgame.io/core';
 import PersonnelHelper from './helpers/personnelHelper';
 import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
@@ -144,9 +143,9 @@ function goToNextStage(G, ctx) {
               case 'thermite':
                 tar.damaged = true;
                 break;
+              case 'biodrone':
               case 'satellite':
               case 'rocket':
-              case 'biodrone':
               case 'shield':
                 G.players[playerID].rbss.push({
                   type: tile.name,
@@ -154,6 +153,7 @@ function goToNextStage(G, ctx) {
                   y: tar.y,
                   owner: playerID,
                   damaged: false,
+                  hasMoved: true,
                 });
                 // TODO: should this live elsewhere?
                 tar.occupied = true;
@@ -185,7 +185,21 @@ function goToNextStage(G, ctx) {
     }
     // TODO: if biodrone.length > 0 then setStage('moveBiodrones') else
     // falls through
-    case 'moveBiodrones':
+    case 'moveBiodrones': {
+      // if moving ordnance is not found then fall through
+      let ordFound = false;
+      G.players.forEach((player) => {
+        player.rbss.forEach((ord) => {
+          if (ord.type !== 'shield' && ord.hasMoved === false) {
+            ordFound = true;
+          }
+        });
+      });
+      if (ordFound) {
+        ctx.events.setStage('moveOrdnance');
+        break;
+      }
+    }
     // TODO: if ordnance.length > 0 then setStage('moveOrdnance') else
     // falls through
     case 'moveOrdnance':
@@ -195,9 +209,11 @@ function goToNextStage(G, ctx) {
     // TODO: clean up for next turn and endTurn()
     // falls through
     default:
+      // cleanup
       G.selectedModuleForMove = null;
       G.stagedModuleOptions = [];
       G.stagedActors = [];
+      WeaponHelper.resetMoves(G, ctx);
       ctx.events.endTurn();
       break;
   }
@@ -209,7 +225,7 @@ function goToNextStage(G, ctx) {
 
 // PHASE: layout
 function placeClone(G, ctx, id, playerID) {
-  const coords = TileHelper.tileIndexToCoordinates(id);
+  const coords = TileHelper.indexToCoordinates(id);
   const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
   if (cloneIndex === false) {
     PersonnelHelper.placeClone(G, playerID, coords);
@@ -236,7 +252,7 @@ function rollDie(G, ctx) {
 
 // STAGE: moveClone
 function selectClone(G, ctx, id, playerID) {
-  const coords = TileHelper.tileIndexToCoordinates(id);
+  const coords = TileHelper.indexToCoordinates(id);
   const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
   G.stagedActors.push(G.players[playerID].clones[cloneIndex]);
   G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
@@ -245,7 +261,7 @@ function selectClone(G, ctx, id, playerID) {
 function selectCloneMoveTarget(G, ctx, id, playerID) {
   let stagedClone = null;
   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-  const coords = TileHelper.tileIndexToCoordinates(id);
+  const coords = TileHelper.indexToCoordinates(id);
   G.stagedModuleOptions.forEach((legalCoord) => {
     if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
       // if (G.stagedActors.length > 1) throw new Error('too many clones');
@@ -265,7 +281,7 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
 
 // STAGE: activateModule
 function selectModuleTargets(G, ctx, id, playerID) {
-  const coords = TileHelper.tileIndexToCoordinates(id);
+  const coords = TileHelper.indexToCoordinates(id);
   const tile = G.selectedModuleForMove;
   if (tile.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
@@ -316,15 +332,19 @@ function confirmBiodroneMoves(G, ctx, id, playerID) {
 }
 
 // STAGE: moveOrdnance
-// TODO: selectOrdnance
-function selectOrdnance() {
-  const tarAry = [];
-  return tarAry;
+
+function selectOrdnance(G, ctx, tileID) {
+  const ord = WeaponHelper.getRBSSByTileIndex(G, ctx, tileID);
+  WeaponHelper.moveOrdnance(G, ctx, ord);
+  const unmoved = WeaponHelper.getUnmovedOrdnance(G, ctx);
+  if (unmoved.length === 0) goToNextStage(G, ctx);
 }
-// TODO: confirmBiodroneTargetSelection
-function confirmOrdnanceSelection() {
-  const tarAry = [];
-  return tarAry;
+
+function confirmOrdnanceSelection(G, ctx) {
+  const unmoved = WeaponHelper.getUnmovedOrdnance(G, ctx);
+  if (unmoved.length === 0) goToNextStage(G, ctx);
+  unmoved.forEach((ord) => WeaponHelper.moveOrdnance(G, ctx, ord));
+  goToNextStage(G, ctx);
 }
 
 // STAGE: fireArms
@@ -384,10 +404,12 @@ const Septikon = {
     players: [
       {
         clones: [],
+        biodrones: [],
         rbss: [],
       },
       {
         clones: [],
+        biodrones: [],
         rbss: [],
       },
     ],

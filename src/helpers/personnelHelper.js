@@ -55,7 +55,7 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
     if (TileHelper.checkWall(curCoords, directions[direction]) === false) {
       return;
     }
-    const cell = G.cells[TileHelper.tileCoordinatesToIndex(nextMove)];
+    const cell = G.cells[TileHelper.coordinatesToIndex(nextMove)];
     if (cell.occupied === true) {
       // const opponentID = (playerID === '0' ? '1' : '0');
       // TODO: iterate the biodrones to check for a match.
@@ -105,7 +105,7 @@ const PersonnelHelper = {
     if (G.players[playerID].clones.length < 5) {
       // console.log(coordinates);
       const tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
-      const tarIdx = TileHelper.tileCoordinatesToIndex(coordinates);
+      const tarIdx = TileHelper.coordinatesToIndex(coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
         G.players[playerID].clones.push({
           x: coordinates.x,
@@ -128,8 +128,8 @@ const PersonnelHelper = {
     }
   },
   moveClone: (G, playerID, orgCoords, tarCoords) => {
-    const orgIdx = TileHelper.tileCoordinatesToIndex(orgCoords);
-    const tarIdx = TileHelper.tileCoordinatesToIndex(tarCoords);
+    const orgIdx = TileHelper.coordinatesToIndex(orgCoords);
+    const tarIdx = TileHelper.coordinatesToIndex(tarCoords);
     if (JSON.stringify(orgIdx) === JSON.stringify(tarIdx)) {
       return;
     }

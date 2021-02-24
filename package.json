@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel index.html --open",
     "serve": "node -r esm src/Server.js",
-    "test": "jest",
+    "test": "jest --watch",
     "coverage": "jest --coverage"
   },
   "browserslist": "> 0.4% and not ie 11",

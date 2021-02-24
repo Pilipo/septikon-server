@@ -1,3 +1,4 @@
+import PersonnelHelper from './personnelHelper';
 import { TileHelper } from './tileHelper';
 
 function getLaserTarget(G, ctx, gunner) {
@@ -38,9 +39,71 @@ function getDamagedShields(G, ctx, playerID) {
   return damagedShields;
 }
 
+function getUnmovedOrdnance(G, ctx) {
+  const returnOrds = [];
+  G.players.forEach((player) => {
+    player.rbss.forEach((ord) => {
+      if (ord.hasMoved === false) {
+        returnOrds.push(ord);
+      }
+    });
+  });
+  return returnOrds;
+}
+
+function removeOrdnance(G, ctx, ord) {
+  if (typeof ord === 'undefined') throw new Error('ord is undefined!');
+  let found = false;
+  G.players.forEach((player) => {
+    if (found) return;
+    player.rbss.forEach((testOrd, idx) => {
+      if (found) return;
+      const toc = { x: testOrd.x, y: testOrd.y };
+      const oc = { x: ord.x, y: ord.y };
+      if (JSON.stringify(toc) === JSON.stringify(oc)) {
+        player.rbss.splice(idx, 1);
+        found = true;
+      }
+    });
+  });
+}
+
+function moveOrdnance(G, ctx, ord) {
+  if (typeof ord === 'undefined') throw new Error('ord is undefined!');
+
+  const newX = ord.owner === '0' ? (ord.x + G.rollValue) : (ord.x - G.rollValue);
+  const coord = { x: newX, y: ord.y };
+  const tarTile = TileHelper.getClickedTileByCoordinates(G, coord);
+  // is non-space, non-surface tile undamaged? (rocket dies and damages tile)
+  // biodrones can land on damage
+  if (tarTile.occupied === true) {
+    const occupant = TileHelper.getOccupantByTileID(G, ctx, coord);
+    if (occupant.owner !== ord.owner && (ord.type === 'rocket' || ord.type === 'biodrone')) {
+      // TODO: kill occupant and ord (no tile damage)
+    }
+  } else if (tarTile.type !== 'space' && tarTile.type !== 'surface') {
+    if (ord.type === 'rocket') {
+      tarTile.damaged = true;
+      removeOrdnance(G, ctx, ord);
+    }
+    if (ord.type === 'biodrone') {
+      G.players[ord.owner].biodrones.push({
+        x: tarTile.x,
+        y: tarTile.y,
+      });
+      tarTile.occupied = true;
+      removeOrdnance(G, ctx, ord);
+    }
+  }
+
+  ord.x = newX;
+  ord.hasMoved = true;
+}
+
 function getRBSSByTileIndex(G, ctx, tileID) {
+  if (typeof tileID === 'undefined') throw new Error('tileID is undefined!');
   let RBSS = null;
-  const coord = TileHelper.tileIndexToCoordinates(tileID);
+  const coord = TileHelper.indexToCoordinates(tileID);
 
   G.players.forEach((player) => {
     if (RBSS) return;
@@ -54,7 +117,7 @@ function getRBSSByTileIndex(G, ctx, tileID) {
   return RBSS;
 }
 
-function getRBSTarget(G, ctx, gunner) {
+function getRBSSTarget(G, ctx, gunner) {
   // gets target for Rocket, Biodrone, Shield, or Satellite
   let target = null;
   const x = ctx.currentPlayer === '0' ? gunner.x + G.rollValue : gunner.x - G.rollValue;
@@ -120,9 +183,23 @@ function getTakeoverTarget(G, ctx, gunner) {
   return target;
 }
 
+function resetMoves(G, ctx) {
+  G.players.forEach((player) => {
+    player.rbss.forEach((ord) => {
+      if (ord.type === 'rocket' || ord.type === 'biodrone') {
+        ord.hasMoved = false;
+      }
+    });
+  });
+}
+
 const WeaponHelper = {
   getRBSSByTileIndex,
   getDamagedShields,
+  getUnmovedOrdnance,
+  moveOrdnance,
+  resetMoves,
+  removeOrdnance,
   getGunnersTargets: (G, ctx, gunners, battleTile) => {
     const returnTargets = [];
     if (gunners.length === 0) return returnTargets;
@@ -136,16 +213,16 @@ const WeaponHelper = {
           returnTargets.push(getThermiteTarget(G, ctx, gunner));
           break;
         case 'rocket':
-          returnTargets.push(getRBSTarget(G, ctx, gunner));
+          returnTargets.push(getRBSSTarget(G, ctx, gunner));
           break;
         case 'biodrone':
-          returnTargets.push(getRBSTarget(G, ctx, gunner));
+          returnTargets.push(getRBSSTarget(G, ctx, gunner));
           break;
         case 'shield':
-          returnTargets.push(getRBSTarget(G, ctx, gunner));
+          returnTargets.push(getRBSSTarget(G, ctx, gunner));
           break;
         case 'satellite':
-          returnTargets.push(getRBSTarget(G, ctx, gunner));
+          returnTargets.push(getRBSSTarget(G, ctx, gunner));
           break;
         case 'espionage':
           returnTargets.push(getEspionageTarget(G, ctx, gunner));

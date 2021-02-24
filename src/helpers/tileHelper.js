@@ -12,6 +12,28 @@ function coordinatesToIndex(coordinates) {
   return parseInt(coordinates.x * 21 + coordinates.y, 10);
 }
 
+function getOccupantByCoordinates(G, ctx, coord) {
+  if (typeof coord === 'undefined') throw new Error('coord is undefined');
+  // const coord = indexToCoordinates(tileID);
+  let occupant = null;
+  G.players.forEach((player) => {
+    if (occupant) return;
+    player.clones.forEach((clone) => {
+      if (occupant) return;
+      if (clone.x === coord.x && clone.y === coord.y) {
+        occupant = clone;
+      }
+    });
+    player.rbss.forEach((rbss) => {
+      if (occupant) return;
+      if (rbss.x === coord.x && rbss.y === coord.y) {
+        occupant = rbss;
+      }
+    });
+  });
+  return occupant;
+}
+
 const tileProperties = {
   occupied: false,
   damaged: false,
@@ -26,8 +48,9 @@ const directions = {
 };
 
 const TileHelper = {
-  tileIndexToCoordinates: (index) => indexToCoordinates(index),
-  tileCoordinatesToIndex: (coordinates) => coordinatesToIndex(coordinates),
+  indexToCoordinates,
+  coordinatesToIndex,
+  getOccupantByCoordinates,
   getDamagedTiles: (G, ctx) => {
     const damagedTiles = [];
     G.cells.forEach((cell) => {

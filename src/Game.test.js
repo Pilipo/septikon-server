@@ -46,7 +46,7 @@ describe('battle and armory tiles', () => {
     client0.moves.selectModuleTargets(184, '0');
     client0.moves.confirmModuleTargetSelection('0');
 
-    // TODO: player1 fire thermite
+    // player1 fire thermite
     client1.moves.rollDie('1'); // 2
     client1.moves.selectClone(506, '1');
     client1.moves.selectCloneMoveTarget(504, '1');
@@ -107,7 +107,7 @@ describe('battle and armory tiles', () => {
     expect(cap0a).toEqual(9);
     // check placement
     expect(g0.players[0].rbss).toEqual([{
-      damaged: false, type: 'shield', x: 14, y: 0, owner: '0',
+      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0',
     }]);
 
     // block laser and damage shield
@@ -179,7 +179,7 @@ describe('battle and armory tiles', () => {
     expect(cap0a).toEqual(9);
     // check placement
     expect(g0.players[0].rbss).toEqual([{
-      damaged: false, type: 'shield', x: 14, y: 0, owner: '0',
+      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0',
     }]);
 
     // block laser and damage shield
@@ -202,32 +202,91 @@ describe('battle and armory tiles', () => {
     expect(c1.activePlayers).toEqual({ 0: 'rollDie' });
   });
 
-  test('biodrone', () => {
-    // TODO: setup
-    // TODO: fire
-    // TODO: check flight
-    // TODO: check landing on surface, warehouse, and battle/armory/prod
+  test('biodrone capsule landing', () => {
+    // setup
+    const matchID = 'ubiytsa';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(139, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(486, '1');
+    client1.moves.placeClone(506, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(485, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(506, '1');
+    client1.moves.selectCloneMoveTarget(462, '1');
+
+    // launch biodrone
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(156, '0');
+    client0.moves.selectCloneMoveTarget(162, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(462, '1');
+    client1.moves.selectCloneMoveTarget(464, '1');
+    client1.moves.selectOrdnance(294, '1');
+
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(168, '0');
+    client0.moves.selectCloneMoveTarget(172, '0');
+    client0.moves.confirmOrdnanceSelection();
+
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(464, '1');
+    client1.moves.selectCloneMoveTarget(470, '1');
+    client1.moves.confirmOrdnanceSelection();
+
+    // check landing
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.players[0].biodrones[0]).toEqual({ x: 26, y: 0 });
+    expect(g0.cells[546].occupied).toEqual(true);
+    expect(c0.activePlayers).toEqual({ 0: 'rollDie' });
   });
-  test('satellite', () => {
+
+  test.skip('satellite', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check placement
     // TODO: fire on rocket
     // TODO: check rocket destroyed
   });
-  test('laser', () => {
+  test.skip('laser', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check damage
   });
-  test('repair and repairTwo', () => {
+  test.skip('repair and repairTwo', () => {
     // TODO: setup
     // TODO: fire 1
     // TODO: check 1 damage state
     // TODO: fire 2
     // TODO: check 2 damage state
   });
-  test('rocket', () => {
+  test.skip('rocket', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check flight
@@ -238,28 +297,28 @@ describe('battle and armory tiles', () => {
     // TODO: check NUKE touchdown
     // TODO: check NUKE damage
   });
-  test('espionage', () => {
+  test.skip('espionage', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check spy state
     // TODO: check spy controls
   });
-  test('takeover', () => {
+  test.skip('takeover', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check satellite owner
   });
-  test('counterEspionage', () => {
+  test.skip('counterEspionage', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check spy state
   });
-  test('armory 1 and 2', () => {
+  test.skip('armory 1 and 2', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check kill zone
   });
-  test('bomb', () => {
+  test.skip('bomb', () => {
     // TODO: setup
     // TODO: fire
     // TODO: check slash & burn with a clone
@@ -267,53 +326,53 @@ describe('battle and armory tiles', () => {
 });
 
 describe('production tiles', () => {
-  test('lichen and lichenTwo', () => {
+  test.skip('lichen and lichenTwo', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('rocketWorkshop', () => {
+  test.skip('rocketWorkshop', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('uraniumMine', () => {
+  test.skip('uraniumMine', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('foundry', () => {
+  test.skip('foundry', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('chemicalReactor and chemicalReactorTwo', () => {
+  test.skip('chemicalReactor and chemicalReactorTwo', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('thermalGenerator', () => {
+  test.skip('thermalGenerator', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('prodRepair', () => {
+  test.skip('prodRepair', () => {
     // TODO: fire
     // TODO: check damage state
     // TODO: check conversion
   });
-  test('nuclearReactor', () => {
+  test.skip('nuclearReactor', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('sensorCabin', () => {
+  test.skip('sensorCabin', () => {
     // TODO: fire
     // TODO: check on dead biodrone
   });
-  test('biocollector', () => {
+  test.skip('biocollector', () => {
     // TODO: fire
     // TODO: check conversion
   });
-  test('airFilter', () => {
+  test.skip('airFilter', () => {
     // TODO: fire
     // TODO: check conversion
     // TODO: check clone increase
   });
-  test('nuclear armory', () => {
+  test.skip('nuclear armory', () => {
     // TODO: fire
     // TODO: check conversion
     // TODO: check nuke warhead
