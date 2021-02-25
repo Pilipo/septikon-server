@@ -197,14 +197,15 @@ function goToNextStage(G, ctx) {
     // falls through
     case 'moveBiodrones': {
       // if moving ordnance is not found then fall through
-      let ordFound = false;
+      let ordFound = 0;
       G.players.forEach((player) => {
         player.rbss.forEach((ord) => {
           if (ord.type !== 'shield' && ord.hasMoved === false) {
-            ordFound = true;
+            ordFound += 1;
           }
         });
       });
+      // TODO: if ordFound === 1; just move the thing
       if (ordFound) {
         ctx.events.setStage('moveOrdnance');
         break;
@@ -240,6 +241,7 @@ function goToNextStage(G, ctx) {
       G.selectedModuleForMove = null;
       G.stagedModuleOptions = [];
       G.stagedActors = [];
+      G.repairsLeft = 0;
       WeaponHelper.resetMoves(G, ctx);
       ctx.events.endTurn();
       break;
