@@ -147,7 +147,7 @@
 			"targetType": "damage",
 			"properties": {
                 "action": "optional",
-				"resourceCostType": ["energy", "oxygen"],
+				"resourceCostType": ["metal", "oxygen"],
 				"resourceCostCount": [1, 1],
 				"callback": "repair",
 				"args": 2

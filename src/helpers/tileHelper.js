@@ -51,10 +51,13 @@ const TileHelper = {
   indexToCoordinates,
   coordinatesToIndex,
   getOccupantByCoordinates,
-  getDamagedTiles: (G, ctx) => {
+  getDamagedTilesByPlayerID: (G, ctx, playerID) => {
+    let pid = playerID;
+    if (typeof pid === 'undefined') pid = ctx.currentPlayer;
+
     const damagedTiles = [];
     G.cells.forEach((cell) => {
-      if (cell.owner === ctx.currentPlayer) {
+      if (cell.owner === pid && cell.damaged) {
         damagedTiles.push(cell);
       }
     });

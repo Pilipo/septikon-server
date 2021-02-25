@@ -10,13 +10,14 @@ function clickCell(G, ctx, id, playerID) {
 function goToNextStage(G, ctx) {
   const currentStage = ctx.activePlayers[ctx.currentPlayer];
   const playerID = ctx.currentPlayer;
+  const tile = G.selectedModuleForMove;
   switch (currentStage) {
     case 'moveClone':
-      switch (G.selectedModuleForMove.type) {
+      switch (tile.type) {
         case 'lock':
           break;
         case 'surface': {
-          const tarCoords = { x: G.selectedModuleForMove.x, y: G.selectedModuleForMove.y };
+          const tarCoords = { x: tile.x, y: tile.y };
           const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
           tarClone.gunner = true;
           break;
@@ -25,7 +26,7 @@ function goToNextStage(G, ctx) {
           // TODO: set arms somehow??
           break;
         case 'production': {
-          switch (G.selectedModuleForMove.name) {
+          switch (tile.name) {
             case 'lichen':
             case 'lichenTwo':
             case 'nuclearReactor':
@@ -39,10 +40,10 @@ function goToNextStage(G, ctx) {
             case 'uraniumMine':
             case 'foundryTwo':
             case 'thermalGenerator': {
-              const ct = G.selectedModuleForMove.resourceCostType;
-              const cc = G.selectedModuleForMove.resourceCostCount;
-              const yt = G.selectedModuleForMove.resourceYieldType;
-              const yc = G.selectedModuleForMove.resourceYieldCount;
+              const ct = tile.resourceCostType;
+              const cc = tile.resourceCostCount;
+              const yt = tile.resourceYieldType;
+              const yc = tile.resourceYieldCount;
               ct.forEach((type, idx) => {
                 ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
               });
@@ -58,7 +59,7 @@ function goToNextStage(G, ctx) {
         }
         case 'battle': {
           let hasReqs = false;
-          switch (G.selectedModuleForMove.name) {
+          switch (tile.name) {
             case 'thermite':
             case 'shield':
             case 'biodrone':
@@ -66,7 +67,8 @@ function goToNextStage(G, ctx) {
             case 'laser':
             case 'rocket': {
               const gunners = PersonnelHelper.getGunners(G, ctx);
-              if (gunners.length > 0) {
+              const spendMultiple = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, tile);
+              if (gunners.length > 0 && spendMultiple) {
                 hasReqs = true;
                 G.stagedTargetOptions = gunners;
               }
@@ -77,12 +79,19 @@ function goToNextStage(G, ctx) {
               // TODO: check gunners' fire line for targets (clones or satellites)
               // TODO: if checks out set Stage to 'activateModule' and track gunners
               break;
-            case 'repair':
             case 'repairTwo':
-              // TODO: check for damaged tiles
-              // TODO: check for resources
-              // TODO: if true set Stage to 'activateModule' and track damaged tiles
+              G.repairsLeft += 1;
+              // falls through
+            case 'repair': {
+              G.repairsLeft += 1;
+              const dT = TileHelper.getDamagedTilesByPlayerID(G, ctx, playerID);
+              const spendMultiple = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, tile);
+              if (dT.length > 0 && spendMultiple) {
+                hasReqs = true;
+                G.stagedTargetOptions = dT;
+              }
               break;
+            }
             case 'counterespionage':
               // TODO: check for spies among us
               // TODO: check for resources
@@ -105,7 +114,7 @@ function goToNextStage(G, ctx) {
     case 'repairShield':
     case 'activateModule': {
       if (G.stagedActors.length) {
-        const tile = G.selectedModuleForMove;
+        // const tile = G.selectedModuleForMove;
         if (tile.targetType === 'gunner') {
           const targets = WeaponHelper.getGunnersTargets(G, ctx, G.stagedActors, tile);
           targets.forEach((tar) => {
@@ -114,7 +123,7 @@ function goToNextStage(G, ctx) {
               ResourceHelper.removeResource(G, ctx, playerID, ct, tile.resourceCostCount[idx]);
             });
             switch (tile.name) {
-              case 'laser':
+              case 'laser': {
                 if (tar.name === 'space' || tar.name === 'surface') {
                   // get occupant
                   const oppID = playerID === '0' ? 1 : 0;
@@ -140,6 +149,7 @@ function goToNextStage(G, ctx) {
                   tar.damaged = true;
                 }
                 break;
+              }
               case 'thermite':
                 tar.damaged = true;
                 break;
@@ -297,10 +307,9 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
 // STAGE: activateModule
 function selectModuleTargets(G, ctx, id, playerID) {
   const coords = TileHelper.indexToCoordinates(id);
-  if (G.selectedModuleForMove === null) {
-    console.log(id);
-  }
-  // console.log(G.selectedModuleForMove.targetType);
+  // if (G.selectedModuleForMove === null) {
+  //   console.log(`Why is this null? ${id}`);
+  // }
   const tile = G.selectedModuleForMove;
   if (tile.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
@@ -313,6 +322,21 @@ function selectModuleTargets(G, ctx, id, playerID) {
         }
       });
       if (canAfford) G.stagedActors.push(gunner);
+    }
+  } else if (tile.targetType === 'damage') {
+    if (G.repairsLeft) {
+      const dt = TileHelper.getClickedTileByIndex(G, id);
+      const canAfford = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, dt);
+      if (canAfford) {
+        dt.damaged = false;
+        G.repairsLeft -= 1;
+        const ct = tile.resourceCostType;
+        const cc = tile.resourceCostCount;
+        ct.forEach((type, idx) => {
+          ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
+        });
+        if (!G.repairsLeft) goToNextStage(G, ctx);
+      }
     }
   } else {
     // TODO: Fire module after valid selection (if reqs allow)");
@@ -414,6 +438,7 @@ const Septikon = {
     stagedModuleOptions: [],
     clickedCell: null,
     stageConfirmed: false,
+    repairsLeft: 0,
     rollValue: 0,
     rollHistory: [],
     setupConfirmations: [

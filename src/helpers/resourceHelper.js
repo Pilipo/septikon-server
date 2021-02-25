@@ -28,6 +28,7 @@ function getOrderedWarehouse(G, ctx, playerID, type) {
 
   return warehouseArray;
 }
+
 function getSpendCapacity(G, ctx, playerID, type) {
   if (Number.isNaN(parseInt(playerID, 10))) throw new Error('PlayerID is not a number!');
   let spendCount = 0;
@@ -55,6 +56,18 @@ function getSpendCapacity(G, ctx, playerID, type) {
   });
 
   return spendCount;
+}
+
+function getTileSpendMultiple(G, ctx, playerID, tile) {
+  const ct = tile.resourceCostType;
+  const cc = tile.resourceCostCount;
+  let multiple = 10;
+  ct.forEach((resType, idx) => {
+    const spendCap = getSpendCapacity(G, ctx, playerID, resType);
+    const m = Math.round(spendCap / cc[idx]);
+    multiple = m < multiple ? m : multiple;
+  });
+  return multiple;
 }
 
 function getCapacity(G, ctx, playerID, type) {
@@ -172,6 +185,7 @@ const ResourceHelper = {
   },
   getCapacity: (G, ctx, type) => getCapacity(G, ctx, type),
   getSpendCapacity,
+  getTileSpendMultiple,
 };
 
 export default ResourceHelper;

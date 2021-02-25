@@ -2,6 +2,7 @@ import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import Septikon from './Game';
 import ResourceHelper from './helpers/resourceHelper';
+import { TileHelper } from './helpers/tileHelper';
 
 describe('battle and armory tiles', () => {
   test('thermite', () => {
@@ -403,17 +404,145 @@ describe('battle and armory tiles', () => {
 
     // test damage
 
-    const { G: g1, ctx: c1 } = client1.getState();
+    const { G: g1 } = client1.getState();
     expect(g1.cells[483].damaged).toEqual(true);
   });
 
-  test.skip('repair and repairTwo', () => {
-    // TODO: setup
-    // TODO: fire 1
-    // TODO: check 1 damage state
-    // TODO: fire 2
-    // TODO: check 2 damage state
+  test('repair', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6
+    const matchID = 'remont';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(138, '0');
+    client0.moves.placeClone(160, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(512, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(500, '1');
+    client1.moves.selectCloneMoveTarget(482, '1'); // <- p1 gunner tile
+
+    // fire laser
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(160, '0');
+    client0.moves.selectCloneMoveTarget(166, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // check damage
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.cells[483].damaged).toEqual(true);
+
+    // repair 1
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(512, '1');
+    client1.moves.selectCloneMoveTarget(514, '1');
+    client1.moves.selectModuleTargets(483, '1');
+
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[483].damaged).toEqual(false);
+    // check resources
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'metal')).toEqual(4);
   });
+
+  test('repairTwo', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6
+    const matchID = 'remontirovat dvazhdy';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(160, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(500, '1');
+    client1.moves.selectCloneMoveTarget(482, '1'); // <- p1 gunner tile
+
+    // fire laser
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(160, '0');
+    client0.moves.selectCloneMoveTarget(166, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // move gunner
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(482, '1');
+    client1.moves.selectCloneMoveTarget(480, '1'); // <- p1 gunner tile
+
+    // fire laser again
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(156, '0');
+    client0.moves.selectCloneMoveTarget(152, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // check damage
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.cells[483].damaged).toEqual(true);
+    expect(g0.cells[504].damaged).toEqual(true);
+
+    // repair 2
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(509, '1');
+    client1.moves.selectCloneMoveTarget(515, '1');
+    client1.moves.selectModuleTargets(483, '1');
+    client1.moves.selectModuleTargets(504, '1');
+
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[483].damaged).toEqual(false);
+    expect(g1.cells[504].damaged).toEqual(false);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'metal')).toEqual(3);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'oxygen')).toEqual(3);
+  });
+
   test.skip('rocket', () => {
     // TODO: setup
     // TODO: fire
