@@ -200,14 +200,31 @@ function goToNextStage(G, ctx) {
         break;
       }
     }
-    // TODO: if ordnance.length > 0 then setStage('moveOrdnance') else
     // falls through
-    case 'moveOrdnance':
-    // TODO: if arms.length > 0 then setStage('fireArms') else
+    case 'moveOrdnance': {
+      const sats = WeaponHelper.getSatellites(G);
+      let targets = [];
+      if (sats !== null && sats.length > 0) {
+        sats.forEach((sat) => {
+          targets = targets.concat(WeaponHelper.getArmsTargets(G, playerID, sat));
+        });
+        // TODO: check clone/biodrone arms
+      }
+      if (targets.length) {
+        if (targets.length === 1) {
+          if (targets[0].type === 'rocket') {
+            WeaponHelper.removeOrdnance(G, ctx, targets[0]);
+          }
+        } else {
+          ctx.events.setStage('fireArms');
+          break;
+        }
+      }
+    }
     // falls through
     case 'fireArms':
-    // TODO: clean up for next turn and endTurn()
-    // falls through
+      // TODO: clean up for next turn and endTurn()
+      // falls through
     default:
       // cleanup
       G.selectedModuleForMove = null;
@@ -403,11 +420,13 @@ const Septikon = {
     ],
     players: [
       {
+        arms: [],
         clones: [],
         biodrones: [],
         rbss: [],
       },
       {
+        arms: [],
         clones: [],
         biodrones: [],
         rbss: [],

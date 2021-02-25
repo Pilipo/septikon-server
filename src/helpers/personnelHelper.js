@@ -108,6 +108,7 @@ const PersonnelHelper = {
       const tarIdx = TileHelper.coordinatesToIndex(coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
         G.players[playerID].clones.push({
+          owner: playerID,
           x: coordinates.x,
           y: coordinates.y,
           spy: false,

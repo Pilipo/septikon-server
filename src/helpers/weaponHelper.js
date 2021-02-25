@@ -1,6 +1,23 @@
 import PersonnelHelper from './personnelHelper';
 import { TileHelper } from './tileHelper';
 
+const firingLines = {
+  drill: [
+    [0, 2], [2, 2], [2, 0], [-2, 2],
+    [2, -2], [0, -2], [-2, -2], [-2, 0],
+  ],
+  cannon: [
+    [0, 1], [1, 1], [1, 0], [-1, 1],
+    [1, -1], [0, -1], [-1, -1], [-1, 0],
+  ],
+  satellite: [
+    [0, 1], [1, 1], [1, 0], [-1, 1],
+    [1, -1], [0, -1], [-1, -1], [-1, 0],
+    [0, 2], [2, 2], [2, 0], [-2, 2],
+    [2, -2], [0, -2], [-2, -2], [-2, 0],
+  ],
+};
+
 function getLaserTarget(G, ctx, gunner) {
   let target = null;
   const it = ctx.currentPlayer === '0' ? 1 : -1;
@@ -26,6 +43,18 @@ function getThermiteTarget(G, ctx, gunner) {
   const tile = TileHelper.getClickedTileByCoordinates(G, { x, y: gunner.y });
   if (tile.damaged === false) target = tile;
   return target;
+}
+
+function getSatellites(G) {
+  const satellites = [];
+  G.players.forEach((player) => {
+    player.rbss.forEach((ord) => {
+      if (ord.type === 'satellite') {
+        satellites.push(ord);
+      }
+    });
+  });
+  return satellites;
 }
 
 function getDamagedShields(G, ctx, playerID) {
@@ -193,6 +222,53 @@ function resetMoves(G, ctx) {
   });
 }
 
+function getPlayerTokens(G, playerID) {
+  if (typeof playerID === 'undefined') throw new Error('playerID is undefined');
+  const tokenArray = [];
+  G.players[playerID].clones.forEach((obj) => {
+    if (obj.owner !== playerID) return;
+    tokenArray.push(obj);
+  });
+  G.players[playerID].biodrones.forEach((obj) => {
+    if (obj.owner !== playerID) return;
+    tokenArray.push(obj);
+  });
+  G.players[playerID].rbss.forEach((obj) => {
+    if (obj.owner !== playerID) return;
+    tokenArray.push(obj);
+  });
+  return tokenArray;
+}
+
+function getArmsTargets(G, playerID, obj) {
+  if (typeof obj === 'undefined') throw new Error('Arms object is undefined.');
+  if (typeof playerID === 'undefined') throw new Error('playerID is undefined.');
+  const oppID = playerID === '0' ? '1' : '0';
+  const testTarget = getPlayerTokens(G, oppID);
+  const tarReturn = [];
+  if (obj.type === 'satellite') {
+    const origin = { x: obj.x, y: obj.y };
+    firingLines.satellite.forEach((diff) => {
+      const x = origin.x + diff[0];
+      const y = origin.y + diff[1];
+      if (x > TileHelper.upperX
+        || x < TileHelper.lowerX
+        || y > TileHelper.upperY
+        || y < TileHelper.lowerY) {
+        return;
+      }
+      const testCoord = { x, y };
+      testTarget.forEach((tar) => {
+        if (tar.x === testCoord.x && tar.y === testCoord.y) {
+          tarReturn.push(tar);
+        }
+      });
+    });
+  }
+
+  return tarReturn;
+}
+
 const WeaponHelper = {
   getRBSSByTileIndex,
   getDamagedShields,
@@ -200,6 +276,8 @@ const WeaponHelper = {
   moveOrdnance,
   resetMoves,
   removeOrdnance,
+  getSatellites,
+  getArmsTargets,
   getGunnersTargets: (G, ctx, gunners, battleTile) => {
     const returnTargets = [];
     if (gunners.length === 0) return returnTargets;

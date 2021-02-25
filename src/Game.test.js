@@ -267,12 +267,77 @@ describe('battle and armory tiles', () => {
     expect(c0.activePlayers).toEqual({ 0: 'rollDie' });
   });
 
-  test.skip('satellite', () => {
+  test('satellite', () => {
     // TODO: setup
-    // TODO: fire
-    // TODO: check placement
-    // TODO: fire on rocket
-    // TODO: check rocket destroyed
+    const matchID = 'sputnik';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(139, '0');
+    client0.moves.placeClone(132, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(506, '1');
+    client1.moves.placeClone(485, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(506, '1');
+    client1.moves.selectCloneMoveTarget(462, '1'); // <- p1 gunner tile
+
+    // launch satellite
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(132, '0');
+    client0.moves.selectCloneMoveTarget(126, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // check placement
+    const { G: g0 } = client0.getState();
+
+    expect(g0.players[0].rbss[0]).toEqual({
+      type: 'satellite',
+      x: 14,
+      y: 0,
+      owner: '0',
+      damaged: false,
+      hasMoved: true,
+    });
+
+    // p1 launch rocket
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(485, '1');
+    client1.moves.selectCloneMoveTarget(487, '1');
+    client1.moves.selectModuleTargets(462, '1');
+    client1.moves.confirmModuleTargetSelection('1');
+
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(168, '0');
+    client0.moves.selectCloneMoveTarget(172, '0');
+    client0.moves.confirmOrdnanceSelection();
+
+    // check rocket destroyed
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.players[1].rbss[0]).toEqual(undefined);
+    expect(c1.activePlayers).toEqual({ 1: 'rollDie' });
   });
   test.skip('laser', () => {
     // TODO: setup
