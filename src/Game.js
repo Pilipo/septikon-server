@@ -137,7 +137,6 @@ function goToNextStage(G, ctx) {
                     }
                   });
                 } else {
-                  
                   tar.damaged = true;
                 }
                 break;
@@ -224,8 +223,8 @@ function goToNextStage(G, ctx) {
     }
     // falls through
     case 'fireArms':
-      // TODO: clean up for next turn and endTurn()
-      // falls through
+    // TODO: clean up for next turn and endTurn()
+    // falls through
     default:
       // cleanup
       G.selectedModuleForMove = null;
@@ -283,8 +282,6 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
   G.stagedModuleOptions.forEach((legalCoord) => {
     if (JSON.stringify(legalCoord) === JSON.stringify(coords)) {
       // if (G.stagedActors.length > 1) throw new Error('too many clones');
-
-      // eslint-disable-next-line prefer-destructuring
       stagedClone = G.stagedActors.pop();
     }
   });
@@ -300,6 +297,10 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
 // STAGE: activateModule
 function selectModuleTargets(G, ctx, id, playerID) {
   const coords = TileHelper.indexToCoordinates(id);
+  if (G.selectedModuleForMove === null) {
+    console.log(id);
+  }
+  // console.log(G.selectedModuleForMove.targetType);
   const tile = G.selectedModuleForMove;
   if (tile.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);

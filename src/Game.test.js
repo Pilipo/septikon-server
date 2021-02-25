@@ -353,7 +353,7 @@ describe('battle and armory tiles', () => {
     client1.start();
 
     client0.moves.placeClone(151, '0');
-    client0.moves.placeClone(139, '0');
+    client0.moves.placeClone(138, '0');
     client0.moves.placeClone(160, '0');
     client0.moves.placeClone(30, '0');
     client0.moves.placeClone(14, '0');
@@ -375,7 +375,6 @@ describe('battle and armory tiles', () => {
     client1.moves.rollDie('1'); // 4
     client1.moves.selectClone(506, '1');
     client1.moves.selectCloneMoveTarget(462, '1'); // <- p1 gunner tile
-    const { G: g1 } = client1.getState();
 
     // fire laser
     client0.moves.rollDie('0'); // 6
@@ -390,7 +389,22 @@ describe('battle and armory tiles', () => {
     expect(g0.cells[462].occupied).toEqual(false);
     expect(g0.players[1].clones.length).toEqual(4);
 
-    // TODO: fire again and test damage
+    // waste a p1 turn
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(484, '1');
+    client1.moves.selectCloneMoveTarget(486, '1');
+
+    // fire again
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(138, '0');
+    client0.moves.selectCloneMoveTarget(142, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // test damage
+
+    const { G: g1, ctx: c1 } = client1.getState();
+    expect(g1.cells[483].damaged).toEqual(true);
   });
 
   test.skip('repair and repairTwo', () => {
