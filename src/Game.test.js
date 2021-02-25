@@ -268,7 +268,7 @@ describe('battle and armory tiles', () => {
   });
 
   test('satellite', () => {
-    // TODO: setup
+    // setup
     const matchID = 'sputnik';
     const client0 = Client({
       game: Septikon, playerID: '0', multiplayer: Local(), matchID,
@@ -339,11 +339,60 @@ describe('battle and armory tiles', () => {
     expect(g1.players[1].rbss[0]).toEqual(undefined);
     expect(c1.activePlayers).toEqual({ 1: 'rollDie' });
   });
-  test.skip('laser', () => {
-    // TODO: setup
-    // TODO: fire
-    // TODO: check damage
+
+  test('laser', () => {
+    // setup
+    const matchID = 'peresvet';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(139, '0');
+    client0.moves.placeClone(160, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(506, '1');
+    client1.moves.placeClone(485, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(506, '1');
+    client1.moves.selectCloneMoveTarget(462, '1'); // <- p1 gunner tile
+    const { G: g1 } = client1.getState();
+
+    // fire laser
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(160, '0');
+    client0.moves.selectCloneMoveTarget(166, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+
+    // check clone kill
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.cells[483].damaged).toEqual(false);
+    expect(g0.cells[462].occupied).toEqual(false);
+    expect(g0.players[1].clones.length).toEqual(4);
+
+    // TODO: fire again and test damage
   });
+
   test.skip('repair and repairTwo', () => {
     // TODO: setup
     // TODO: fire 1

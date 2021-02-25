@@ -137,6 +137,7 @@ function goToNextStage(G, ctx) {
                     }
                   });
                 } else {
+                  
                   tar.damaged = true;
                 }
                 break;

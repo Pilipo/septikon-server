@@ -41,6 +41,7 @@ describe('basic game runthrough', () => {
         owner: '0', x: 0, y: 14, spy: false, gunner: false,
       },
     ]);
+    expect(g0.cells[164].occupied).toEqual(true);
   });
 
   test('player 0: ready to start', () => {
