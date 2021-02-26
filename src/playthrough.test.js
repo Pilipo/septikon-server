@@ -26,19 +26,19 @@ describe('basic game runthrough', () => {
 
     expect(g0.players[0].clones).toEqual([
       {
-        owner: '0', x: 7, y: 17, spy: false, gunner: false,
+        owner: '0', x: 7, y: 17, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '0', x: 7, y: 0, spy: false, gunner: false,
+        owner: '0', x: 7, y: 0, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '0', x: 6, y: 10, spy: false, gunner: false,
+        owner: '0', x: 6, y: 10, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '0', x: 1, y: 9, spy: false, gunner: false,
+        owner: '0', x: 1, y: 9, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '0', x: 0, y: 14, spy: false, gunner: false,
+        owner: '0', x: 0, y: 14, spy: false, gunner: false, arms: [],
       },
     ]);
     expect(g0.cells[164].occupied).toEqual(true);
@@ -70,19 +70,19 @@ describe('basic game runthrough', () => {
 
     expect(g1.players[1].clones).toEqual([
       {
-        owner: '1', x: 30, y: 20, spy: false, gunner: false,
+        owner: '1', x: 30, y: 20, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '1', x: 30, y: 19, spy: false, gunner: false,
+        owner: '1', x: 30, y: 19, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '1', x: 30, y: 18, spy: false, gunner: false,
+        owner: '1', x: 30, y: 18, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '1', x: 30, y: 17, spy: false, gunner: false,
+        owner: '1', x: 30, y: 17, spy: false, gunner: false, arms: [],
       },
       {
-        owner: '1', x: 23, y: 2, spy: false, gunner: false,
+        owner: '1', x: 23, y: 2, spy: false, gunner: false, arms: [],
       },
     ]);
   });
@@ -163,7 +163,7 @@ describe('basic game runthrough', () => {
     // test queued gunners
     expect(g0.stagedTargetOptions.length).toBeGreaterThan(0);
     expect(g0.stagedTargetOptions).toEqual([{
-      owner: '0', x: 8, y: 4, spy: false, gunner: true,
+      owner: '0', x: 8, y: 4, spy: false, gunner: true, arms: [],
     }]);
   });
 
@@ -172,7 +172,7 @@ describe('basic game runthrough', () => {
     client0.moves.selectModuleTargets(172, '0');
     const { G: g0 } = client0.store.getState();
     expect(g0.stagedActors).toEqual([{
-      owner: '0', x: 8, y: 4, spy: false, gunner: true,
+      owner: '0', x: 8, y: 4, spy: false, gunner: true, arms: [],
     }]);
   });
 

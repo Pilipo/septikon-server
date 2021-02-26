@@ -92,7 +92,28 @@ function getCloneByCoordinates(G, coords) {
   return clone;
 }
 
+function armPlayerClones(G, playerID, armType) {
+  if (typeof playerID === 'undefined') throw new Error('playerID is undefined');
+  if (typeof armType === 'undefined') throw new Error('armType is undefined');
+  G.players[playerID].clones.forEach((clone) => {
+    clone.arms.push({ type: armType });
+  });
+}
+
+function disarmPlayerClones(G, playerID, armType) {
+  if (typeof playerID === 'undefined') throw new Error('playerID is undefined');
+  G.players[playerID].clones.forEach((clone) => {
+    clone.arms.forEach((arm, aIdx) => {
+      if (arm.type === armType) {
+        clone.arm.splice(aIdx, 1);
+      }
+    });
+  });
+}
+
 const PersonnelHelper = {
+  armPlayerClones,
+  disarmPlayerClones,
   getCloneIndexByCoordinates: (G, coordinates) => {
     // if (typeof playerID === 'undefined') throw new Error('playerID undefined');
     let cloneIdx = false;
@@ -108,7 +129,6 @@ const PersonnelHelper = {
   getCloneByCoordinates,
   placeClone: (G, playerID, coordinates) => {
     if (G.players[playerID].clones.length < 5) {
-      // console.log(coordinates);
       const tile = TileHelper.getClickedTileByCoordinates(G, coordinates);
       const tarIdx = TileHelper.coordinatesToIndex(coordinates);
       if (tile.owner === playerID && tile.name !== 'surface' && tile.type !== 'warehouse') {
@@ -118,6 +138,7 @@ const PersonnelHelper = {
           y: coordinates.y,
           spy: false,
           gunner: false,
+          arms: [],
         });
         G.cells[tarIdx].occupied = true;
       }
@@ -140,6 +161,13 @@ const PersonnelHelper = {
       return;
     }
     const tarClone = getCloneByCoordinates(G, orgCoords);
+    if (G.cells[orgIdx].type === 'armory') {
+      armPlayerClones(G, tarClone.owner, G.cells[orgIdx].name);
+    }
+    if (G.cells[tarIdx].type === 'armory') {
+      disarmPlayerClones(G, tarClone.owner, G.cells[orgIdx].name);
+    }
+
     tarClone.x = tarCoords.x;
     tarClone.y = tarCoords.y;
     G.cells[orgIdx].occupied = false;

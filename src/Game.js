@@ -3,7 +3,7 @@ import ResourceHelper from './helpers/resourceHelper';
 import { TileHelper, tileProperties } from './helpers/tileHelper';
 import WeaponHelper from './helpers/weaponHelper';
 
-function clickCell(G, ctx, id, playerID) {
+function clickCell(G, ctx, id) {
   G.clickedCell = G.cells[id];
 }
 
@@ -23,7 +23,7 @@ function goToNextStage(G, ctx) {
           break;
         }
         case 'armory':
-          // TODO: set arms somehow??
+          PersonnelHelper.armPlayerClones(G, playerID, tile.name);
           break;
         case 'production': {
           switch (tile.name) {
@@ -261,28 +261,50 @@ function goToNextStage(G, ctx) {
     }
     // falls through
     case 'moveOrdnance': {
+      const curP = ctx.currentPlayer;
+      const oppP = ctx.currentPlayer === 0 ? 1 : 0;
       const sats = WeaponHelper.getSatellites(G);
-      let targets = [];
-      if (sats !== null && sats.length > 0) {
-        sats.forEach((sat) => {
-          targets = targets.concat(WeaponHelper.getArmsTargets(G, playerID, sat));
-        });
-        // TODO: check clone/biodrone arms
-      }
-      if (targets.length) {
-        if (targets.length === 1) {
-          if (targets[0].type === 'rocket') {
-            WeaponHelper.removeOrdnance(G, ctx, targets[0]);
-          }
+      let cTars = [];
+      let oTars = [];
+
+      sats.forEach((sat) => {
+        cTars = cTars.concat(WeaponHelper.getSatelliteTargets(G, curP, sat));
+        oTars = oTars.concat(WeaponHelper.getSatelliteTargets(G, oppP, sat));
+      });
+      G.players[curP].clones.forEach((clone) => {
+        if (!clone.spy) cTars = cTars.concat(WeaponHelper.getArmsTargets(G, curP, clone));
+      });
+      G.players[oppP].clones.forEach((clone) => {
+        if (clone.spy) cTars = cTars.concat(WeaponHelper.getArmsTargets(G, oppP, clone));
+      });
+      cTars.forEach((tar) => {
+        // kill em all
+        if (tar.type === 'biodrone') {
+          PersonnelHelper.removeBiodrone(G, oppP, { x: tar.x, y: tar.y });
+        } else if (tar.type === 'rocket') {
+          WeaponHelper.removeOrdnance(G, ctx, tar);
         } else {
-          ctx.events.setStage('fireArms');
-          break;
+          PersonnelHelper.removeClone(G, oppP, { x: tar.x, y: tar.y });
         }
-      }
+      });
+
+      G.players[oppP].clones.forEach((clone) => {
+        if (!clone.spy) oTars = oTars.concat(WeaponHelper.getArmsTargets(G, oppP, clone));
+      });
+      G.players[curP].clones.forEach((clone) => {
+        if (clone.spy) oTars = oTars.concat(WeaponHelper.getArmsTargets(G, curP, clone));
+      });
+      oTars.forEach((tar) => {
+        // kill em all
+        if (tar.type === 'biodrone') {
+          PersonnelHelper.removeBiodrone(G, curP, { x: tar.x, y: tar.y });
+        } else if (tar.type === 'rocket') {
+          WeaponHelper.removeOrdnance(G, ctx, tar);
+        } else {
+          PersonnelHelper.removeClone(G, curP, { x: tar.x, y: tar.y });
+        }
+      });
     }
-    // falls through
-    case 'fireArms':
-    // TODO: clean up for next turn and endTurn()
     // falls through
     default:
       // cleanup
@@ -296,10 +318,6 @@ function goToNextStage(G, ctx) {
   }
 }
 
-// function clickCell(G, ctx, id) {
-//   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
-// }
-
 // PHASE: layout
 function placeClone(G, ctx, id, playerID) {
   const coords = TileHelper.indexToCoordinates(id);
@@ -312,7 +330,17 @@ function placeClone(G, ctx, id, playerID) {
 }
 
 function confirmSetup(G, ctx, playerID) {
-  if (G.players[playerID].clones.length === 5) {
+  const { clones } = G.players[playerID];
+  if (clones.length === 5) {
+    const arms = [];
+    clones.forEach((clone) => {
+      const cc = { x: clone.x, y: clone.y };
+      const tile = TileHelper.getClickedTileByCoordinates(G, cc);
+      if (tile.type === 'armory') {
+        arms.push({ type: tile.name });
+      }
+    });
+    if (arms.length) arms.forEach((arm) => PersonnelHelper.armPlayerClones(G, playerID, arm.type));
     G.setupConfirmations[playerID] = !G.setupConfirmations[playerID];
     ctx.events.endTurn();
   }
@@ -455,14 +483,12 @@ function confirmOrdnanceSelection(G, ctx) {
 // STAGE: fireArms
 // TODO: select arms (clones, satellites, and biodrones)
 function selectArms() {
-  const tarAry = [];
-  return tarAry;
+  // TODO: Kill if possible; end turn if not
 }
 
 // TODO: confirmArmsSelections
 function confirmArmsSelections() {
-  const tarAry = [];
-  return tarAry;
+  // TODO: Check for remaining killings
 }
 
 // (optional) repairShield
@@ -509,14 +535,12 @@ const Septikon = {
     ],
     players: [
       {
-        arms: [],
         clones: [],
         biodrones: [],
         rbss: [],
         warheads: 0,
       },
       {
-        arms: [],
         clones: [],
         biodrones: [],
         rbss: [],

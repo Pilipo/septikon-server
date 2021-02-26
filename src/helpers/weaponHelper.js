@@ -268,17 +268,46 @@ function getPlayerTokens(G, playerID) {
   return tokenArray;
 }
 
-function getArmsTargets(G, playerID, obj) {
-  if (typeof obj === 'undefined') throw new Error('Arms object is undefined.');
+function getSatelliteTargets(G, playerID, sat) {
+  if (typeof sat === 'undefined') throw new Error('Arms object is undefined.');
   if (typeof playerID === 'undefined') throw new Error('playerID is undefined.');
   const oppID = playerID === '0' ? '1' : '0';
   const testTarget = getPlayerTokens(G, oppID);
   const tarReturn = [];
-  if (obj.type === 'satellite') {
-    const origin = { x: obj.x, y: obj.y };
-    firingLines.satellite.forEach((diff) => {
+  const origin = { x: sat.x, y: sat.y };
+  firingLines[sat.type].forEach((diff) => {
+    const x = origin.x + diff[0];
+    const y = origin.y + diff[1];
+    if (Number.isNaN(x)) throw new Error('x is not a number!');
+    if (x > TileHelper.upperX
+      || x < TileHelper.lowerX
+      || y > TileHelper.upperY
+      || y < TileHelper.lowerY) {
+      return;
+    }
+    const testCoord = { x, y };
+    testTarget.forEach((tar) => {
+      if (tar.x === testCoord.x && tar.y === testCoord.y) {
+        tarReturn.push(tar);
+      }
+    });
+  });
+  return tarReturn;
+}
+
+function getArmsTargets(G, playerID, clone) {
+  if (typeof clone === 'undefined') throw new Error('Arms object is undefined.');
+  if (typeof playerID === 'undefined') throw new Error('playerID is undefined.');
+  const oppID = playerID === '0' ? '1' : '0';
+  const testTarget = getPlayerTokens(G, oppID);
+  const tarReturn = [];
+  const origin = { x: clone.x, y: clone.y };
+
+  clone.arms.forEach((arm) => {
+    firingLines[arm.type].forEach((diff) => {
       const x = origin.x + diff[0];
       const y = origin.y + diff[1];
+      if (Number.isNaN(x) || Number.isNaN(y)) throw new Error('x is not a number!');
       if (x > TileHelper.upperX
         || x < TileHelper.lowerX
         || y > TileHelper.upperY
@@ -292,7 +321,7 @@ function getArmsTargets(G, playerID, obj) {
         }
       });
     });
-  }
+  });
 
   return tarReturn;
 }
@@ -306,6 +335,7 @@ const WeaponHelper = {
   removeOrdnance,
   getSatellites,
   getArmsTargets,
+  getSatelliteTargets,
   getEspionageTarget,
   getTakeoverTarget,
   getGunnersTargets: (G, ctx, gunners, battleTile) => {
