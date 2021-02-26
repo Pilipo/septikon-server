@@ -133,7 +133,7 @@ const PersonnelHelper = {
       });
     }
   },
-  moveClone: (G, playerID, orgCoords, tarCoords) => {
+  moveClone: (G, orgCoords, tarCoords) => {
     const orgIdx = TileHelper.coordinatesToIndex(orgCoords);
     const tarIdx = TileHelper.coordinatesToIndex(tarCoords);
     if (JSON.stringify(orgIdx) === JSON.stringify(tarIdx)) {
@@ -154,15 +154,15 @@ const PersonnelHelper = {
     });
     return gunners;
   },
-  getSpies: () => {
+  getPlayerSpies: (G, playerID) => {
+    if (typeof playerID === 'undefined') throw new Error('playerID is undefined');
     const spies = [];
     // TODO: get spies
-    // opponentID = ctx.currentPlayer == 0 ? 1 : 0;
-    // G.players[opponentID].clones.forEach((clone) => {
-    //   if (clone.spy === true) {
-    //     spies.push(clone);
-    //   }
-    // });
+    G.players[playerID].clones.forEach((clone) => {
+      if (clone.spy === true) {
+        spies.push(clone);
+      }
+    });
     return spies;
   },
   getBiodrones: (G, ctx) => G.players[ctx.currentPlayer].biodrones,

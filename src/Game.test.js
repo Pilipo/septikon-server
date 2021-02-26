@@ -735,7 +735,7 @@ describe('battle and armory tiles', () => {
     client1.moves.placeClone(633, '1');
     client1.moves.placeClone(509, '1');
     client1.moves.placeClone(648, '1');
-    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(516, '1');
     client1.moves.placeClone(484, '1');
     client1.moves.confirmSetup('1');
 
@@ -771,6 +771,7 @@ describe('battle and armory tiles', () => {
     client0.moves.selectClone(609, '0');
     const { G: g1, ctx: c1 } = client0.getState();
     expect(g1.stagedModuleOptions).toEqual([{ x: 30, y: 3 }, { x: 29, y: 4 }]);
+    // TODO: test module activation
     client0.moves.selectCloneMoveTarget(613, '0');
 
     client1.moves.rollDie('1'); // 6
@@ -778,6 +779,33 @@ describe('battle and armory tiles', () => {
 
     const { G: g2, ctx: c2 } = client0.getState();
     expect(g2.stagedModuleOptions).toEqual([]);
+    expect(g2.players[1].clones[0]).toEqual({
+      owner: '1', x: 29, y: 4, spy: true, gunner: false,
+    });
+  });
+
+  test('counterEspionage', () => {
+    // persist from previous setup
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'shpionazh';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    // p1 fires countermeasures
+    client1.moves.selectClone(516, '1');
+    client1.moves.selectCloneMoveTarget(522, '1');
+    client1.moves.selectModuleTargets(613, '1');
+
+    const { G: g2, ctx: c2 } = client0.getState();
+    expect(g2.players[1].clones[0]).toEqual({
+      owner: '1', x: 29, y: 4, spy: false, gunner: false,
+    });
   });
 
   test('takeover', () => {
@@ -853,12 +881,7 @@ describe('battle and armory tiles', () => {
     // TODO: test rocket destruction (p0)
     // TODO: test rocket pass (p1)
   });
-  
-  test.skip('counterEspionage', () => {
-    // TODO: setup
-    // TODO: fire
-    // TODO: check spy state
-  });
+
   test.skip('armory 1 and 2', () => {
     // TODO: setup
     // TODO: fire

@@ -104,7 +104,7 @@ function goToNextStage(G, ctx) {
             }
             case 'repairTwo':
               G.repairsLeft += 1;
-              // falls through
+            // falls through
             case 'repair': {
               G.repairsLeft += 1;
               const dT = TileHelper.getDamagedTilesByPlayerID(G, ctx, playerID);
@@ -115,11 +115,15 @@ function goToNextStage(G, ctx) {
               }
               break;
             }
-            case 'counterespionage':
-              // TODO: check for spies among us
-              // TODO: check for resources
-              // TODO: if true set Stage to 'activateModule' and track spies
+            case 'counterEspionage': {
+              const spies = PersonnelHelper.getPlayerSpies(G, playerID);
+              const spendMultiple = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, tile);
+              if (spies.length > 0 && spendMultiple) {
+                hasReqs = true;
+                G.stagedTargetOptions = spies;
+              }
               break;
+            }
             default:
               break;
           }
@@ -326,16 +330,14 @@ function rollDie(G, ctx) {
 // STAGE: moveClone
 function selectClone(G, ctx, id, playerID) {
   const cc = TileHelper.indexToCoordinates(id);
-  const cIdx = PersonnelHelper.getCloneIndexByCoordinates(G, cc);
   const c = PersonnelHelper.getCloneByCoordinates(G, cc);
-
-  if (c.owner === playerID || c.spy === true) {
-    G.stagedActors.push(G.players[playerID].clones[cIdx]);
+  if ((c.owner === playerID && !c.spy) || (c.owner !== playerID && c.spy)) {
+    G.stagedActors.push(c);
     G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, cc);
   }
 }
 
-function selectCloneMoveTarget(G, ctx, id, playerID) {
+function selectCloneMoveTarget(G, ctx, id) {
   let stagedClone = null;
   G.clickedCell = TileHelper.getClickedTileByIndex(G, id);
   const coords = TileHelper.indexToCoordinates(id);
@@ -346,7 +348,7 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
     }
   });
   if (stagedClone !== null) {
-    PersonnelHelper.moveClone(G, playerID, { x: stagedClone.x, y: stagedClone.y }, coords);
+    PersonnelHelper.moveClone(G, { x: stagedClone.x, y: stagedClone.y }, coords);
     G.stagedModuleOptions = [];
     G.selectedModuleForMove = G.clickedCell;
     // advance turn stage
@@ -357,9 +359,6 @@ function selectCloneMoveTarget(G, ctx, id, playerID) {
 // STAGE: activateModule
 function selectModuleTargets(G, ctx, id, playerID) {
   const coords = TileHelper.indexToCoordinates(id);
-  // if (G.selectedModuleForMove === null) {
-  //   console.log(`Why is this null? ${id}`);
-  // }
   const tile = G.selectedModuleForMove;
   if (tile.targetType === 'gunner') {
     const gunner = PersonnelHelper.getCloneByCoordinates(G, coords);
@@ -387,6 +386,19 @@ function selectModuleTargets(G, ctx, id, playerID) {
         });
         if (!G.repairsLeft) goToNextStage(G, ctx);
       }
+    }
+  } else if (tile.targetType === 'spy') {
+    const sc = TileHelper.indexToCoordinates(id);
+    const spy = PersonnelHelper.getCloneByCoordinates(G, sc);
+    const canAfford = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, tile);
+    if (canAfford) {
+      spy.spy = false;
+      const ct = tile.resourceCostType;
+      const cc = tile.resourceCostCount;
+      ct.forEach((type, idx) => {
+        ResourceHelper.removeResource(G, ctx, playerID, type, cc[idx]);
+      });
+      goToNextStage(G, ctx);
     }
   } else {
     // TODO: Fire module after valid selection (if reqs allow)");
