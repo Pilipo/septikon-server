@@ -18,7 +18,7 @@ function goToNextStage(G, ctx) {
           break;
         case 'surface': {
           const tarCoords = { x: tile.x, y: tile.y };
-          const tarClone = PersonnelHelper.getCloneByCoordinates(G, playerID, tarCoords);
+          const tarClone = PersonnelHelper.getCloneByCoordinates(G, tarCoords);
           tarClone.gunner = true;
           break;
         }
@@ -75,13 +75,33 @@ function goToNextStage(G, ctx) {
                 hasReqs = true;
                 G.stagedTargetOptions = gunners;
               }
-            }
-            // fall through
-            case 'espionage':
-            case 'takeover':
-              // TODO: check gunners' fire line for targets (clones or satellites)
-              // TODO: if checks out set Stage to 'activateModule' and track gunners
               break;
+            }
+            case 'espionage':
+            case 'takeover': {
+              // TODO: check gunners' fire line for targets (clones or satellites)
+              const gunners = PersonnelHelper.getGunners(G, ctx);
+              const spendMultiple = ResourceHelper.getTileSpendMultiple(G, ctx, playerID, tile);
+              let tarFound = null;
+              if (gunners.length > 0 && spendMultiple) {
+                if (tile.name === 'espionage') {
+                  gunners.forEach((g) => {
+                    if (tarFound) return;
+                    tarFound = WeaponHelper.getEspionageTarget(G, ctx, g);
+                  });
+                } else {
+                  gunners.forEach((g) => {
+                    if (tarFound) return;
+                    tarFound = WeaponHelper.getTakeoverTarget(G, ctx, g);
+                  });
+                }
+                if (tarFound) {
+                  hasReqs = true;
+                  G.stagedTargetOptions = gunners;
+                }
+              }
+              break;
+            }
             case 'repairTwo':
               G.repairsLeft += 1;
               // falls through
@@ -178,6 +198,14 @@ function goToNextStage(G, ctx) {
                 tar.occupied = true;
                 break;
               }
+              case 'takeover':
+              case 'espionage': {
+                G.stagedActors.forEach((gunner) => {
+                  const tarClone = WeaponHelper.getEspionageTarget(G, ctx, gunner);
+                  tarClone.spy = true;
+                });
+                break;
+              }
               default:
                 break;
             }
@@ -265,7 +293,7 @@ function goToNextStage(G, ctx) {
 // PHASE: layout
 function placeClone(G, ctx, id, playerID) {
   const coords = TileHelper.indexToCoordinates(id);
-  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
+  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, coords);
   if (cloneIndex === false) {
     PersonnelHelper.placeClone(G, playerID, coords);
   } else {
@@ -291,10 +319,14 @@ function rollDie(G, ctx) {
 
 // STAGE: moveClone
 function selectClone(G, ctx, id, playerID) {
-  const coords = TileHelper.indexToCoordinates(id);
-  const cloneIndex = PersonnelHelper.getCloneIndexByCoordinates(G, playerID, coords);
-  G.stagedActors.push(G.players[playerID].clones[cloneIndex]);
-  G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, coords);
+  const cc = TileHelper.indexToCoordinates(id);
+  const cIdx = PersonnelHelper.getCloneIndexByCoordinates(G, cc);
+  const c = PersonnelHelper.getCloneByCoordinates(G, cc);
+
+  if (c.owner === playerID || c.spy === true) {
+    G.stagedActors.push(G.players[playerID].clones[cIdx]);
+    G.stagedModuleOptions = PersonnelHelper.getClonesLegalMoves(G, playerID, G.rollValue, cc);
+  }
 }
 
 function selectCloneMoveTarget(G, ctx, id, playerID) {
@@ -324,7 +356,7 @@ function selectModuleTargets(G, ctx, id, playerID) {
   // }
   const tile = G.selectedModuleForMove;
   if (tile.targetType === 'gunner') {
-    const gunner = PersonnelHelper.getCloneByCoordinates(G, playerID, coords);
+    const gunner = PersonnelHelper.getCloneByCoordinates(G, coords);
     if (gunner !== null && gunner.gunner === true) {
       let canAfford = false;
       tile.resourceCostType.forEach((ct, idx) => {

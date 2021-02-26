@@ -621,7 +621,7 @@ describe('battle and armory tiles', () => {
 
   test('nuke', () => {
     // setup
-    // roll order 5, 4, 6, 2, 4, 6
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
     const matchID = 'yadernaya bomba';
     const client0 = Client({
       game: Septikon, playerID: '0', multiplayer: Local(), matchID,
@@ -711,12 +711,75 @@ describe('battle and armory tiles', () => {
     expect(g9.cells[484].damaged).toEqual(true);
     expect(g9.cells[504].damaged).toEqual(true);
   });
-  test.skip('espionage', () => {
-    // TODO: setup
-    // TODO: fire
-    // TODO: check spy state
-    // TODO: check spy controls
+
+  test('espionage', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'shpionazh';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(152, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(633, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(633, '1');
+    client1.moves.selectCloneMoveTarget(609, '1'); // <- p1 gunner tile
+
+    // fire brainwaves!
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(152, '0');
+    client0.moves.selectCloneMoveTarget(158, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection();
+
+    // check spy state
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.players[1].clones[0]).toEqual({
+      owner: '1', x: 29, y: 0, spy: true, gunner: false,
+    });
+
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(648, '1');
+    client1.moves.selectCloneMoveTarget(646, '1');
+
+    // check spy controls
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(609, '0');
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.stagedModuleOptions).toEqual([{ x: 30, y: 3 }, { x: 29, y: 4 }]);
+    client0.moves.selectCloneMoveTarget(613, '0');
+
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(613, '1');
+
+    const { G: g2, ctx: c2 } = client0.getState();
+    expect(g2.stagedModuleOptions).toEqual([]);
   });
+
   test.skip('takeover', () => {
     // TODO: setup
     // TODO: fire

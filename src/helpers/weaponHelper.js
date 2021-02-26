@@ -300,6 +300,8 @@ const WeaponHelper = {
   removeOrdnance,
   getSatellites,
   getArmsTargets,
+  getEspionageTarget,
+  getTakeoverTarget,
   getGunnersTargets: (G, ctx, gunners, battleTile) => {
     const returnTargets = [];
     if (gunners.length === 0) return returnTargets;

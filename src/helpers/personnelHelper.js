@@ -78,29 +78,34 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
   return [...new Set(legalMoves)];
 }
 
-function getCloneByCoordinates(G, playerID, coords) {
+function getCloneByCoordinates(G, coords) {
   let clone = null;
-  G.players[playerID].clones.forEach((el) => {
-    // console.log(`comparison: ${el.x},${el.y} to ${coords.x},${coords.y}`);
-    if (el.x === coords.x && el.y === coords.y) {
-      clone = el;
-    }
+  G.players.forEach((player) => {
+    if (clone) return;
+    player.clones.forEach((el) => {
+      if (clone) return;
+      if (el.x === coords.x && el.y === coords.y) {
+        clone = el;
+      }
+    });
   });
   return clone;
 }
 
 const PersonnelHelper = {
-  getCloneIndexByCoordinates: (G, playerID, coordinates) => {
-    if (typeof playerID === 'undefined') throw new Error('playerID undefined');
+  getCloneIndexByCoordinates: (G, coordinates) => {
+    // if (typeof playerID === 'undefined') throw new Error('playerID undefined');
     let cloneIdx = false;
-    G.players[playerID].clones.forEach((el, idx) => {
-      if (el.x === coordinates.x && el.y === coordinates.y) {
-        cloneIdx = idx;
-      }
+    G.players.forEach((player) => {
+      player.clones.forEach((el, idx) => {
+        if (el.x === coordinates.x && el.y === coordinates.y) {
+          cloneIdx = idx;
+        }
+      });
     });
     return cloneIdx;
   },
-  getCloneByCoordinates: (G, playerID, coords) => getCloneByCoordinates(G, playerID, coords),
+  getCloneByCoordinates,
   placeClone: (G, playerID, coordinates) => {
     if (G.players[playerID].clones.length < 5) {
       // console.log(coordinates);
@@ -134,7 +139,7 @@ const PersonnelHelper = {
     if (JSON.stringify(orgIdx) === JSON.stringify(tarIdx)) {
       return;
     }
-    const tarClone = getCloneByCoordinates(G, playerID, orgCoords);
+    const tarClone = getCloneByCoordinates(G, orgCoords);
     tarClone.x = tarCoords.x;
     tarClone.y = tarCoords.y;
     G.cells[orgIdx].occupied = false;
