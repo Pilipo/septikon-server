@@ -18,6 +18,9 @@ const firingLines = {
   ],
 };
 
+const nukeFiringLines = [
+  [0, 1], [1, 0], [-1, 0], [0, -1],
+];
 function getLaserTarget(G, ctx, gunner) {
   let target = null;
   const it = ctx.currentPlayer === '0' ? 1 : -1;
@@ -101,7 +104,9 @@ function moveOrdnance(G, ctx, ord) {
   if (typeof ord === 'undefined') throw new Error('ord is undefined!');
 
   const newX = ord.owner === '0' ? (ord.x + G.rollValue) : (ord.x - G.rollValue);
+  const originCoord = { x: ord.x, y: ord.y };
   const coord = { x: newX, y: ord.y };
+  const originTile = TileHelper.getClickedTileByCoordinates(G, originCoord);
   const tarTile = TileHelper.getClickedTileByCoordinates(G, coord);
   // is non-space, non-surface tile undamaged? (rocket dies and damages tile)
   // biodrones can land on damage
@@ -113,6 +118,21 @@ function moveOrdnance(G, ctx, ord) {
   } else if (tarTile.type !== 'space' && tarTile.type !== 'surface') {
     if (ord.type === 'rocket') {
       tarTile.damaged = true;
+      // console.log(tarTile);
+      if (ord.hasWarhead) {
+        nukeFiringLines.forEach((diff) => {
+          const x = tarTile.x + diff[0];
+          const y = tarTile.y + diff[1];
+          if (x <= TileHelper.upperX
+            && x >= TileHelper.lowerX
+            && y <= TileHelper.upperY
+            && y >= TileHelper.lowerY) {
+            const dCoord = { x, y };
+            const dTile = TileHelper.getClickedTileByCoordinates(G, dCoord);
+            if (dTile.type !== 'surface') dTile.damaged = true;
+          }
+        });
+      }
       removeOrdnance(G, ctx, ord);
     }
     if (ord.type === 'biodrone') {
@@ -127,6 +147,8 @@ function moveOrdnance(G, ctx, ord) {
 
   ord.x = newX;
   ord.hasMoved = true;
+  tarTile.occupied = true;
+  originTile.occupied = false;
 }
 
 function getRBSSByTileIndex(G, ctx, tileID) {

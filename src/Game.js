@@ -50,6 +50,9 @@ function goToNextStage(G, ctx) {
               yt.forEach((type, idx) => {
                 ResourceHelper.addResource(G, ctx, playerID, type, yc[idx]);
               });
+              if (tile.name === 'nuclearArmory') {
+                G.players[playerID].warheads += 1;
+              }
               break;
             }
             default:
@@ -156,18 +159,25 @@ function goToNextStage(G, ctx) {
               case 'biodrone':
               case 'satellite':
               case 'rocket':
-              case 'shield':
-                G.players[playerID].rbss.push({
+              case 'shield': {
+                const obj = {
                   type: tile.name,
                   x: tar.x,
                   y: tar.y,
                   owner: playerID,
                   damaged: false,
                   hasMoved: true,
-                });
+                  hasWarhead: false,
+                };
+                if (G.players[playerID].warheads) {
+                  obj.hasWarhead = true;
+                  G.players[playerID].warheads -= 1;
+                }
+                G.players[playerID].rbss.push(obj);
                 // TODO: should this live elsewhere?
                 tar.occupied = true;
                 break;
+              }
               default:
                 break;
             }
@@ -453,12 +463,14 @@ const Septikon = {
         clones: [],
         biodrones: [],
         rbss: [],
+        warheads: 0,
       },
       {
         arms: [],
         clones: [],
         biodrones: [],
         rbss: [],
+        warheads: 0,
       },
     ],
   }),

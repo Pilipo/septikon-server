@@ -108,7 +108,7 @@ describe('battle and armory tiles', () => {
     expect(cap0a).toEqual(9);
     // check placement
     expect(g0.players[0].rbss).toEqual([{
-      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0',
+      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0', hasWarhead: false,
     }]);
 
     // block laser and damage shield
@@ -180,7 +180,7 @@ describe('battle and armory tiles', () => {
     expect(cap0a).toEqual(9);
     // check placement
     expect(g0.players[0].rbss).toEqual([{
-      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0',
+      damaged: false, hasMoved: true, type: 'shield', x: 14, y: 0, owner: '0', hasWarhead: false,
     }]);
 
     // block laser and damage shield
@@ -321,6 +321,7 @@ describe('battle and armory tiles', () => {
       owner: '0',
       damaged: false,
       hasMoved: true,
+      hasWarhead: false,
     });
 
     // p1 launch rocket
@@ -587,7 +588,7 @@ describe('battle and armory tiles', () => {
     client0.moves.selectModuleTargets(168, '0');
     client0.moves.confirmModuleTargetSelection('0');
 
-    // TODO: check flight
+    // check flight
     const { G: g0 } = client0.getState();
     expect(g0.players[0].rbss[0].x).toEqual(14);
 
@@ -618,12 +619,97 @@ describe('battle and armory tiles', () => {
     expect(ResourceHelper.getSpendCapacity(g3, c3, '0', 'rocket')).toEqual(4);
   });
 
-  test.skip('nuke', () => {
-    // TODO: setup
+  test('nuke', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6
+    const matchID = 'yadernaya bomba';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(500, '1');
+    client1.moves.selectCloneMoveTarget(482, '1'); // <- p1 gunner tile
+
+    // build warhead
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(14, '0');
+    client0.moves.selectCloneMoveTarget(20, '0');
+
+    // p1 waste turn
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(482, '1');
+    client1.moves.selectCloneMoveTarget(480, '1'); // <- p1 gunner tile
+
     // TODO: fire NUKE
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(133, '0');
+    client0.moves.selectCloneMoveTarget(137, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection('0');
+    const { G: g0 } = client0.getState();
+    expect(g0.players[0].rbss[0]).toEqual({
+      type: 'rocket',
+      x: 12,
+      y: 0,
+      owner: '0',
+      damaged: false,
+      hasMoved: false,
+      hasWarhead: true,
+    });
+
     // TODO: check NUKE flight
-    // TODO: check NUKE touchdown
-    // TODO: check NUKE damage
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(480, '1');
+    client1.moves.selectCloneMoveTarget(474, '1'); // <- p1 gunner tile
+    client1.moves.confirmOrdnanceSelection();
+
+    const { G: g1 } = client0.getState();
+    expect(g1.cells[378].occupied).toEqual(true);
+    expect(g1.cells[252].occupied).toEqual(false);
+    expect(g1.players[0].rbss[0].x).toEqual(18);
+
+    client0.moves.rollDie('0'); // 1
+    client0.moves.selectClone(30, '0');
+    client0.moves.selectCloneMoveTarget(29, '0');
+    client0.moves.confirmOrdnanceSelection();
+
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(648, '1');
+    client1.moves.selectCloneMoveTarget(644, '1'); // <- p1 gunner tile
+    client1.moves.confirmOrdnanceSelection();
+    const { G: g9, ctx: c9 } = client0.getState();
+    // check NUKE touchdown
+    expect(g9.players[0].rbss).toEqual([]);
+    // check NUKE damage
+    expect(g9.cells[483].damaged).toEqual(true);
+    expect(g9.cells[484].damaged).toEqual(true);
+    expect(g9.cells[504].damaged).toEqual(true);
   });
   test.skip('espionage', () => {
     // TODO: setup

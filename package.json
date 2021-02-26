@@ -8,7 +8,7 @@
     "serve": "node -r esm src/Server.js",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "make-badges": "istanbul-badges-readme"
+    "badges": "istanbul-badges-readme"
   },
   "browserslist": "> 0.4% and not ie 11",
   "author": "",
