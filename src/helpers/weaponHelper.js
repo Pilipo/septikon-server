@@ -211,7 +211,13 @@ function getEspionageTarget(G, ctx, gunner) {
 
 function getTakeoverTarget(G, ctx, gunner) {
   const oppID = ctx.currentPlayer === '0' ? '1' : '0';
-  const oppSats = G.players[oppID].satellites;
+  const oppRBSS = G.players[oppID].rbss;
+  const oppSats = [];
+  oppRBSS.forEach((obj) => {
+    if (obj.type === 'satellite') {
+      oppSats.push(obj);
+    }
+  });
   const targets = [];
   let target = null;
   oppSats.forEach((sat) => {

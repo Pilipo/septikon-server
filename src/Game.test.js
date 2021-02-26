@@ -780,11 +780,80 @@ describe('battle and armory tiles', () => {
     expect(g2.stagedModuleOptions).toEqual([]);
   });
 
-  test.skip('takeover', () => {
-    // TODO: setup
-    // TODO: fire
-    // TODO: check satellite owner
+  test('takeover', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'perenimat';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(132, '0');
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(14, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(633, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(486, '1');
+    client1.moves.placeClone(491, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(151, '0');
+    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
+
+    // get a gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(486, '1');
+    client1.moves.selectCloneMoveTarget(462, '1'); // <- p1 gunner tile
+
+    // launch sat
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(132, '0');
+    client0.moves.selectCloneMoveTarget(126, '0');
+    client0.moves.selectModuleTargets(168, '0');
+    client0.moves.confirmModuleTargetSelection();
+    const { G: g0, ctx: c0 } = client0.getState();
+    expect(g0.players[0].rbss[0]).toEqual({
+      type: 'satellite',
+      x: 14,
+      y: 0,
+      owner: '0',
+      damaged: false,
+      hasMoved: true,
+      hasWarhead: false,
+    });
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(491, '1');
+    client1.moves.selectCloneMoveTarget(489, '1');
+    client1.moves.selectModuleTargets(462, '1');
+    client1.moves.confirmModuleTargetSelection();
+
+    const { G: g1 } = client0.getState();
+    expect(g1.players[0].rbss[0]).toEqual({
+      type: 'satellite',
+      x: 14,
+      y: 0,
+      owner: '1',
+      damaged: false,
+      hasMoved: true,
+      hasWarhead: false,
+    });
+
+    // TODO: test rocket destruction (p0)
+    // TODO: test rocket pass (p1)
   });
+  
   test.skip('counterEspionage', () => {
     // TODO: setup
     // TODO: fire

@@ -198,7 +198,13 @@ function goToNextStage(G, ctx) {
                 tar.occupied = true;
                 break;
               }
-              case 'takeover':
+              case 'takeover': {
+                G.stagedActors.forEach((gunner) => {
+                  const tarClone = WeaponHelper.getTakeoverTarget(G, ctx, gunner);
+                  tarClone.owner = playerID;
+                });
+                break;
+              }
               case 'espionage': {
                 G.stagedActors.forEach((gunner) => {
                   const tarClone = WeaponHelper.getEspionageTarget(G, ctx, gunner);
