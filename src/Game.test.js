@@ -53,7 +53,7 @@ describe('battle and armory tiles', () => {
     client1.moves.selectModuleTargets(465, '1');
     client1.moves.confirmModuleTargetSelection('1');
 
-    const { G: g0, ctx: c0 } = client0.store.getState();
+    const { G: g0 } = client0.store.getState();
     expect(g0.cells[541].damaged).toEqual(true);
     expect(g0.cells[24].damaged).toEqual(true);
   });
@@ -385,7 +385,7 @@ describe('battle and armory tiles', () => {
     client0.moves.confirmModuleTargetSelection('0');
 
     // check clone kill
-    const { G: g0, ctx: c0 } = client0.getState();
+    const { G: g0 } = client0.getState();
     expect(g0.cells[483].damaged).toEqual(false);
     expect(g0.cells[462].occupied).toEqual(false);
     expect(g0.players[1].clones.length).toEqual(4);
@@ -453,7 +453,7 @@ describe('battle and armory tiles', () => {
     client0.moves.confirmModuleTargetSelection('0');
 
     // check damage
-    const { G: g0, ctx: c0 } = client0.getState();
+    const { G: g0 } = client0.getState();
     expect(g0.cells[483].damaged).toEqual(true);
 
     // repair 1
@@ -525,7 +525,7 @@ describe('battle and armory tiles', () => {
     client0.moves.confirmModuleTargetSelection('0');
 
     // check damage
-    const { G: g0, ctx: c0 } = client0.getState();
+    const { G: g0 } = client0.getState();
     expect(g0.cells[483].damaged).toEqual(true);
     expect(g0.cells[504].damaged).toEqual(true);
 
@@ -1434,6 +1434,7 @@ describe('production tiles', () => {
     expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'oxygen')).toEqual(6);
     // TODO: check clone increase
   });
+
   test('nuclear armory', () => {
     // roll order 5, 4, 6, 2, 4, 6, 1, 4
     const matchID = 'boyegolovka';

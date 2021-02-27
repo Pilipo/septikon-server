@@ -448,19 +448,19 @@ function confirmModuleTargetSelection(G, ctx) {
 
 // STAGE: moveBiodrones
 // TODO: selectBiodrones
-function selectBiodrones(G, ctx, id, playerID) {
+function selectBiodrones() {
   const tarAry = [];
   return tarAry;
 }
 
 // TODO: selectBiodroneMoveTarget
-function selectBiodroneMoveTarget(G, ctx, id, playerID) {
+function selectBiodroneMoveTarget() {
   const tarTile = {};
   return tarTile;
 }
 
 // TODO: selectBiodroneMoveTarget
-function confirmBiodroneMoves(G, ctx, id, playerID) {
+function confirmBiodroneMoves() {
   const tarTile = {};
   return tarTile;
 }

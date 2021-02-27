@@ -13,8 +13,6 @@ function getClonesLegalMoves(G, playerID, moves, curCoords, prevCoords) {
 
   // check for allLocks on first iteration
   if (typeof prevCoords === 'undefined' && curTile.type === 'lock') {
-    // TODO: accommodate spies
-
     const allLocks = TileHelper.getLocks(playerID);
 
     // TODO: Fix bug in which the lock the clone is presently standing on is a legal target.
