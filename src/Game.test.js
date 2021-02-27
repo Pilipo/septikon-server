@@ -702,7 +702,7 @@ describe('battle and armory tiles', () => {
     client1.moves.selectClone(648, '1');
     client1.moves.selectCloneMoveTarget(644, '1'); // <- p1 gunner tile
     client1.moves.confirmOrdnanceSelection();
-    const { G: g9, ctx: c9 } = client0.getState();
+    const { G: g9 } = client0.getState();
     // check NUKE touchdown
     expect(g9.players[0].rbss).toEqual([]);
     // check NUKE damage
@@ -756,7 +756,7 @@ describe('battle and armory tiles', () => {
     client0.moves.confirmModuleTargetSelection();
 
     // check spy state
-    const { G: g0, ctx: c0 } = client0.getState();
+    const { G: g0 } = client0.getState();
     expect(g0.players[1].clones[0]).toEqual({
       owner: '1', x: 29, y: 0, spy: true, gunner: false, arms: [],
     });
@@ -768,7 +768,7 @@ describe('battle and armory tiles', () => {
     // check spy controls
     client0.moves.rollDie('0'); // 4
     client0.moves.selectClone(609, '0');
-    const { G: g1, ctx: c1 } = client0.getState();
+    const { G: g1 } = client0.getState();
     expect(g1.stagedModuleOptions).toEqual([{ x: 30, y: 3 }, { x: 29, y: 4 }]);
     // TODO: test module activation
     client0.moves.selectCloneMoveTarget(613, '0');
@@ -776,7 +776,7 @@ describe('battle and armory tiles', () => {
     client1.moves.rollDie('1'); // 6
     client1.moves.selectClone(613, '1');
 
-    const { G: g2, ctx: c2 } = client0.getState();
+    const { G: g2 } = client0.getState();
     expect(g2.stagedModuleOptions).toEqual([]);
     expect(g2.players[1].clones[0]).toEqual({
       owner: '1', x: 29, y: 4, spy: true, gunner: false, arms: [],
@@ -801,7 +801,7 @@ describe('battle and armory tiles', () => {
     client1.moves.selectCloneMoveTarget(522, '1');
     client1.moves.selectModuleTargets(613, '1');
 
-    const { G: g2, ctx: c2 } = client0.getState();
+    const { G: g2 } = client0.getState();
     expect(g2.players[1].clones[0]).toEqual({
       owner: '1', x: 29, y: 4, spy: false, gunner: false, arms: [],
     });
@@ -850,7 +850,7 @@ describe('battle and armory tiles', () => {
     client0.moves.selectCloneMoveTarget(126, '0');
     client0.moves.selectModuleTargets(168, '0');
     client0.moves.confirmModuleTargetSelection();
-    const { G: g0, ctx: c0 } = client0.getState();
+    const { G: g0 } = client0.getState();
     expect(g0.players[0].rbss[0]).toEqual({
       type: 'satellite',
       x: 14,
@@ -946,7 +946,7 @@ describe('battle and armory tiles', () => {
     client1.moves.confirmModuleTargetSelection();
 
     // TODO: check kill zone
-    const { G: g3, ctx: c3 } = client0.getState();
+    const { G: g3 } = client0.getState();
     expect(g3.players[0].clones.length).toEqual(3);
     expect(g3.players[1].clones.length).toEqual(5);
 
@@ -1019,7 +1019,7 @@ describe('battle and armory tiles', () => {
     client1.moves.confirmModuleTargetSelection();
 
     // check kill zone
-    const { G: g3, ctx: c3 } = client0.getState();
+    const { G: g3 } = client0.getState();
     expect(g3.players[0].clones.length).toEqual(4);
     expect(g3.players[1].clones.length).toEqual(5);
 
@@ -1073,7 +1073,7 @@ describe('battle and armory tiles', () => {
     client0.moves.selectCloneMoveTarget(178, '0'); // <- p0 gunner tile
 
     // check destruction
-    const { G: g3, ctx: c3 } = client0.getState();
+    const { G: g3 } = client0.getState();
     expect(g3.players[0].clones.length).toEqual(5);
     expect(g3.players[1].clones.length).toEqual(5);
   });
@@ -1466,7 +1466,7 @@ describe('production tiles', () => {
     client0.moves.selectClone(15, '0');
     client0.moves.selectCloneMoveTarget(20, '0');
 
-    const { G: g1, ctx: c1 } = client0.getState();
+    const { G: g1 } = client0.getState();
     expect(g1.cells[20].occupied).toEqual(true);
     expect(g1.players[0].warheads).toEqual(1);
   });
