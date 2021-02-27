@@ -1116,49 +1116,254 @@ describe('production tiles', () => {
     client1.moves.selectClone(642, '1');
     client1.moves.selectCloneMoveTarget(646, '1'); // <- p1 gunner tile
 
-    const { G:g1, ctx:c1 } = client0.getState();
+    const { G: g1, ctx: c1 } = client0.getState();
     expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'biomass')).toEqual(6);
     expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'biomass')).toEqual(7);
   });
-  test.skip('rocketWorkshop', () => {
-    // TODO: fire
-    // TODO: check conversion
+
+  test('rocketWorkshop', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'raketnaya masterskaya';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(6, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(6, '0');
+    client0.moves.selectCloneMoveTarget(1, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[1].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'rocket')).toEqual(6);
   });
-  test.skip('uraniumMine', () => {
-    // TODO: fire
-    // TODO: check conversion
+
+  test('uraniumMine', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'uran';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(7, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(7, '0');
+    client0.moves.selectCloneMoveTarget(2, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[2].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'uranium')).toEqual(6);
   });
-  test.skip('foundry', () => {
-    // TODO: fire
-    // TODO: check conversion
+  test('foundry', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'Liteynyy zavod';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(8, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(8, '0');
+    client0.moves.selectCloneMoveTarget(3, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[3].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'metal')).toEqual(6);
   });
-  test.skip('chemicalReactor and chemicalReactorTwo', () => {
-    // TODO: fire
-    // TODO: check conversion
+
+  test('chemicalReactor and chemicalReactorTwo', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'khimicheskiy reaktor';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(25, '0');
+    client0.moves.placeClone(8, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(641, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(25, '0');
+    client0.moves.selectCloneMoveTarget(30, '0');
+
+    // build
+    client1.moves.rollDie('0'); // 4
+    client1.moves.selectClone(641, '1');
+    client1.moves.selectCloneMoveTarget(645, '1');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[30].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'oxygen')).toEqual(6);
+    expect(g1.cells[645].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'oxygen')).toEqual(7);
   });
-  test.skip('thermalGenerator', () => {
-    // TODO: fire
-    // TODO: check conversion
+
+  test('thermalGenerator', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'teplovoy generator';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(7, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(7, '0');
+    client0.moves.selectCloneMoveTarget(12, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[12].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'energy')).toEqual(11);
   });
+
   test.skip('prodRepair', () => {
-    // TODO: fire
+    // TODO: fire <- 8
     // TODO: check damage state
     // TODO: check conversion
   });
-  test.skip('nuclearReactor', () => {
-    // TODO: fire
-    // TODO: check conversion
+
+  test('nuclearReactor', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'yadernyy reaktor';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(4, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(4, '0');
+    client0.moves.selectCloneMoveTarget(9, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[9].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'energy')).toEqual(13);
   });
   test.skip('sensorCabin', () => {
-    // TODO: fire
+    // TODO: fire <- 13
     // TODO: check on dead biodrone
   });
   test.skip('biocollector', () => {
-    // TODO: fire
+    // TODO: fire <- 14
     // TODO: check conversion
   });
   test.skip('airFilter', () => {
-    // TODO: fire
+    // TODO: fire <- 15
     // TODO: check conversion
     // TODO: check clone increase
   });
@@ -1193,7 +1398,7 @@ describe('production tiles', () => {
     client0.moves.selectClone(15, '0');
     client0.moves.selectCloneMoveTarget(20, '0');
 
-    const { G:g1, ctx:c1 } = client0.getState();
+    const { G: g1, ctx: c1 } = client0.getState();
     expect(g1.cells[20].occupied).toEqual(true);
     expect(g1.players[0].warheads).toEqual(1);
   });
