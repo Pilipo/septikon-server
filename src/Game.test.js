@@ -955,10 +955,75 @@ describe('battle and armory tiles', () => {
     // TODO: check kill zone
   });
 
-  test.skip('armory 2', () => {
-    // TODO: setup
-    // TODO: test being armed at setup
+  test('armory 2', () => {
+    // setup
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'dva arsenala';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(167, '0');
+    client0.moves.placeClone(94, '0');
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(147, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(633, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(486, '1');
+    client1.moves.placeClone(490, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // test being armed at setup
+    const { G: g0 } = client0.getState();
+    expect(g0.players[0].clones[0].arms).toEqual([{ type: 'drill' }]);
+
+    // p0 gets southern gunner
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(167, '0');
+    client0.moves.selectCloneMoveTarget(184, '0'); // <- p0 gunner tile
+
+    // p1 gets northern gunner
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(486, '1');
+    client1.moves.selectCloneMoveTarget(462, '1'); // <- p1 gunner tile
+
+    // p0 moves gunner
+    client0.moves.rollDie('0'); // 6
+    client0.moves.selectClone(184, '0');
+    client0.moves.selectCloneMoveTarget(178, '0'); // <- p0 gunner tile
+
+    // p1 fires espionage through northern gunner; takes spy
+    client1.moves.rollDie('1'); // 2
+    client1.moves.selectClone(490, '1');
+    client1.moves.selectCloneMoveTarget(492, '1');
+    client1.moves.selectModuleTargets(462, '1');
+    client1.moves.confirmModuleTargetSelection();
+
+    // p0 moves gunner
+    client0.moves.rollDie('0'); // 4
+    client0.moves.selectClone(178, '0');
+    client0.moves.selectCloneMoveTarget(174, '0');
+
+    // p1 moves spy into a striking distance
+    client1.moves.rollDie('1'); // 6
+    client1.moves.selectClone(147, '1');
+    client1.moves.selectCloneMoveTarget(153, '1');
+    client1.moves.confirmModuleTargetSelection();
+
     // TODO: check kill zone
+    const { G: g3, ctx: c3 } = client0.getState();
+    expect(g3.players[0].clones.length).toEqual(4);
+    expect(g3.players[1].clones.length).toEqual(5);
+
     // TODO: test being armed after setup
     // TODO: check kill zone
   });
