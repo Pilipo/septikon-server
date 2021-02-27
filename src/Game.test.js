@@ -1080,9 +1080,45 @@ describe('battle and armory tiles', () => {
 });
 
 describe('production tiles', () => {
-  test.skip('lichen and lichenTwo', () => {
-    // TODO: fire
-    // TODO: check conversion
+  test('lichen and lichenTwo', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'lishaynik';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(5, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(642, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // get a lichen
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(5, '0');
+    client0.moves.selectCloneMoveTarget(0, '0'); // <- p0 gunner tile
+
+    // get a lichen 2
+    client1.moves.rollDie('1'); // 4
+    client1.moves.selectClone(642, '1');
+    client1.moves.selectCloneMoveTarget(646, '1'); // <- p1 gunner tile
+
+    const { G:g1, ctx:c1 } = client0.getState();
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'biomass')).toEqual(6);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '1', 'biomass')).toEqual(7);
   });
   test.skip('rocketWorkshop', () => {
     // TODO: fire
@@ -1142,7 +1178,7 @@ describe('production tiles', () => {
     client0.moves.placeClone(156, '0');
     client0.moves.placeClone(133, '0');
     client0.moves.placeClone(30, '0');
-    client0.moves.placeClone(14, '0');
+    client0.moves.placeClone(15, '0');
     client0.moves.confirmSetup('0');
 
     client1.moves.placeClone(500, '1');
@@ -1152,19 +1188,13 @@ describe('production tiles', () => {
     client1.moves.placeClone(484, '1');
     client1.moves.confirmSetup('1');
 
-    // get a gunner
-    client0.moves.rollDie('0'); // 5
-    client0.moves.selectClone(151, '0');
-    client0.moves.selectCloneMoveTarget(168, '0'); // <- p0 gunner tile
-
-    // get a gunner
-    client1.moves.rollDie('1'); // 4
-    client1.moves.selectClone(500, '1');
-    client1.moves.selectCloneMoveTarget(482, '1'); // <- p1 gunner tile
-
     // build warhead
     client0.moves.rollDie('0'); // 6
-    client0.moves.selectClone(14, '0');
+    client0.moves.selectClone(15, '0');
     client0.moves.selectCloneMoveTarget(20, '0');
+
+    const { G:g1, ctx:c1 } = client0.getState();
+    expect(g1.cells[20].occupied).toEqual(true);
+    expect(g1.players[0].warheads).toEqual(1);
   });
 });
