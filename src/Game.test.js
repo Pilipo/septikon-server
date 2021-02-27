@@ -1354,17 +1354,84 @@ describe('production tiles', () => {
     expect(g1.cells[9].occupied).toEqual(true);
     expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'energy')).toEqual(13);
   });
+
   test.skip('sensorCabin', () => {
     // TODO: fire <- 13
     // TODO: check on dead biodrone
   });
-  test.skip('biocollector', () => {
-    // TODO: fire <- 14
-    // TODO: check conversion
+
+  test('biocollector', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'biokollektor';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(9, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(9, '0');
+    client0.moves.selectCloneMoveTarget(14, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[14].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'biodrone')).toEqual(6);
   });
-  test.skip('airFilter', () => {
-    // TODO: fire <- 15
-    // TODO: check conversion
+
+  test('airFilter', () => {
+    // roll order 5, 4, 6, 2, 4, 6, 1, 4
+    const matchID = 'vozdushnyy fil\'tr';
+    const client0 = Client({
+      game: Septikon, playerID: '0', multiplayer: Local(), matchID,
+    });
+    const client1 = Client({
+      game: Septikon, playerID: '1', multiplayer: Local(), matchID,
+    });
+    client0.start();
+    client1.start();
+
+    client0.moves.placeClone(151, '0');
+    client0.moves.placeClone(156, '0');
+    client0.moves.placeClone(133, '0');
+    client0.moves.placeClone(30, '0');
+    client0.moves.placeClone(10, '0');
+    client0.moves.confirmSetup('0');
+
+    client1.moves.placeClone(500, '1');
+    client1.moves.placeClone(509, '1');
+    client1.moves.placeClone(648, '1');
+    client1.moves.placeClone(647, '1');
+    client1.moves.placeClone(484, '1');
+    client1.moves.confirmSetup('1');
+
+    // build
+    client0.moves.rollDie('0'); // 5
+    client0.moves.selectClone(10, '0');
+    client0.moves.selectCloneMoveTarget(15, '0');
+
+    // check conversion
+    const { G: g1, ctx: c1 } = client0.getState();
+    expect(g1.cells[15].occupied).toEqual(true);
+    expect(ResourceHelper.getSpendCapacity(g1, c1, '0', 'oxygen')).toEqual(6);
     // TODO: check clone increase
   });
   test('nuclear armory', () => {

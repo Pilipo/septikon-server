@@ -137,17 +137,8 @@ function getFirstFullTileIndex(G, ctx, playerID, type) {
 }
 
 function addResource(G, ctx, playerID, type) {
-  const curCap = getCapacity(G, ctx, playerID, type);
-
-  if (curCap <= 0) {
-    return false;
-  }
   const tile = getLastFreeTileIndex(G, ctx, playerID, type);
-  if (tile == null) {
-    return false;
-  }
   G.cells[TileHelper.coordinatesToIndex({ x: tile.x, y: tile.y })].isFull = true;
-  return true;
 }
 
 function removeResource(G, ctx, playerID, type) {
@@ -158,9 +149,25 @@ function removeResource(G, ctx, playerID, type) {
 const ResourceHelper = {
   TYPE,
   addResource: (G, ctx, playerID, type, count) => {
-    for (let i = 0; i < count; i += 1) {
-      addResource(G, ctx, playerID, type);
+    let curCap = null;
+    let convertedType = null;
+    if (type === 'energy') {
+      const curCapE1 = getCapacity(G, ctx, playerID, 'energy1');
+      const curCapE2 = getCapacity(G, ctx, playerID, 'energy2');
+      curCap = curCapE1 > curCapE2 ? curCapE1 : curCapE2;
+      convertedType = curCapE2 > curCapE1 ? 'energy2' : 'energy1';
+    } else {
+      curCap = getCapacity(G, ctx, playerID, type);
+      convertedType = type;
     }
+
+    if (curCap < count) {
+      return false;
+    }
+    for (let i = 0; i < count; i += 1) {
+      addResource(G, ctx, playerID, convertedType);
+    }
+    return true;
   },
   removeResource: (G, ctx, playerID, type, count) => {
     let curCap = null;
