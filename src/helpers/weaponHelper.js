@@ -1,4 +1,3 @@
-import PersonnelHelper from './personnelHelper';
 import { TileHelper } from './tileHelper';
 
 const firingLines = {
@@ -71,7 +70,7 @@ function getDamagedShields(G, ctx, playerID) {
   return damagedShields;
 }
 
-function getUnmovedOrdnance(G, ctx) {
+function getUnmovedOrdnance(G) {
   const returnOrds = [];
   G.players.forEach((player) => {
     player.rbss.forEach((ord) => {
@@ -240,7 +239,7 @@ function getTakeoverTarget(G, ctx, gunner) {
   return target;
 }
 
-function resetMoves(G, ctx) {
+function resetMoves(G) {
   G.players.forEach((player) => {
     player.rbss.forEach((ord) => {
       if (ord.type === 'rocket' || ord.type === 'biodrone') {
