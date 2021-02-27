@@ -304,6 +304,7 @@ function getArmsTargets(G, playerID, clone) {
   const origin = { x: clone.x, y: clone.y };
 
   clone.arms.forEach((arm) => {
+    if (arm.type === 'explosives') return;
     firingLines[arm.type].forEach((diff) => {
       const x = origin.x + diff[0];
       const y = origin.y + diff[1];

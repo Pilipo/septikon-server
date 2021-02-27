@@ -13,6 +13,7 @@ function goToNextStage(G, ctx) {
   const tile = G.selectedModuleForMove;
   switch (currentStage) {
     case 'moveClone':
+      // TODO: check if clones have explosives; if so, give option for blowing crap up
       switch (tile.type) {
         case 'lock':
           break;
